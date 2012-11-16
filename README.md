@@ -5,7 +5,8 @@ CadetEngine is a component based AS3 Scene Engine which supports 2D and 3D rende
 
 The CadetEngine framework is broken down into layers, each layer adds additional features via it's own Flex Library project.
 
-#### Cadet (core) ####
+Cadet (core)
+------------
 
 Dependencies: [FloxApp](https://github.com/unwrong/FloxApp)
 
@@ -15,7 +16,8 @@ The Cadet core library can be used in conjunction with vanilla Starling, Away3D,
 
 [Examples](https://github.com/unwrong/CadetEngine/examples/cadet)
 
-#### Cadet2D ####
+Cadet2D
+-------
 
 Dependencies: [Cadet (core)](https://github.com/unwrong/CadetEngine/tree/master/cadet), [FloxApp](https://github.com/unwrong/FloxApp), [Starling](https://github.com/PrimaryFeather/Starling-Framework)
 
@@ -23,7 +25,8 @@ Cadet2D augments Cadet with 2D Rendering capability (via Starling) and various 2
 
 [Examples](https://github.com/unwrong/CadetEngine/examples/cadet2D)
 
-#### Cadet2DBox2D ####
+Cadet2DBox2D
+------------
 
 Dependencies: [Cadet (core)](https://github.com/unwrong/CadetEngine/tree/master/cadet), [Cadet2D](https://github.com/unwrong/CadetEngine/tree/master/cadet2D)
 
@@ -31,7 +34,8 @@ Cadet2DBox2D augments Cadet2D with a suite of physics behaviours and processes p
 
 [Examples](https://github.com/unwrong/CadetEngine/examples/cadet2DBox2D)
  
-#### Cadet3D ####
+Cadet3D
+-------
 
 Dependencies: [Cadet (core)](https://github.com/unwrong/CadetEngine/tree/master/cadet), [FloxApp](https://github.com/unwrong/FloxApp), [Away3D](https://github.com/away3d/away3d-core-fp11)
 
@@ -39,7 +43,8 @@ Cadet3D augments Cadet with 3D Rendering capability (via Away3D) and various 3D-
 
 [Examples](https://github.com/unwrong/CadetEngine/examples/cadet3D)
 
-#### Cadet3DPhysics ####
+Cadet3DPhysics
+--------------
 
 Dependencies: [Cadet (core)](https://github.com/unwrong/CadetEngine/tree/master/cadet), [Cadet3D](https://github.com/unwrong/CadetEngine/tree/master/cadet3D), [AwayPhysics](https://github.com/away3d/awayphysics-core-fp11)
 
