@@ -65,6 +65,8 @@ package cadet2D.renderPipeline.flash.components.renderers
 		protected var identityMatrix		:Matrix;
 		protected var layersTable			:Object;
 		
+		private var _enabled				:Boolean;
+		
 		public function Renderer2D()
 		{
 			name = "Renderer 2D";
@@ -139,12 +141,20 @@ package cadet2D.renderPipeline.flash.components.renderers
 		
 		public function enable(parent:DisplayObjectContainer, depth:int = -1):void
 		{
+			if (_enabled) return;
+			
+			_enabled = true;
+			
 			if ( depth > -1 )	parent.addChildAt(viewport, depth);
 			else				parent.addChild(viewport);
 		}
 		public function disable(parent:DisplayObjectContainer):void
 		{
-			parent.removeChild(viewport);
+			_enabled = false;
+			
+			if ( parent.contains(viewport) ) {
+				parent.removeChild(viewport);
+			}
 		}
 		
 		override public function validateNow():void
