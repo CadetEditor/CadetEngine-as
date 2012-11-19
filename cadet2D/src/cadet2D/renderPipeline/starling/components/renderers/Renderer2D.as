@@ -106,7 +106,7 @@ package cadet2D.renderPipeline.starling.components.renderers
 			
 			_enabled = true;
 			
-			trace("RENDERER2D ENABLE: parent x "+parent.x+" y "+parent.y);//+" numInstances "+numInstances);
+			//trace("RENDERER2D ENABLE: parent x "+parent.x+" y "+parent.y);//+" numInstances "+numInstances);
 			_parent = parent;
 			
 			var pt:Point = _parent.localToGlobal(new Point(0,0));
@@ -145,8 +145,8 @@ package cadet2D.renderPipeline.starling.components.renderers
 
 		private function onTouchHandler(e:TouchEvent):void
 		{
-			var dispObj:DisplayObject = DisplayObject(e.target);
-			
+			//var dispObj:DisplayObject = DisplayObject(e.target);
+			var dispObj:DisplayObject = DisplayObject(_viewport.stage);
 			var touches:Vector.<Touch> = e.getTouches(dispObj);
 			
 			for each (var touch:Touch in touches)
@@ -157,8 +157,8 @@ package cadet2D.renderPipeline.starling.components.renderers
 				
 				var local:Point = _viewport.globalToLocal(location);
 				
-				trace("onTouch x "+_mouseX+" y "+_mouseY+" phase "+touch.phase);
-				trace("local x "+local.x+" y "+local.y);
+				//trace("onTouch x "+_mouseX+" y "+_mouseY+" phase "+touch.phase);
+				//trace("local x "+local.x+" y "+local.y);
 				//trace("parent x "+_parent.x+" y "+_parent.y);
 				break;
 			}
