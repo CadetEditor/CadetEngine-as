@@ -88,8 +88,8 @@ package cadet2D.renderPipeline.starling.components.skins
 		
 		protected function validateAsset():void
 		{
-			if ( image && sprite.contains(image) ) {
-				sprite.removeChild(image);
+			if ( image && displayObjectContainer.contains(image) ) {
+				displayObjectContainer.removeChild(image);
 			}
 			
 			if (!Starling.context) return;
@@ -107,7 +107,7 @@ package cadet2D.renderPipeline.starling.components.skins
 			image = new Image(texture);
 			image.x = _fillXOffset;
 			image.y = _fillYOffset;
-			sprite.addChild(image);
+			displayObjectContainer.addChild(image);
 		}		
 	}
 }

@@ -330,7 +330,7 @@ package cadet2D.renderPipeline.starling.components.renderers
 			
 			addSkinToDisplayList(skin);
 			
-			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObject;
+			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObjectContainer;
 			
 			skin.invalidate("*");
 			skin.validateNow();
@@ -345,7 +345,7 @@ package cadet2D.renderPipeline.starling.components.renderers
 			// Could be a Flash Skin of type ISkin2D
 			if (!(skin is AbstractSkin2D)) return;
 			
-			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObject;
+			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObjectContainer;
 			
 			removeSkinFromDisplayList(skin);
 			skin.removeEventListener(InvalidationEvent.INVALIDATE, invalidateSkinHandler);
@@ -356,7 +356,7 @@ package cadet2D.renderPipeline.starling.components.renderers
 		private function invalidateSkinHandler( event:InvalidationEvent ):void
 		{
 			var skin:ISkin2D = ISkin2D(event.target);
-			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObject;
+			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObjectContainer;
 			
 			if ( displayObject.parent == null )
 			{
@@ -377,14 +377,14 @@ package cadet2D.renderPipeline.starling.components.renderers
 			if ( !layers ) return;
 			
 			var parent:starling.display.DisplayObjectContainer = layers[skin.layerIndex];
-			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObject;
+			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObjectContainer;
 			
 			parent.addChild( displayObject );
 		}
 		
 		private function removeSkinFromDisplayList( skin:ISkin2D ):void
 		{
-			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObject;
+			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObjectContainer;
 			
 			if ( displayObject.parent )
 			{

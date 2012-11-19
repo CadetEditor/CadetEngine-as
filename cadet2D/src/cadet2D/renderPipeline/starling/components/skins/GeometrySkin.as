@@ -27,7 +27,8 @@ package cadet2D.renderPipeline.starling.components.skins
 	import flash.display.LineScaleMode;
 	import flash.geom.Matrix;
 	
-//	import starling.display.Graphics;
+	import starling.display.Graphics;
+	import starling.display.Shape;
 	
 	public class GeometrySkin extends AbstractSkin2D implements ISkin2D
 	{
@@ -43,6 +44,8 @@ package cadet2D.renderPipeline.starling.components.skins
 		
 		private var _geometry	:IGeometry;
 		
+		private var _shape		:Shape;
+		
 		public function GeometrySkin( lineThickness:Number = 1, lineColor:uint = 0xFFFFFF, lineAlpha:Number = 0.7, fillColor:uint = 0xFFFFFF, fillAlpha:Number = 0.04 )
 		{
 			name = "GeometrySkin";
@@ -51,6 +54,9 @@ package cadet2D.renderPipeline.starling.components.skins
 			this.lineAlpha = lineAlpha;
 			this.fillColor = fillColor;
 			this.fillAlpha = fillAlpha;
+			
+			_displayObjectContainer = new Shape();
+			_shape = Shape(_displayObjectContainer);
 		}
 		
 		override protected function addedToScene():void
@@ -85,15 +91,15 @@ package cadet2D.renderPipeline.starling.components.skins
 		{
 			if ( isInvalid( DISPLAY ) )
 			{
-//				validateDisplay();
+				validateDisplay();
 			}
 			
 			super.validateNow();
 		}
-		/*
+		
 		protected function validateDisplay():void
 		{
-			var graphics:Graphics = sprite.graphics;
+			var graphics:Graphics = _shape.graphics;
 			graphics.clear();
 			render( _geometry, graphics );
 		}
@@ -124,6 +130,7 @@ package cadet2D.renderPipeline.starling.components.skins
 		
 		protected function renderPolygon( polygon:PolygonGeometry, graphics:Graphics ):void
 		{
+			var graphics:Graphics = _shape.graphics;
 			var vertices:Array = polygon.vertices;
 			var firstVertex:Vertex = vertices[0];
 			if ( !firstVertex ) return;
@@ -135,7 +142,7 @@ package cadet2D.renderPipeline.starling.components.skins
 			{
 				var m:Matrix = new Matrix();
 				m.translate(_fillXOffset, _fillYOffset);
-				graphics.beginBitmapFill(new Bitmap(_fillBitmap), m);
+				graphics.beginBitmapFill(_fillBitmap, m);
 			}
 			else if ( _fillAlpha > 0 )
 			{
@@ -160,6 +167,7 @@ package cadet2D.renderPipeline.starling.components.skins
 		
 		protected function renderCircle( circle:CircleGeometry, graphics:Graphics ):void
 		{
+			var graphics:Graphics = _shape.graphics;
 			//TODO: handle further arguments
 			if ( _lineThickness != 0 ) graphics.lineStyle( _lineThickness, _lineColor, _lineAlpha );//, false, LineScaleMode.NONE );
 			
@@ -167,7 +175,7 @@ package cadet2D.renderPipeline.starling.components.skins
 			{
 				var m:Matrix = new Matrix();
 				m.translate(_fillXOffset, _fillYOffset);
-				graphics.beginBitmapFill(new Bitmap(_fillBitmap), m);
+				graphics.beginBitmapFill(_fillBitmap, m);
 			}
 			else if ( _fillAlpha > 0 )
 			{
@@ -185,9 +193,9 @@ package cadet2D.renderPipeline.starling.components.skins
 			//TODO: handle further arguments
 			if ( _lineThickness != 0 ) graphics.lineStyle( _lineThickness, _lineColor, _lineAlpha );//, false, LineScaleMode.NONE );
 			//QuadraticBezierUtil.draw(graphics, bezierCurve.segments);
+			draw( graphics, bezierCurve.segments);
 		}
-		*/
-		/*
+	
 		private function draw( graphics:Graphics, segments:Array ):void
 		{
 			for ( var i:int = 0; i < segments.length; i++ )
@@ -197,7 +205,6 @@ package cadet2D.renderPipeline.starling.components.skins
 				graphics.curveTo(segment.controlX, segment.controlY, segment.endX, segment.endY);
 			}
 		}
-		*/
 		
 		[Serializable][Inspectable( label="Line thickness", priority="1", editor="Slider", min="0.1", max="100", snapInterval="0.1" )]
 		public function set lineThickness( value:Number ):void
