@@ -27,7 +27,7 @@ package cadet.core
 	[Event( type="cadet.events.InvalidationEvent", name="invalidate" )]
 	
 	/**
-	 * Abstract. This class is not designed to be directly instansiated. 
+	 * Abstract. This class is not designed to be directly instantiated. 
 	 * @author Jonathan
 	 * 
 	 */	
