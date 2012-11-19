@@ -1,7 +1,7 @@
 CadetEngine
 ===========
 
-CadetEngine is a component based AS3 Scene Engine which supports 2D and 3D GPU accelerated rendering, physics, custom behaviours and 3rd party library integration.
+CadetEngine is an Entity based AS3 Scene Engine which supports 2D and 3D GPU accelerated rendering, physics, custom behaviours and 3rd party library integration.
 
 The CadetEngine framework supports extensibility by being separated into tiers, each tier augments the Cadet core library via it's own Flex Library project.
 
