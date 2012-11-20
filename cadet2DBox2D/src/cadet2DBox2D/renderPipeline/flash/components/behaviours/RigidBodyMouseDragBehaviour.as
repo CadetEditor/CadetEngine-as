@@ -74,13 +74,13 @@ package cadet2DBox2D.renderPipeline.flash.components.behaviours
 			
 			if ( _skin)
 			{
-				AbstractSkin2D(_skin).displayObject.removeEventListener( MouseEvent.MOUSE_DOWN, mouseDownHandler );
+				AbstractSkin2D(_skin).displayObjectContainer.removeEventListener( MouseEvent.MOUSE_DOWN, mouseDownHandler );
 			}
 			_skin = value;
 			
 			if ( _skin)
 			{
-				AbstractSkin2D(_skin).displayObject.addEventListener( MouseEvent.MOUSE_DOWN, mouseDownHandler );
+				AbstractSkin2D(_skin).displayObjectContainer.addEventListener( MouseEvent.MOUSE_DOWN, mouseDownHandler );
 			}
 		}
 		public function get skin():ISkin2D { return _skin; }

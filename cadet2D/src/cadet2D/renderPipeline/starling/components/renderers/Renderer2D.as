@@ -83,7 +83,8 @@ package cadet2D.renderPipeline.starling.components.renderers
 		private var _viewportX				:Number = 0;
 		private var _viewportY				:Number = 0;
 		
-		private var _enabled				:Boolean = false; 				
+		private var _enabled				:Boolean = false; 
+		private var _initialised 			:Boolean = false;
 		
 		//private static var numInstances		:uint = 0;
 		
@@ -130,6 +131,7 @@ package cadet2D.renderPipeline.starling.components.renderers
 		public function disable(parent:flash.display.DisplayObjectContainer):void
 		{
 			_enabled = false;
+			_initialised = false;
 			
 			_viewport.stage.removeEventListener(TouchEvent.TOUCH, onTouchHandler);
 			
@@ -166,6 +168,8 @@ package cadet2D.renderPipeline.starling.components.renderers
 		
 		private function onRootCreatedHandler( event:starling.events.Event ):void
 		{
+			_initialised = true;
+			
 			_viewport = Sprite(star.root);
 			_viewport.stage.addEventListener(TouchEvent.TOUCH, onTouchHandler);
 			
@@ -220,6 +224,8 @@ package cadet2D.renderPipeline.starling.components.renderers
 			addSkins();
 			
 			dispatchEvent(new RendererEvent(RendererEvent.INITIALISED));
+			
+			invalidate(VIEWPORT);
 		}
 		
 		public function set viewportX( value:Number ):void

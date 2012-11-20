@@ -41,7 +41,7 @@ package cadet2D.renderPipeline.flash.components.skins
 			addSiblingReference(Transform2D, "transform2D");
 		}
 		
-		public function get displayObject():Sprite { return sprite; }
+		public function get displayObjectContainer():Sprite { return sprite; }
 		
 		[Serializable]
 		public function set transform2D( value:Transform2D ):void

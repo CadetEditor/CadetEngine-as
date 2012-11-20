@@ -10,8 +10,8 @@
         </excludedEntries>
       </libraryPathEntry>
       <libraryPathEntry kind="3" linkType="1" path="/CadetEngine/bin/CadetEngine.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="3" linkType="1" path="/CadetEngine_Extension_3D/bin/CadetEngine_Extension_3D.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="1" linkType="1" path="lib"/>
+      <libraryPathEntry kind="3" linkType="1" path="/CadetEngine_Extension_3D/bin/CadetEngine_Extension_3D.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
