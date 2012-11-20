@@ -12,7 +12,7 @@ package
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	
-	[SWF( width="640", height="480", backgroundColor="0x002135", frameRate="30" )]
+	[SWF( width="700", height="400", backgroundColor="0x002135", frameRate="60" )]
 	public class BunnyMarkSpawner extends Sprite
 	{
 		[Embed(source = "assets/wabbit_alpha.png")]
