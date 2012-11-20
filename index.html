@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="CadetEngine : CadetEngine is an Entity based AS3 Scene Engine which supports 2D and 3D GPU accelerated rendering, physics, custom behaviours and 3rd party library integration." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>CadetEngine</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/unwrong/CadetEngine">View on GitHub</a>
+
+          <h1 id="project_title">CadetEngine</h1>
+          <h2 id="project_tagline">CadetEngine is an Entity based AS3 Scene Engine which supports 2D and 3D GPU accelerated rendering, physics, custom behaviours and 3rd party library integration.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/unwrong/CadetEngine/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/unwrong/CadetEngine/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>CadetEngine</h1>
+
+<p>CadetEngine is an Entity based AS3 Scene Engine which supports 2D and 3D GPU accelerated rendering, physics, custom behaviours and 3rd party library integration.</p>
+
+<p>The CadetEngine framework supports extensibility by being separated into tiers, each tier augments the Cadet core library via it's own Flex Library project.</p>
+
+<h2>Cadet (core)</h2>
+
+<p>Dependencies: <a href="https://github.com/unwrong/FloxApp">FloxApp</a></p>
+
+<p><a href="https://github.com/unwrong/CadetEngine/tree/master/cadet">Cadet</a> is the core scene engine, a bare bones structure containing (amongst others) the classes <a href="https://github.com/unwrong/CadetEngine/blob/master/cadet/src/cadet/core/Component.as">Component</a>, <a href="https://github.com/unwrong/CadetEngine/blob/master/cadet/src/cadet/core/ComponentContainer.as">ComponentContainer</a> and <a href="https://github.com/unwrong/CadetEngine/blob/master/cadet/src/cadet/core/CadetScene.as">CadetScene</a>. All children of the CadetScene must be Components and all Components which have children must be ComponentContainers, for instance, CadetScene extends ComponentContainer, which in turn extends Component.</p>
+
+<p>The Cadet core library can be used in conjunction with vanilla Starling, Away3D, etc projects in order to add game processes and behaviours. However, if you wish to integrate Cadet projects with the <a href="http://www.cadeteditor.com">CadetEditor</a>, the Cadet2D and Cadet3D libraries must be used. Cadet2D and Cadet3D wrap up Starling and Away3D implementations respectively via a single layer of abstraction, providing a simple wrapper API which allows specific properties to be Inspectable via the property inspector and Serializable using the serialization lib. Cadet2D and Cadet3D give Starling and Away3D a presence in the Cadet scene graph in the same way Cadet2DBox2D gives Box2D a presence in the scene graph. The CadetEditor solely acts upon the Cadet scene graph, so anything that needs to be editable needs to have a presence within it. It's worth noting that Cadet doesn't get mixed up in the internal execution of any 3rd party libraries, it simply provides hooks for adding and removing entities to/from those libraries, and adding/removing instances of the libraries themselves; it does all of this by simply calling the 3rd party library's public API.</p>
+
+<p><a href="https://github.com/unwrong/CadetEngine/examples/cadet">Examples</a></p>
+
+<h2>Cadet2D</h2>
+
+<p>Dependencies: <a href="https://github.com/unwrong/CadetEngine/tree/master/cadet">Cadet (core)</a>, <a href="https://github.com/unwrong/FloxApp">FloxApp</a>, <a href="https://github.com/PrimaryFeather/Starling-Framework">Starling</a>, <a href="https://github.com/unwrong/Starling-Extension-Graphics">Starling-Extension-Graphics</a></p>
+
+<p>Cadet2D augments Cadet with 2D Rendering capability (via Starling and Starling-Extension-Graphics) and adds various 2D-specific geometries, skins, behaviours and processes.</p>
+
+<p><a href="https://github.com/unwrong/CadetEngine/examples/cadet2D">Examples</a></p>
+
+<h2>Cadet2DBox2D</h2>
+
+<p>Dependencies: <a href="https://github.com/unwrong/CadetEngine/tree/master/cadet">Cadet (core)</a>, <a href="https://github.com/unwrong/CadetEngine/tree/master/cadet2D">Cadet2D</a></p>
+
+<p>Cadet2DBox2D augments Cadet2D with a suite of physics behaviours and processes powered by the <a href="http://box2dflash.sourceforge.net/">Box2D</a> library. Cadet2DBox2D has been separated from Cadet2D in order to allow Cadet2D to be augmented by other physics engines (e.g. <a href="https://github.com/deltaluca/nape">Nape</a>) without bundling all of the various implementations into one bloated library. It could also be the case that the user may wish to simply use Cadet2D without requiring physics. </p>
+
+<p><a href="https://github.com/unwrong/CadetEngine/examples/cadet2DBox2D">Examples</a></p>
+
+<h2>Cadet3D</h2>
+
+<p>Dependencies: <a href="https://github.com/unwrong/CadetEngine/tree/master/cadet">Cadet (core)</a>, <a href="https://github.com/unwrong/FloxApp">FloxApp</a>, <a href="https://github.com/away3d/away3d-core-fp11">Away3D</a></p>
+
+<p>Cadet3D augments Cadet with 3D Rendering capability (via Away3D) and various 3D-specific geometries, materials, lights, cameras, textures, etc. </p>
+
+<p><a href="https://github.com/unwrong/CadetEngine/examples/cadet3D">Examples</a></p>
+
+<h2>Cadet3DPhysics</h2>
+
+<p>Dependencies: <a href="https://github.com/unwrong/CadetEngine/tree/master/cadet">Cadet (core)</a>, <a href="https://github.com/unwrong/CadetEngine/tree/master/cadet3D">Cadet3D</a>, <a href="https://github.com/away3d/awayphysics-core-fp11">AwayPhysics</a></p>
+
+<p>Cadet3DPhysics augments Cadet3D with physics behaviours and processes powered by the <a href="https://github.com/away3d/awayphysics-core-fp11">AwayPhysics</a> library. Cadet3DPhysics has been separated from Cadet3D as users may wish to simply use Cadet3D and not require physics.</p>
+
+<p><a href="https://github.com/unwrong/CadetEngine/examples/cadet3DPhysics">Examples</a></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">CadetEngine maintained by <a href="https://github.com/unwrong">unwrong</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
