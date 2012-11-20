@@ -17,24 +17,26 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	import starling.textures.Texture;
 	
-	[SWF( width="640", height="480", backgroundColor="0x002135", frameRate="30" )]
-	public class Main extends Sprite
+	[SWF( width="700", height="400", backgroundColor="0x002135", frameRate="60" )]
+	public class BunnyMark extends Sprite
 	{
 		[Embed(source = "assets/wabbit_alpha.png")]
 		private var BunnyAsset:Class;
 		private var textureComponent:TextureComponent;
 		
+		private var numEntities			:int = 1000;
+		private var entityIndex			:uint;
+		
 		private var cadetScene:CadetScene;
 		
-		public function Main()
+		public function BunnyMark()
 		{
-			// Create the CadetScene
 			cadetScene = new CadetScene();
 			
-			// Add the Starling Renderer
 			var renderer:Renderer2D = new Renderer2D();
 			renderer.viewportWidth = stage.stageWidth;
 			renderer.viewportHeight = stage.stageHeight;
@@ -45,15 +47,21 @@ package
 		
 		private function rendererInitHandler( event:RendererEvent ):void
 		{
+			// Create the shared TextureComponent
 			textureComponent = new TextureComponent();
 			textureComponent.asset = new BunnyAsset();
 			
-			// create all the bunnies
-			for(var i:int=0;i<1000;i++){
+			addEventListener( Event.ENTER_FRAME, enterFrameHandler );			
+		}
+		
+		private function enterFrameHandler( event:Event ):void
+		{
+			if (entityIndex < numEntities) {
+				entityIndex ++;
 				createBunny();
 			}
 			
-			addEventListener( Event.ENTER_FRAME, enterFrameHandler );			
+			cadetScene.step();
 		}
 		
 		private function createBunny():void
@@ -70,18 +78,15 @@ package
 			
 			// Add the BounceBehaviour to the Entity
 			var randomVelocity:Point = new Point(Math.random() * 10, (Math.random() * 10) - 5);
-			var bounceBehaviour:BounceBehaviour = new BounceBehaviour(randomVelocity);
+			var bounceBehaviour:BounceBehaviour = new BounceBehaviour();
+			bounceBehaviour.velocity = randomVelocity;
+			bounceBehaviour.screenRect = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 			bunnyEntity.children.addItem(bounceBehaviour);
 			
 			// Add a Skin to the Entity
 			var skin:AssetSkin = new AssetSkin();
 			skin.fillTexture = textureComponent;
 			bunnyEntity.children.addItem(skin);			
-		}
-		
-		private function enterFrameHandler( event:Event ):void
-		{
-			cadetScene.step();
 		}
 	}
 }

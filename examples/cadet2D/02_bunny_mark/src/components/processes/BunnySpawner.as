@@ -11,28 +11,20 @@ package components.processes
 	import components.behaviours.BounceBehaviour;
 	
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	public class BunnySpawner extends Component implements ISteppableComponent
 	{
-		[Serializable][Inspectable( editor="NumericStepper", label="Number of Bunnies", min="1", max="1000" ) ]
 		public var numEntities			:int = 100;
-		
-		private var _textureComponent	:TextureComponent;
-		
-		private var allSpawned			:Boolean;
 		private var entityIndex			:uint;
+		
+		public var textureComponent		:TextureComponent;
+		public var screenRect			:Rectangle;
 		
 		public function BunnySpawner()
 		{
 
 		}
-		
-		[Serializable][Inspectable( editor="ComponentList", scope="scene" )]
-		public function set textureComponent( value:TextureComponent ):void
-		{
-			_textureComponent = value;
-		}
-		public function get textureComponent():TextureComponent { return _textureComponent; }	
 		
 		private function createBunny():void
 		{
@@ -48,24 +40,22 @@ package components.processes
 			
 			// Add the BounceBehaviour to the Entity
 			var randomVelocity:Point = new Point(Math.random() * 10, (Math.random() * 10) - 5);
-			var bounceBehaviour:BounceBehaviour = new BounceBehaviour(randomVelocity);
+			var bounceBehaviour:BounceBehaviour = new BounceBehaviour();
+			bounceBehaviour.velocity = randomVelocity;
+			bounceBehaviour.screenRect = screenRect;
 			bunnyEntity.children.addItem(bounceBehaviour);
 			
 			// Add a Skin to the Entity
 			var skin:AssetSkin = new AssetSkin();
-			skin.fillTexture = _textureComponent;
+			skin.fillTexture = textureComponent;
 			bunnyEntity.children.addItem(skin);			
 		}
 		
 		public function step( dt:Number ):void
 		{
-			if (allSpawned) return;
-			
 			if (entityIndex < numEntities) {
 				entityIndex ++;
 				createBunny();
-			} else {
-				allSpawned = true;
 			}
 		}
 	}

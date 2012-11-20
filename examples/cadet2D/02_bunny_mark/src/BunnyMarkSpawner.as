@@ -10,21 +10,20 @@ package
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.geom.Rectangle;
 	
 	[SWF( width="640", height="480", backgroundColor="0x002135", frameRate="30" )]
-	public class Spawner extends Sprite
+	public class BunnyMarkSpawner extends Sprite
 	{
 		[Embed(source = "assets/wabbit_alpha.png")]
 		private var BunnyAsset:Class;
 		
 		private var cadetScene:CadetScene;
 		
-		public function Spawner()
+		public function BunnyMarkSpawner()
 		{
-			// Create the CadetScene
 			cadetScene = new CadetScene();
 			
-			// Add the Starling Renderer
 			var renderer:Renderer2D = new Renderer2D();
 			renderer.viewportWidth = stage.stageWidth;
 			renderer.viewportHeight = stage.stageHeight;
@@ -35,12 +34,15 @@ package
 		
 		private function rendererInitHandler( event:RendererEvent ):void
 		{
+			// Create the shared TextureComponent
 			var textureComponent:TextureComponent = new TextureComponent();
 			textureComponent.asset = new BunnyAsset();
 			
+			// Create the BunnySpawner Process
 			var bunnySpawner:BunnySpawner = new BunnySpawner();
 			bunnySpawner.textureComponent = textureComponent;
 			bunnySpawner.numEntities = 1000;
+			bunnySpawner.screenRect = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 			cadetScene.children.addItem(bunnySpawner);
 			
 			addEventListener( Event.ENTER_FRAME, enterFrameHandler );			
