@@ -200,6 +200,18 @@ package cadet3DPhysics.components.behaviours
 				body = null;
 			}
 		}
+		
+		public function getAngularVelocity():Vector3D
+		{
+			if ( !body ) return null;
+			return body.angularVelocity;
+		}
+		
+		public function applyTorque(torque:Vector3D):void
+		{
+			if ( !body ) return;
+			body.applyTorque(torque);
+		}
 	}
 }
 

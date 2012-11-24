@@ -54,7 +54,7 @@ package cadet.core
 		public function Component()
 		{
 			// Delegate work to init() function to gain
-			// performance inscrease from JIT compilation (which ignores constructors).
+			// performance increase from JIT compilation (which ignores constructors).
 			init();
 		}
 		

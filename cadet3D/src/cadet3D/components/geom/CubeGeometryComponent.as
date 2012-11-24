@@ -20,9 +20,13 @@ package cadet3D.components.geom
 	{
 		private var cubeGeom	:CubeGeometry;
 		
-		public function CubeGeometryComponent()
-		{
-			_geometry = cubeGeom = new CubeGeometry()
+		public function CubeGeometryComponent( width:Number = 100, height:Number = 100, depth:Number = 100 )
+		{			
+			_geometry = cubeGeom = new CubeGeometry();
+			
+			this.width = width;
+			this.height = height;
+			this.depth = depth;
 		}
 		
 		/**

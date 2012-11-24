@@ -11,7 +11,7 @@
 package cadet3D.components.core
 {
 	import away3d.core.base.Geometry;
-	import away3d.core.raycast.MouseHitMethod;
+	import away3d.core.pick.PickingColliderType;
 	import away3d.entities.Mesh;
 	import away3d.materials.ColorMaterial;
 	
@@ -32,11 +32,12 @@ package cadet3D.components.core
 		
 		public function MeshComponent()
 		{
-			_object3D = _mesh = new Mesh();
+			_object3D = _mesh = new Mesh(new Geometry());
 			_mesh.material = new ColorMaterial(0xFF00FF);
 			_mesh.geometry = new Geometry();
 			_mesh.mouseEnabled = true;
-			_mesh.mouseHitMethod = MouseHitMethod.MESH_CLOSEST_HIT;
+			//_mesh.mouseHitMethod = MouseHitMethod.MESH_CLOSEST_HIT;
+			_mesh.pickingCollider = PickingColliderType.AUTO_BEST_HIT;
 		}
 		
 		override public function dispose():void

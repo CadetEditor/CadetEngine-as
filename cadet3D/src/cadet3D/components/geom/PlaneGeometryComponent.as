@@ -20,9 +20,12 @@ package cadet3D.components.geom
 	{
 		private var planeGeom	:PlaneGeometry;
 		
-		public function PlaneGeometryComponent()
+		public function PlaneGeometryComponent(width:Number, height:Number)
 		{
 			_geometry = planeGeom = new PlaneGeometry()
+			
+			this.width = width;
+			this.height = height;
 		}
 		
 		[Serializable][Inspectable( priority="2", editor="NumberInput", min="1", max="9999", numDecimalPlaces="2" )]

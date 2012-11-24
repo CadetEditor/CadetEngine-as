@@ -34,7 +34,7 @@ package cadet3D.components.debug
 		
 		public function TridentComponent(length:uint = 500, showLetters:Boolean = true)
 		{
-			_object3D = _mesh = new Mesh();
+			_object3D = _mesh = new Mesh(new Geometry());
 			_mesh.castsShadows = false;
 			
 			_length = length;
