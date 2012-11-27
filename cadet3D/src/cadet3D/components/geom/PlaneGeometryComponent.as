@@ -20,7 +20,7 @@ package cadet3D.components.geom
 	{
 		private var planeGeom	:PlaneGeometry;
 		
-		public function PlaneGeometryComponent(width:Number, height:Number)
+		public function PlaneGeometryComponent(width:Number = 100, height:Number = 100)
 		{
 			_geometry = planeGeom = new PlaneGeometry()
 			
