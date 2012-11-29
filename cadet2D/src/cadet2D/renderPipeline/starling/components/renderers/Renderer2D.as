@@ -37,7 +37,7 @@ package cadet2D.renderPipeline.starling.components.renderers
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	
-	[Event( type="cadet.events.RendererEvent", name="ready" )]
+	[Event( type="cadet.events.RendererEvent", name="initialised" )]
 	public class Renderer2D extends Component implements IRenderer2D
 	{
 		// Invalidation types
@@ -47,11 +47,13 @@ package cadet2D.renderPipeline.starling.components.renderers
 		public static const WORLD_CONTAINER					:String = "worldContainer";
 		public static const VIEWPORT_BACKGROUND_CONTAINER	:String = "viewportBackgroundContainer";
 		public static const VIEWPORT_FOREGROUND_CONTAINER	:String = "viewportForegroundContainer";
+		public static const VIEWPORT_OVERLAY_CONTAINER		:String = "viewportOverlayContainer";
 		
 		// Config consts
 		public static const NUM_CONTAINER_LAYERS			:int = 8;
 		public static const NUM_VIEWPORT_FOREGROUND_LAYERS	:int = 8;
 		public static const NUM_VIEWPORT_BACKGROUND_LAYERS	:int = 8;
+		public static const NUM_VIEWPORT_OVERLAY_LAYERS		:int = 3;
 		
 		// Properties
 		protected var _viewportWidth				:Number;
@@ -63,10 +65,12 @@ package cadet2D.renderPipeline.starling.components.renderers
 		protected var viewportBackgroundContainer	:Sprite;
 		protected var _worldContainer				:Sprite;
 		protected var viewportForegroundContainer	:Sprite;
+		protected var viewportOverlayContainer		:Sprite;
 		
 		protected var viewportBackgroundLayers			:Array;	
 		protected var worldContainerLayers				:Array;
 		protected var viewportForegroundLayers			:Array;	
+		protected var viewportOverlayLayers				:Array;
 		
 		// Misc
 		protected var skinTable				:Dictionary;
@@ -87,6 +91,7 @@ package cadet2D.renderPipeline.starling.components.renderers
 		private var _initialised 			:Boolean = false;
 		
 		//private static var numInstances		:uint = 0;
+		private var overlays				:Dictionary;
 		
 		public function Renderer2D()
 		{
@@ -99,6 +104,7 @@ package cadet2D.renderPipeline.starling.components.renderers
 			displayObjectTable = new Dictionary();
 			
 			layersTable = {};
+			overlays = new Dictionary();
 		}
 		
 		public function enable(parent:flash.display.DisplayObjectContainer, depth:int = -1):void
@@ -115,7 +121,7 @@ package cadet2D.renderPipeline.starling.components.renderers
 			viewportX = pt.x;
 			viewportY = pt.y;
 			
-			var viewportRect:Rectangle = null;//new Rectangle(_viewportX, _viewportY, _viewportWidth, _viewportHeight);
+			var viewportRect:Rectangle = new Rectangle(_viewportX, _viewportY, _viewportWidth, _viewportHeight);
 			
 			//if (Starling.current)	Starling.current.dispose();
 			if (star) star.dispose();
@@ -215,11 +221,23 @@ package cadet2D.renderPipeline.starling.components.renderers
 				layer = new Sprite();
 				viewportForegroundLayers[i] = layer;
 				viewportForegroundContainer.addChild(layer);
-			}		
+			}
+			
+			viewportOverlayContainer = new Sprite();
+			_viewport.addChild(viewportOverlayContainer);
+			
+			viewportOverlayLayers = [];
+			for ( i = 0; i < NUM_VIEWPORT_OVERLAY_LAYERS; i++ )
+			{
+				layer = new Sprite();
+				viewportOverlayLayers[i] = layer;
+				viewportOverlayContainer.addChild(layer);
+			}
 			
 			layersTable[WORLD_CONTAINER] = worldContainerLayers;
 			layersTable[VIEWPORT_BACKGROUND_CONTAINER] = viewportBackgroundLayers;
 			layersTable[VIEWPORT_FOREGROUND_CONTAINER] = viewportForegroundLayers;
+			layersTable[VIEWPORT_OVERLAY_CONTAINER] = viewportOverlayLayers;
 			
 			addSkins();
 			
@@ -276,6 +294,9 @@ package cadet2D.renderPipeline.starling.components.renderers
 			//TODO: commented out for now as TouchEvents require start() to be used...
 			//if (star)	star.nextFrame();
 			
+			//if ( isInvalid(OVERLAYS) )
+			//validateOverlays();
+			
 			super.validateNow();
 		}
 		
@@ -290,9 +311,12 @@ package cadet2D.renderPipeline.starling.components.renderers
 			_viewport.x = _viewportX;
 			_viewport.y = _viewportY;
 			
+			star.stage.stageWidth = _viewportWidth;
+			star.stage.stageHeight = _viewportHeight;
+			
 			var viewportRect:Rectangle = new Rectangle(_viewportX, _viewportY, _viewportWidth, _viewportHeight);
 			
-			//star.viewPort = viewportRect;
+			star.viewPort = viewportRect;
 		}
 		
 		public function getSkinForDisplayObject( displayObject:DisplayObject ):ISkin2D
@@ -413,6 +437,32 @@ package cadet2D.renderPipeline.starling.components.renderers
 					layer.removeChildAt(0);
 					delete skinTable[displayObject];
 				}
+			}
+		}
+		
+		public function addOverlay( overlay:DisplayObject, layerIndex:uint = 0 ):void
+		{
+			var layers:Array = layersTable[VIEWPORT_OVERLAY_CONTAINER];
+			
+			if (!layers) return;
+			
+			var parent:starling.display.DisplayObjectContainer = layers[layerIndex];
+			
+			overlays[overlay] = layerIndex;
+			
+			parent.addChild( overlay );
+		}
+		public function removeOverlay( overlay:DisplayObject ):void
+		{
+			var layerIndex:uint = overlays[overlay];
+			
+			var layers:Array = layersTable[VIEWPORT_OVERLAY_CONTAINER];
+			
+			var parent:starling.display.DisplayObjectContainer = layers[layerIndex];
+			
+			if ( parent.contains( overlay ) ) {
+				parent.removeChild( overlay );
+				delete overlays[overlay];
 			}
 		}
 		

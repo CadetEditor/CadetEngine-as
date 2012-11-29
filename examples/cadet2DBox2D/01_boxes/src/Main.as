@@ -45,20 +45,21 @@ package
 		{
 			cadetScene.children.addItem( new PhysicsProcess() );
 			
-			for ( var i:int = 0; i < 30; i++ )
+			var boxSize:uint = 10;
+			for ( var i:int = 0; i < 80; i++ )
 			{
 				var x:Number = Math.random() * stage.stageWidth;
 				var y:Number = Math.random() * 100;
-				var width:Number = 20 + Math.random() * 20;
-				var height:Number = 20 + Math.random() * 20;
+				var width:Number = boxSize + Math.random() * boxSize;
+				var height:Number = boxSize + Math.random() * boxSize;
 				addRectangleEntity( x, y, width, height );
 			}
 			
-			var rotatingRectangle:Entity = addRectangleEntity( 0, 0, 100, 100 );
+			var rotatingRectangle:Entity = addRectangleEntity( 0, 0, 60, 60 );
 			rotatingRectangle.children.addItem( new ApplyTorqueBehaviour(50,2) );
 			
 			// Create the floor. We pass 'true' as the 'fixed' property to make the floor static.
-			addRectangleEntity( 0, stage.stageHeight-50, stage.stageWidth, 50, true );
+			addRectangleEntity( -200, stage.stageHeight-50, stage.stageWidth+200, 50, true );
 			
 			addEventListener(Event.ENTER_FRAME, enterFrameHandler);			
 		}
