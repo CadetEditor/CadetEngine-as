@@ -19,6 +19,7 @@ package cadet2D.renderPipeline.starling.components.renderers
 	
 	import cadet2D.components.renderers.IRenderer2D;
 	import cadet2D.components.skins.ISkin2D;
+	import cadet2D.overlays.Overlay;
 	import cadet2D.renderPipeline.starling.components.skins.AbstractSkin2D;
 	
 	import flash.display.DisplayObjectContainer;
@@ -31,6 +32,7 @@ package cadet2D.renderPipeline.starling.components.renderers
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
+	import starling.display.Shape;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -39,10 +41,7 @@ package cadet2D.renderPipeline.starling.components.renderers
 	
 	[Event( type="cadet.events.RendererEvent", name="initialised" )]
 	public class Renderer2D extends Component implements IRenderer2D
-	{
-		// Invalidation types
-		protected static const VIEWPORT		:String = "viewport";
-		
+	{		
 		// Container ID's
 		public static const WORLD_CONTAINER					:String = "worldContainer";
 		public static const VIEWPORT_BACKGROUND_CONTAINER	:String = "viewportBackgroundContainer";
@@ -91,7 +90,7 @@ package cadet2D.renderPipeline.starling.components.renderers
 		private var _initialised 			:Boolean = false;
 		
 		//private static var numInstances		:uint = 0;
-		private var overlays				:Dictionary;
+		private var overlaysTable			:Dictionary;
 		
 		public function Renderer2D()
 		{
@@ -104,7 +103,7 @@ package cadet2D.renderPipeline.starling.components.renderers
 			displayObjectTable = new Dictionary();
 			
 			layersTable = {};
-			overlays = new Dictionary();
+			overlaysTable = new Dictionary();
 		}
 		
 		public function enable(parent:flash.display.DisplayObjectContainer, depth:int = -1):void
@@ -116,12 +115,12 @@ package cadet2D.renderPipeline.starling.components.renderers
 			//trace("RENDERER2D ENABLE: parent x "+parent.x+" y "+parent.y);//+" numInstances "+numInstances);
 			_parent = parent;
 			
-			var pt:Point = _parent.localToGlobal(new Point(0,0));
-			//TODO: Should be viewRect?
-			viewportX = pt.x;
-			viewportY = pt.y;
+//			var pt:Point = _parent.localToGlobal(new Point(0,0));
+//			//TODO: Should be viewRect?
+//			viewportX = pt.x;
+//			viewportY = pt.y;
 			
-			var viewportRect:Rectangle = new Rectangle(_viewportX, _viewportY, _viewportWidth, _viewportHeight);
+			var viewportRect:Rectangle = null;//new Rectangle(_viewportX, _viewportY, _viewportWidth, _viewportHeight);
 			
 			//if (Starling.current)	Starling.current.dispose();
 			if (star) star.dispose();
@@ -160,8 +159,8 @@ package cadet2D.renderPipeline.starling.components.renderers
 			for each (var touch:Touch in touches)
 			{
 				var location:Point = touch.getLocation(dispObj);
-				_mouseX = location.x - _viewportX;
-				_mouseY = location.y - _viewportY;
+				_mouseX = location.x //- _viewportX;
+				_mouseY = location.y //- _viewportY;
 				
 				var local:Point = _viewport.globalToLocal(location);
 				
@@ -178,14 +177,6 @@ package cadet2D.renderPipeline.starling.components.renderers
 			
 			_viewport = Sprite(star.root);
 			_viewport.stage.addEventListener(TouchEvent.TOUCH, onTouchHandler);
-			
-			_viewport.x = _viewportX;
-			_viewport.y = _viewportY;
-			
-//			_mask = new flash.display.Shape();
-//			_mask.alpha = 0.4;
-//			_viewport.addChild(_mask);
-//			_viewport.mask = _mask;		
 			
 			_worldContainer = new Sprite();
 			_viewport.addChild(_worldContainer);
@@ -243,35 +234,35 @@ package cadet2D.renderPipeline.starling.components.renderers
 			
 			dispatchEvent(new RendererEvent(RendererEvent.INITIALISED));
 			
-			invalidate(VIEWPORT);
+			invalidate(RendererInvalidationTypes.VIEWPORT);
 		}
 		
 		public function set viewportX( value:Number ):void
 		{
 			_viewportX = value;
-			invalidate(VIEWPORT);
+			invalidate(RendererInvalidationTypes.VIEWPORT);
 		}
 		public function get viewportX():Number
 		{
 			return _viewportX;
 		}
 		
-		public function set viewportY( value:Number ):void
-		{
-			_viewportY = value;
-			invalidate(VIEWPORT);
-		}
-		public function get viewportY():Number
-		{
-			return _viewportY;
-		}
+//		public function set viewportY( value:Number ):void
+//		{
+//			_viewportY = value;
+//			invalidate(VIEWPORT);
+//		}
+//		public function get viewportY():Number
+//		{
+//			return _viewportY;
+//		}
 		
 		[Inspectable][Serializable]
 		public function set viewportWidth( value:Number ):void
 		{
 			trace("set viewportWidth "+value);
 			_viewportWidth = value;
-			invalidate(VIEWPORT);
+			invalidate(RendererInvalidationTypes.VIEWPORT);
 		}
 		public function get viewportWidth():Number { return _viewportWidth; }
 		
@@ -280,22 +271,23 @@ package cadet2D.renderPipeline.starling.components.renderers
 		{
 			trace("set viewportHeight "+value);
 			_viewportHeight = value;
-			invalidate(VIEWPORT);
+			invalidate(RendererInvalidationTypes.VIEWPORT);
 		}
 		public function get viewportHeight():Number { return _viewportHeight; }
 		
 		override public function validateNow():void
 		{
-			if ( isInvalid(VIEWPORT) )
-			{
+			if ( isInvalid(RendererInvalidationTypes.VIEWPORT) ) {
 				validateViewport();
 			}
 			
 			//TODO: commented out for now as TouchEvents require start() to be used...
 			//if (star)	star.nextFrame();
 			
-			//if ( isInvalid(OVERLAYS) )
-			//validateOverlays();
+			if ( isInvalid(RendererInvalidationTypes.OVERLAYS) ) {
+				delete invalidationTable[RendererInvalidationTypes.OVERLAYS];
+				validateOverlays();
+			}
 			
 			super.validateNow();
 		}
@@ -304,12 +296,13 @@ package cadet2D.renderPipeline.starling.components.renderers
 		{
 			if (!_viewport) return;
 			
-//			_mask.graphics.clear();
-//			_mask.graphics.beginFill(0xFF0000);
-//			_mask.graphics.drawRect(0,0,_viewportWidth,_viewportHeight);
+			var pt:Point = _parent.localToGlobal(new Point(0,0));
 			
-			_viewport.x = _viewportX;
-			_viewport.y = _viewportY;
+			_viewportX = pt.x;
+			_viewportY = pt.y;
+			
+//			_viewport.x = _viewportX;
+//			_viewport.y = _viewportY;
 			
 			star.stage.stageWidth = _viewportWidth;
 			star.stage.stageHeight = _viewportHeight;
@@ -317,6 +310,14 @@ package cadet2D.renderPipeline.starling.components.renderers
 			var viewportRect:Rectangle = new Rectangle(_viewportX, _viewportY, _viewportWidth, _viewportHeight);
 			
 			star.viewPort = viewportRect;
+		}
+		
+		private function validateOverlays():void
+		{
+			for ( var key:Object in overlaysTable ) {
+				var overlay:Overlay = Overlay(key);
+				overlay.validateNow();
+			}
 		}
 		
 		public function getSkinForDisplayObject( displayObject:DisplayObject ):ISkin2D
@@ -440,7 +441,9 @@ package cadet2D.renderPipeline.starling.components.renderers
 			}
 		}
 		
-		public function addOverlay( overlay:DisplayObject, layerIndex:uint = 0 ):void
+		
+		
+		public function addOverlay( overlay:Overlay, layerIndex:uint = 0 ):void
 		{
 			var layers:Array = layersTable[VIEWPORT_OVERLAY_CONTAINER];
 			
@@ -448,13 +451,14 @@ package cadet2D.renderPipeline.starling.components.renderers
 			
 			var parent:starling.display.DisplayObjectContainer = layers[layerIndex];
 			
-			overlays[overlay] = layerIndex;
+			overlaysTable[overlay] = layerIndex;
 			
 			parent.addChild( overlay );
 		}
-		public function removeOverlay( overlay:DisplayObject ):void
+		
+		public function removeOverlay( overlay:Overlay ):void
 		{
-			var layerIndex:uint = overlays[overlay];
+			var layerIndex:uint = overlaysTable[overlay];
 			
 			var layers:Array = layersTable[VIEWPORT_OVERLAY_CONTAINER];
 			
@@ -462,9 +466,22 @@ package cadet2D.renderPipeline.starling.components.renderers
 			
 			if ( parent.contains( overlay ) ) {
 				parent.removeChild( overlay );
-				delete overlays[overlay];
+				delete overlaysTable[overlay];
 			}
 		}
+		
+		public function getOverlayOfType( type:Class ):DisplayObject
+		{
+			for each ( var overlay:DisplayObject in overlaysTable ) {
+				if ( overlay is type ) {
+					return overlay;
+				}
+			}
+			
+			return null;
+		}
+		
+		
 		
 		public function get viewport():Sprite { return _viewport; }
 		public function get worldContainer():Sprite { return _worldContainer; }
