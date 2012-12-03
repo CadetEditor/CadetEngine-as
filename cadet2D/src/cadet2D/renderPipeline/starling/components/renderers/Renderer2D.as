@@ -89,8 +89,8 @@ package cadet2D.renderPipeline.starling.components.renderers
 		private var _enabled				:Boolean = false; 
 		private var _initialised 			:Boolean = false;
 		
-		//private static var numInstances		:uint = 0;
 		private var overlaysTable			:Dictionary;
+		private var _backgroundColor		:uint = 0x303030;
 		
 		public function Renderer2D()
 		{
@@ -114,23 +114,16 @@ package cadet2D.renderPipeline.starling.components.renderers
 			
 			//trace("RENDERER2D ENABLE: parent x "+parent.x+" y "+parent.y);//+" numInstances "+numInstances);
 			_parent = parent;
-			
-//			var pt:Point = _parent.localToGlobal(new Point(0,0));
-//			//TODO: Should be viewRect?
-//			viewportX = pt.x;
-//			viewportY = pt.y;
-			
-			var viewportRect:Rectangle = null;//new Rectangle(_viewportX, _viewportY, _viewportWidth, _viewportHeight);
-			
+
 			//if (Starling.current)	Starling.current.dispose();
 			if (star) star.dispose();
 			
-			star = new Starling( Sprite, parent.stage, viewportRect );//, parent.stage.stage3Ds[numInstances] );
+			star = new Starling( Sprite, parent.stage );
 			star.addEventListener(starling.events.Event.ROOT_CREATED, onRootCreatedHandler);
 			star.antiAliasing = 1;
 			star.start();	// TouchEvents require start() to be called...
 			
-			//numInstances ++;
+			validateViewport();
 		}
 		
 		public function disable(parent:flash.display.DisplayObjectContainer):void
@@ -237,43 +230,35 @@ package cadet2D.renderPipeline.starling.components.renderers
 			invalidate(RendererInvalidationTypes.VIEWPORT);
 		}
 		
-		public function set viewportX( value:Number ):void
-		{
-			_viewportX = value;
-			invalidate(RendererInvalidationTypes.VIEWPORT);
-		}
-		public function get viewportX():Number
-		{
-			return _viewportX;
-		}
-		
-//		public function set viewportY( value:Number ):void
-//		{
-//			_viewportY = value;
-//			invalidate(VIEWPORT);
-//		}
-//		public function get viewportY():Number
-//		{
-//			return _viewportY;
-//		}
-		
-		[Inspectable][Serializable]
+		[Serializable][Inspectable]
 		public function set viewportWidth( value:Number ):void
 		{
-			trace("set viewportWidth "+value);
+			if ( _viewportWidth == value ) return;
+			
 			_viewportWidth = value;
 			invalidate(RendererInvalidationTypes.VIEWPORT);
 		}
 		public function get viewportWidth():Number { return _viewportWidth; }
 		
-		[Inspectable][Serializable]
+		[Serializable][Inspectable]
 		public function set viewportHeight( value:Number ):void
 		{
-			trace("set viewportHeight "+value);
+			if ( _viewportHeight == value ) return;
+			
 			_viewportHeight = value;
 			invalidate(RendererInvalidationTypes.VIEWPORT);
 		}
 		public function get viewportHeight():Number { return _viewportHeight; }
+		
+/*		[Serializable][Inspectable( label="Background colour", priority="1", editor="ColorPicker" )]
+		public function set backgroundColor( value:uint ):void
+		{
+			if ( _backgroundColor == value ) return;
+			
+			_backgroundColor = value;
+			invalidate(RendererInvalidationTypes.VIEWPORT);
+		}
+		public function get backgroundColor():uint { return _backgroundColor; }*/
 		
 		override public function validateNow():void
 		{
@@ -294,18 +279,16 @@ package cadet2D.renderPipeline.starling.components.renderers
 		
 		private function validateViewport():void
 		{
-			if (!_viewport) return;
+			if (!_parent) return;
 			
 			var pt:Point = _parent.localToGlobal(new Point(0,0));
 			
 			_viewportX = pt.x;
 			_viewportY = pt.y;
 			
-//			_viewport.x = _viewportX;
-//			_viewport.y = _viewportY;
-			
 			star.stage.stageWidth = _viewportWidth;
 			star.stage.stageHeight = _viewportHeight;
+			//star.stage.color = _backgroundColor;
 			
 			var viewportRect:Rectangle = new Rectangle(_viewportX, _viewportY, _viewportWidth, _viewportHeight);
 			

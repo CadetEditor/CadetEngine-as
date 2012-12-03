@@ -142,7 +142,11 @@ package cadet2D.renderPipeline.starling.components.skins
 			{
 				var m:Matrix = new Matrix();
 				m.translate(_fillXOffset, _fillYOffset);
-				graphics.beginBitmapFill(_fillBitmap, m);
+				try {
+					graphics.beginBitmapFill(_fillBitmap, m);
+				} catch ( e:Error ) {
+					trace("Error: "+e.errorID+" "+e.message);
+				}
 			}
 			else if ( _fillAlpha > 0 )
 			{
