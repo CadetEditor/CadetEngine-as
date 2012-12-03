@@ -2,7 +2,7 @@
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
   <includeClasses>
     <classEntry path="cadet2D.overlays.Overlay"/>
-    <classEntry path="cadet2D.renderPipeline.starling.components.renderers.RendererInvalidationTypes"/>
+    <classEntry path="cadet2D.components.renderers.RendererInvalidationTypes"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

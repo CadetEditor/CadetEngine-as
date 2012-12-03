@@ -8,7 +8,7 @@
 //
 // =================================================================================================
 
-package cadet2D.renderPipeline.starling.components.renderers
+package cadet2D.components.renderers
 {
 	import cadet.core.Component;
 	import cadet.core.IComponent;
@@ -17,10 +17,9 @@ package cadet2D.renderPipeline.starling.components.renderers
 	import cadet.events.RendererEvent;
 	import cadet.util.ComponentUtil;
 	
-	import cadet2D.components.renderers.IRenderer2D;
 	import cadet2D.components.skins.ISkin2D;
 	import cadet2D.overlays.Overlay;
-	import cadet2D.renderPipeline.starling.components.skins.AbstractSkin2D;
+	import cadet2D.components.skins.AbstractSkin2D;
 	
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;

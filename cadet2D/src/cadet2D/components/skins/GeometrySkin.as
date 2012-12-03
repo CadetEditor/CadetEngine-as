@@ -8,7 +8,7 @@
 //
 // =================================================================================================
 
-package cadet2D.renderPipeline.starling.components.skins
+package cadet2D.components.skins
 {
 	import cadet.components.geom.IGeometry;
 	import cadet.events.InvalidationEvent;
@@ -17,7 +17,6 @@ package cadet2D.renderPipeline.starling.components.skins
 	import cadet2D.components.geom.CircleGeometry;
 	import cadet2D.components.geom.CompoundGeometry;
 	import cadet2D.components.geom.PolygonGeometry;
-	import cadet2D.components.skins.ISkin2D;
 	import cadet2D.geom.QuadraticBezier;
 	import cadet2D.geom.Vertex;
 	import cadet2D.util.QuadraticBezierUtil;

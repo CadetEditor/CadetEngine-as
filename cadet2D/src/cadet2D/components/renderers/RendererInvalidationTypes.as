@@ -1,4 +1,4 @@
-package cadet2D.renderPipeline.starling.components.renderers
+package cadet2D.components.renderers
 {
 	public class RendererInvalidationTypes
 	{
