@@ -18,6 +18,7 @@ package cadet2DBox2D.components.behaviours
 	import cadet.core.Component;
 	import cadet.core.IRenderer;
 	import cadet.core.ISteppableComponent;
+	import cadet.events.RendererEvent;
 	
 	import cadet2D.components.renderers.IRenderer2D;
 	import cadet2D.components.renderers.Renderer2D;
@@ -100,13 +101,21 @@ package cadet2DBox2D.components.behaviours
 			}
 			_renderer = Renderer2D(value);
 			
-			if ( _renderer) {
+			if ( _renderer && _renderer.viewport ) {
 				_renderer.viewport.stage.addEventListener( TouchEvent.TOUCH, touchEventHandler );
+			} else {
+				renderer.addEventListener( RendererEvent.INITIALISED, rendererInitialisedHandler );
 			}
 		}
 		public function get renderer():IRenderer
 		{
 			return _renderer;
+		}
+		
+		private function rendererInitialisedHandler( event:RendererEvent ):void
+		{
+			renderer.removeEventListener( RendererEvent.INITIALISED, rendererInitialisedHandler );
+			_renderer.viewport.stage.addEventListener( TouchEvent.TOUCH, touchEventHandler );
 		}
 		
 		private function createJoint():void
