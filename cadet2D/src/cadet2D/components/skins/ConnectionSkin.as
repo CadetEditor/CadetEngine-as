@@ -100,7 +100,7 @@ package cadet2D.components.skins
 		public function validateDisplay():void
 		{
 			if ( !_connection ) return;
-			if ( !_renderer ) return;
+			if ( !_renderer || !_renderer.viewport ) return;
 			
 			var graphics:Graphics = _shape.graphics;
 			graphics.clear();
@@ -111,10 +111,14 @@ package cadet2D.components.skins
 			pt1 = _renderer.viewport.localToGlobal(pt1);
 			pt1 = _shape.globalToLocal(pt1);
 			
+			trace("Connection Circle 1 x "+pt1.x+" y "+pt1.y);
+			
 			var pt2:Point = _connection.transformB.matrix.transformPoint( _connection.localPosB.toPoint() );
 			pt2 = _renderer.worldToViewport(pt2);
 			pt2 = _renderer.viewport.localToGlobal(pt2);
 			pt2 = _shape.globalToLocal(pt2);
+			
+			trace("Connection Circle 2 x "+pt2.x+" y "+pt2.y);
 									
 			graphics.drawCircle( pt1.x, pt1.y, radius );
 			graphics.drawCircle( pt2.x, pt2.y, radius );

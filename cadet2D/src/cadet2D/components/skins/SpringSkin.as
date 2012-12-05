@@ -96,7 +96,7 @@ package cadet2D.components.skins
 		public function validateDisplay():void
 		{
 			if (!_connection) return;
-			if (!_renderer) return;
+			if (!_renderer || !_renderer.viewport) return;
 			if (!_connection.transformA) return;
 			if (!_connection.transformB) return;
 			

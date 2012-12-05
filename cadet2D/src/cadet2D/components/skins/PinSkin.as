@@ -31,7 +31,7 @@ package cadet2D.components.skins
 		private var _radius:Number;
 		
 		private var _pin				:Pin;
-		private var _renderer			:IRenderer2D;
+		private var _renderer			:Renderer2D;
 		
 		private var _shape				:Shape;
 		
@@ -55,7 +55,7 @@ package cadet2D.components.skins
 		
 		public function set renderer( value:IRenderer2D ):void
 		{
-			_renderer = value;
+			_renderer = Renderer2D(value);
 			invalidate(DISPLAY);
 		}
 		public function get renderer():IRenderer2D { return _renderer; }
@@ -95,10 +95,10 @@ package cadet2D.components.skins
 		public function validateDisplay():void
 		{
 			if ( !_pin ) return;
-			if ( !_renderer ) return;
+			if ( !_renderer || !_renderer.viewport) return;
 			if ( !_pin.transformA ) return;
 			
-			var graphics:Graphics = _shape.graphics
+			var graphics:Graphics = _shape.graphics;
 			graphics.clear();
 			graphics.beginFill( _fillColor, _fillAlpha );
 			
