@@ -111,16 +111,17 @@ package cadet2D.components.renderers
 			
 			_enabled = true;
 			
-			//trace("RENDERER2D ENABLE: parent x "+parent.x+" y "+parent.y);//+" numInstances "+numInstances);
 			_parent = parent;
-
-			//if (Starling.current)	Starling.current.dispose();
-			if (star) star.dispose();
 			
-			star = new Starling( Sprite, parent.stage );
-			star.addEventListener(starling.events.Event.ROOT_CREATED, onRootCreatedHandler);
-			star.antiAliasing = 1;
-			star.start();	// TouchEvents require start() to be called...
+			if (!Starling.current) {
+				star = new Starling( Sprite, parent.stage );
+				star.addEventListener(starling.events.Event.ROOT_CREATED, onRootCreatedHandler);
+				star.antiAliasing = 1;
+				star.start();	// TouchEvents require start() to be called...
+			} else {
+				star = Starling.current;
+				init();
+			}
 			
 			validateViewport();
 		}
@@ -132,38 +133,34 @@ package cadet2D.components.renderers
 			
 			_viewport.stage.removeEventListener(TouchEvent.TOUCH, onTouchHandler);
 			
-			if (!star) return;
+//			removeSkins();
+//			removeOverlays();
 			
-			star.stop();
-			star.dispose();
-			
-			//if (Starling.current) Starling.current.dispose();
-			
-			star = null;
+			_viewport.removeChildren();
 		}
 
 		private function onTouchHandler(e:TouchEvent):void
 		{
-			//var dispObj:DisplayObject = DisplayObject(e.target);
 			var dispObj:DisplayObject = DisplayObject(_viewport.stage);
 			var touches:Vector.<Touch> = e.getTouches(dispObj);
 			
 			for each (var touch:Touch in touches)
 			{
 				var location:Point = touch.getLocation(dispObj);
-				_mouseX = location.x //- _viewportX;
-				_mouseY = location.y //- _viewportY;
+				_mouseX = location.x;
+				_mouseY = location.y;
 				
 				var local:Point = _viewport.globalToLocal(location);
-				
-				//trace("onTouch x "+_mouseX+" y "+_mouseY+" phase "+touch.phase);
-				//trace("local x "+local.x+" y "+local.y);
-				//trace("parent x "+_parent.x+" y "+_parent.y);
 				break;
 			}
 		}
 		
 		private function onRootCreatedHandler( event:starling.events.Event ):void
+		{	
+			init();
+		}
+		
+		private function init():void
 		{
 			_initialised = true;
 			
@@ -223,10 +220,11 @@ package cadet2D.components.renderers
 			layersTable[VIEWPORT_OVERLAY_CONTAINER] = viewportOverlayLayers;
 			
 			addSkins();
+			addOverlays();
 			
 			dispatchEvent(new RendererEvent(RendererEvent.INITIALISED));
 			
-			invalidate(RendererInvalidationTypes.VIEWPORT);
+			invalidate(RendererInvalidationTypes.VIEWPORT);			
 		}
 		
 		[Serializable][Inspectable]
@@ -321,6 +319,15 @@ package cadet2D.components.renderers
 			for each ( var skin:ISkin2D in allSkins )
 			{
 				addSkin( skin );
+			}
+		}
+		
+		private function removeSkins():void
+		{
+			var allSkins:Vector.<IComponent> = ComponentUtil.getChildrenOfType( scene, ISkin2D, true );
+			for each ( var skin:ISkin2D in allSkins )
+			{
+				removeSkin( skin );
 			}
 		}
 		
@@ -452,9 +459,24 @@ package cadet2D.components.renderers
 			}
 		}
 		
+		private function addOverlays():void
+		{
+			for ( var key:Object in overlaysTable ) {
+				var overlay:Overlay = Overlay(key);
+				addOverlay(overlay);
+			}			
+		}
+		private function removeOverlays():void
+		{
+			for ( var key:Object in overlaysTable ) {
+				var overlay:Overlay = Overlay(key);
+				removeOverlay(overlay);
+			}
+		}
+		
 		public function getOverlayOfType( type:Class ):DisplayObject
 		{
-			for each ( var overlay:DisplayObject in overlaysTable ) {
+			for each ( var overlay:Overlay in overlaysTable ) {
 				if ( overlay is type ) {
 					return overlay;
 				}
