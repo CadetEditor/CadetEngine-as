@@ -17,9 +17,9 @@ package cadet2D.components.renderers
 	import cadet.events.RendererEvent;
 	import cadet.util.ComponentUtil;
 	
+	import cadet2D.components.skins.AbstractSkin2D;
 	import cadet2D.components.skins.ISkin2D;
 	import cadet2D.overlays.Overlay;
-	import cadet2D.components.skins.AbstractSkin2D;
 	
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
@@ -27,6 +27,8 @@ package cadet2D.components.renderers
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
+	
+	import flox.app.util.AsynchronousUtil;
 	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -120,7 +122,7 @@ package cadet2D.components.renderers
 				star.start();	// TouchEvents require start() to be called...
 			} else {
 				star = Starling.current;
-				init();
+				AsynchronousUtil.callLater(init);
 			}
 			
 			validateViewport();
@@ -518,6 +520,16 @@ package cadet2D.components.renderers
 			if (!_worldContainer) return;
 			//_worldContainer.transform.matrix = m;
 			_worldContainer.transformationMatrix = m;
+		}
+		
+		public function getParent():flash.display.DisplayObjectContainer
+		{
+			return _parent;
+		}
+		
+		public function get initialised():Boolean
+		{
+			return _initialised;
 		}
 		
 		//public function getWorldToViewportMatrix():Matrix { return identityMatrix.clone(); }

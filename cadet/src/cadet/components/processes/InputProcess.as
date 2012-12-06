@@ -14,7 +14,10 @@ package cadet.components.processes
 	import cadet.core.IComponent;
 	import cadet.core.IRenderer;
 	import cadet.events.InputProcessEvent;
+	import cadet.events.RendererEvent;
 	
+	import flash.display.DisplayObjectContainer;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
@@ -43,13 +46,12 @@ package cadet.components.processes
 		{
 			if ( _renderer )
 			{
-//				_renderer.viewport.removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-//				_renderer.viewport.removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
-//				
-//				if ( _renderer.viewport.stage )
-//				{
-//					removedFromStageHandler();
-//				}
+				//_renderer.viewport.removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+				//_renderer.viewport.removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+				
+				if ( _renderer.initialised ) {
+					removedFromStageHandler();
+				}
 			}
 			_renderer = value;
 			if ( _renderer )
@@ -57,29 +59,37 @@ package cadet.components.processes
 //				_renderer.viewport.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 //				_renderer.viewport.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 //				
-//				if ( _renderer.viewport.stage )
-//				{
-//					addedToStageHandler();
-//				}
+				if ( _renderer.initialised ) {
+					addedToStageHandler();
+				} else {
+					_renderer.addEventListener( RendererEvent.INITIALISED, rendererInitialisedHandler );
+				}
 			}
 		}
 		public function get renderer():IRenderer { return _renderer; }
 		
+		private function rendererInitialisedHandler( event:RendererEvent ):void
+		{
+			addedToStageHandler();
+		}
+		
 		private function addedToStageHandler( event:Event = null ):void
 		{
-//			_renderer.viewport.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
-//			_renderer.viewport.stage.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
-//			_renderer.viewport.stage.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
-//			_renderer.viewport.stage.addEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);
+			var parent:DisplayObjectContainer = _renderer.getParent();
+			parent.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
+			parent.stage.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
+			parent.stage.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
+			parent.stage.addEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);
 			
 		}
 		
 		private function removedFromStageHandler( event:Event = null ):void
 		{
-//			_renderer.viewport.stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
-//			_renderer.viewport.stage.removeEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
-//			_renderer.viewport.stage.removeEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
-//			_renderer.viewport.stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);
+			var parent:DisplayObjectContainer = _renderer.getParent();
+			parent.stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
+			parent.stage.removeEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
+			parent.stage.removeEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
+			parent.stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);
 		}
 		
 		

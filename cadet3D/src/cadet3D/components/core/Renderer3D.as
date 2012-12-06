@@ -27,6 +27,7 @@ package cadet3D.components.core
 	import cadet.core.IComponent;
 	import cadet.core.IRenderer;
 	import cadet.events.ComponentEvent;
+	import cadet.events.RendererEvent;
 	import cadet.util.ComponentUtil;
 	
 	import cadet3D.components.cameras.CameraComponent;
@@ -56,6 +57,10 @@ package cadet3D.components.core
 		private var preRenderEvent				:Renderer3DEvent;
 		private var postRenderEvent				:Renderer3DEvent;
 		
+		private var _enabled					:Boolean;
+		private var _initialised				:Boolean;
+		private var _parent						:DisplayObjectContainer;
+		
 		public function Renderer3D()
 		{
 			_view3D = new View3D();
@@ -82,11 +87,19 @@ package cadet3D.components.core
 		
 		public function enable(parent:DisplayObjectContainer, depth:int = -1):void
 		{
+			_parent = parent;
+			
 			if ( depth > -1 )	parent.addChildAt(viewport, depth);
 			else				parent.addChild(viewport);
+			
+			_enabled = true;
+			_initialised = true;
+			
+			dispatchEvent(new RendererEvent(RendererEvent.INITIALISED));
 		}
 		public function disable(parent:DisplayObjectContainer):void
 		{
+			_enabled = false;
 			parent.removeChild(viewport);
 		}
 		
@@ -329,6 +342,16 @@ package cadet3D.components.core
 		{
 			//materialComponent.material.lightPicker = null;
 			_materials.splice(_materials.indexOf(materialComponent.material), 1);
+		}
+		
+		public function getParent():DisplayObjectContainer
+		{
+			return _parent;
+		}
+		
+		public function get initialised():Boolean
+		{
+			return _initialised;
 		}
 	}
 }

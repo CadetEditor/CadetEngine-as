@@ -27,5 +27,9 @@ package cadet.core
 		
 		function enable(parent:DisplayObjectContainer, depth:int = -1):void
 		function disable(parent:DisplayObjectContainer):void
+			
+		function getParent():DisplayObjectContainer
+			
+		function get initialised():Boolean
 	}
 }
