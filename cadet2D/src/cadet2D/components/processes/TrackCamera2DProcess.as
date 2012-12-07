@@ -91,14 +91,13 @@ package cadet2D.components.processes
 		
 		public function step( dt:Number ):void
 		{
-			if ( !_renderer ) return;
+			if ( !_renderer || !_renderer.initialised ) return;
 			if ( !_target ) return;
 			
 			var skin:ISkin2D = ComponentUtil.getChildOfType(_target, ISkin2D, false);
 			
 			if ( !skin ) return;
 			
-			// TODO: THIS LINE BINDS THIS CLASS TO THE FLASH RENDERER
 			// Calculate the components position relative to the container.
 			var bounds:Rectangle = AbstractSkin2D(skin).displayObjectContainer.getBounds(DisplayObject(Renderer2D(_renderer).worldContainer));
 			
