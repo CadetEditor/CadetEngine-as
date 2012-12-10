@@ -1,0 +1,28 @@
+<cadet:CadetScene x:id="0" timeScale="1" framerate="30" name="Component" xmlns:cadet="www.unwrong.com/cadet/1.0.0" xmlns:x="flox.app.core.serialization.Serializer" xmlns:flox="www.unwrong.com/flox/1.0.0" xmlns:cadet3D="www.unwrong.com/cadet3D/1.0.0">
+  <Object x:name="userData" x:id="1"/>
+  <flox:DependencyManager x:name="dependencyManager" x:id="2">
+    <flox:ArrayCollection x:name="dependencyNodes" x:id="3"/>
+  </flox:DependencyManager>
+  <flox:ArrayCollection x:name="children" x:id="4">
+    <cadet3D:Renderer3D x:name="0" x:id="5" name="Away3D Renderer">
+      <cadet3D:CameraComponent x:name="cameraComponent" x:id="6" transform="0.937706470489502,1.4901161193847656e-7,-0.34742850065231323,0,0.12348747253417969,0.934701681137085,0.33329200744628906,0,0.32474204897880554,-0.3554331362247467,0.8764758110046387,0,-82.89120483398438,171.59405517578125,-204.82273864746094,1" name="Camera">
+        <flox:ArrayCollection x:name="children" x:id="7"/>
+      </cadet3D:CameraComponent>
+    </cadet3D:Renderer3D>
+    <cadet3D:DirectionalLightComponent x:name="1" x:id="8" color="16777215" specular="1" transform="0.9530273079872131,-0.13210584223270416,-0.2725565731525421,0,0.30282384157180786,0.39757466316223145,0.8661594390869141,0,-0.006063111126422882,-0.9080101251602173,0.41890430450439453,0,-4.31298828125,170.5011749267578,-5.684341886080802e-14,1" diffuse="0" name="Directional Light" ambient="1" ambientColor="16777215">
+      <flox:ArrayCollection x:name="children" x:id="9"/>
+    </cadet3D:DirectionalLightComponent>
+    <x:Ref x:name="2" x:id="6"/>
+    <cadet3D:MeshComponent x:name="3" x:id="10" transform="10.143118858337402,0,0,0,0,10.143118858337402,0,0,0,0,10.143118858337402,0,0,0,0,1" name="RobotMesh">
+      <cadet3D:TextureMaterialComponent x:name="materialComponent" x:id="11" depthCompareMode="less" alphaThreshold="0" specularStrength="0" envMapAlpha="1" gloss="36" name="RobotMaterial">
+        <cadet3D:BitmapTextureComponent x:name="diffuseTexture" x:id="12" bitmapData="RobotDiffuse.png" name="RobotoDiffuse"/>
+      </cadet3D:TextureMaterialComponent>
+      <cadet3D:GeometryComponent x:name="geometryComponent" x:id="13" geometry="Robot.Robot_geom" name="Robot_geom"/>
+      <flox:ArrayCollection x:name="children" x:id="14">
+        <cadet3D:GeometryComponent x:name="0" x:id="15" geometry="Robot.Robot_geom" name="RobotGeom"/>
+        <x:Ref x:name="1" x:id="12"/>
+        <x:Ref x:name="2" x:id="11"/>
+      </flox:ArrayCollection>
+    </cadet3D:MeshComponent>
+  </flox:ArrayCollection>
+</cadet:CadetScene>

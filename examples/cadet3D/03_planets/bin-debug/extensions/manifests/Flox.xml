@@ -1,0 +1,11 @@
+<manifest prefix="flox" url="www.unwrong.com/flox/1.0.0">
+	
+	<!-- Managers -->
+	<classMap name="DependencyManager" class="flox.app.managers.DependencyManager" />
+	<classMap name="DependencyNode" class="flox.app.managers.DependencyNode" />
+	
+	<!-- Entities -->
+	<classMap name="ArrayCollection" class="flox.core.data.ArrayCollection" />
+	
+	
+</manifest>

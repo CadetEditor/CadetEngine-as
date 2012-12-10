@@ -6,13 +6,13 @@ package
 	
 	import cadet2D.components.core.Entity;
 	import cadet2D.components.geom.RectangleGeometry;
+	import cadet2D.components.renderers.Renderer2D;
+	import cadet2D.components.skins.GeometrySkin;
 	import cadet2D.components.transforms.Transform2D;
-	import cadet2D.renderPipeline.starling.components.renderers.Renderer2D;
-	import cadet2D.renderPipeline.starling.components.skins.GeometrySkin;
 	
 	import cadet2DBox2D.components.behaviours.RigidBodyBehaviour;
+	import cadet2DBox2D.components.behaviours.RigidBodyMouseDragBehaviour;
 	import cadet2DBox2D.components.processes.PhysicsProcess;
-	import cadet2DBox2D.renderPipeline.starling.components.behaviours.RigidBodyMouseDragBehaviour;
 	
 	import components.behaviours.ApplyTorqueBehaviour;
 	

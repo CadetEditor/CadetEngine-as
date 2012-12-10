@@ -1,0 +1,21 @@
+<manifest prefix="cadet3D" url="www.unwrong.com/cadet3D/1.0.0">
+
+  <!-- CORE -->
+  <classMap name="Renderer3D" class="cadet3D.components.core.Renderer3D"/>
+  <classMap name="MeshComponent" class="cadet3D.components.core.MeshComponent"/> 
+  <!-- CAMERAS -->
+  <classMap name="CameraComponent" class="cadet3D.components.cameras.CameraComponent"/>
+  <!-- DEBUG -->
+  <classMap name="TridentComponent" class="cadet3D.components.debug.TridentComponent"/>
+  <!-- GEOM -->
+  <classMap name="GeometryComponent" class="cadet3D.components.geom.GeometryComponent"/>
+  <classMap name="SphereGeometryComponent" class="cadet3D.components.geom.SphereGeometryComponent"/>
+  <!-- LIGHTS -->
+  <classMap name="DirectionalLightComponent" class="cadet3D.components.lights.DirectionalLightComponent"/>
+  <!-- TEXTURES -->
+  <classMap name="BitmapTextureComponent" class="cadet3D.components.textures.BitmapTextureComponent"/>
+  <!-- MATERIALS -->
+  <classMap name="ColorMaterialComponent" class="cadet3D.components.materials.ColorMaterialComponent"/>
+  <classMap name="TextureMaterialComponent" class="cadet3D.components.materials.TextureMaterialComponent"/>
+  
+</manifest>

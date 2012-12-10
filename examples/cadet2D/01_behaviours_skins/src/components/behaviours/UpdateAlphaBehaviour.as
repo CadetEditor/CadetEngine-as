@@ -3,8 +3,8 @@ package components.behaviours
 	import cadet.core.Component;
 	import cadet.core.ISteppableComponent;
 	
-	import cadet2D.renderPipeline.starling.components.renderers.Renderer2D;
-	import cadet2D.renderPipeline.starling.components.skins.GeometrySkin;
+	import cadet2D.components.renderers.Renderer2D;
+	import cadet2D.components.skins.GeometrySkin;
 	
 	public class UpdateAlphaBehaviour extends Component implements ISteppableComponent
 	{

@@ -4,9 +4,9 @@ package components.processes
 	import cadet.core.ISteppableComponent;
 	
 	import cadet2D.components.core.Entity;
+	import cadet2D.components.skins.AssetSkin;
+	import cadet2D.components.textures.TextureComponent;
 	import cadet2D.components.transforms.Transform2D;
-	import cadet2D.renderPipeline.starling.components.skins.AssetSkin;
-	import cadet2D.renderPipeline.starling.components.textures.TextureComponent;
 	
 	import components.behaviours.BounceBehaviour;
 	

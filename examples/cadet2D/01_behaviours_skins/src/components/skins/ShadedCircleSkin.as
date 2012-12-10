@@ -3,7 +3,7 @@ package components.skins
 	import cadet.events.InvalidationEvent;
 	
 	import cadet2D.components.geom.CircleGeometry;
-	import cadet2D.renderPipeline.starling.components.skins.AbstractSkin2D;
+	import cadet2D.components.skins.AbstractSkin2D;
 	
 	import flash.display.GradientType;
 	import flash.geom.Matrix;

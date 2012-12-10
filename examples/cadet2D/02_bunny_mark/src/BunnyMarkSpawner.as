@@ -3,8 +3,8 @@ package
 	import cadet.core.CadetScene;
 	import cadet.events.RendererEvent;
 	
-	import cadet2D.renderPipeline.starling.components.renderers.Renderer2D;
-	import cadet2D.renderPipeline.starling.components.textures.TextureComponent;
+	import cadet2D.components.renderers.Renderer2D;
+	import cadet2D.components.textures.TextureComponent;
 	
 	import components.processes.BunnySpawner;
 	

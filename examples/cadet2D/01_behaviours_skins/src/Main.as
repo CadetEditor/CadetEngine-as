@@ -7,9 +7,9 @@ package
 	import cadet2D.components.core.Entity;
 	import cadet2D.components.geom.CircleGeometry;
 	import cadet2D.components.geom.RectangleGeometry;
+	import cadet2D.components.renderers.Renderer2D;
+	import cadet2D.components.skins.GeometrySkin;
 	import cadet2D.components.transforms.Transform2D;
-	import cadet2D.renderPipeline.starling.components.renderers.Renderer2D;
-	import cadet2D.renderPipeline.starling.components.skins.GeometrySkin;
 	
 	import components.behaviours.AnimateRotationBehaviour;
 	import components.behaviours.UpdateAlphaBehaviour;
