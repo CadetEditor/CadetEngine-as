@@ -96,8 +96,8 @@ package cadet2D.components.renderers
 		public function Renderer2D()
 		{
 			name = "Starling Renderer";
-			viewportWidth = 800;
-			viewportHeight = 600;	
+			_viewportWidth = 800;
+			_viewportHeight = 600;	
 			
 			identityMatrix = new Matrix();
 			skinTable = new Dictionary();
@@ -114,6 +114,9 @@ package cadet2D.components.renderers
 			_enabled = true;
 			
 			_parent = parent;
+			
+			_viewportWidth = parent.stage.stageWidth;
+			_viewportHeight = parent.stage.stageHeight;
 			
 			if (!Starling.current) {
 				star = new Starling( Sprite, parent.stage );
@@ -134,9 +137,6 @@ package cadet2D.components.renderers
 			_initialised = false;
 			
 			_viewport.stage.removeEventListener(TouchEvent.TOUCH, onTouchHandler);
-			
-//			removeSkins();
-//			removeOverlays();
 			
 			_viewport.removeChildren();
 		}
@@ -229,7 +229,7 @@ package cadet2D.components.renderers
 			invalidate(RendererInvalidationTypes.VIEWPORT);			
 		}
 		
-		[Serializable][Inspectable]
+		[Inspectable]//[Serializable]
 		public function set viewportWidth( value:Number ):void
 		{
 			if ( _viewportWidth == value ) return;
@@ -239,7 +239,7 @@ package cadet2D.components.renderers
 		}
 		public function get viewportWidth():Number { return _viewportWidth; }
 		
-		[Serializable][Inspectable]
+		[Inspectable]//[Serializable]
 		public function set viewportHeight( value:Number ):void
 		{
 			if ( _viewportHeight == value ) return;

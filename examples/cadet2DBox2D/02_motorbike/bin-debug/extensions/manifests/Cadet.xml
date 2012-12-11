@@ -1,0 +1,15 @@
+<manifest prefix="cadet" url="www.unwrong.com/cadet/1.0.0">
+	
+	<!-- Core -->
+	<classMap name="CadetScene" class="cadet.core.CadetScene" />
+	<classMap name="Component" class="cadet.core.Component" />
+	<classMap name="ComponentContainer" class="cadet.core.ComponentContainer" />
+	
+	<!-- Behaviours  -->
+	<classMap name="VehicleUserControlBehaviour" class="cadet.components.behaviours.VehicleUserControlBehaviour" />
+	
+	<!-- Processes -->
+	<classMap name="InputMapping" class="cadet.components.processes.InputMapping" />
+	<classMap name="InputProcess" class="cadet.components.processes.InputProcess" />
+	
+</manifest>

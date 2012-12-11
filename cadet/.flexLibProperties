@@ -2,6 +2,7 @@
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
   <includeClasses>
     <classEntry path="cadet.components.geom.IGeometry"/>
+    <classEntry path="cadet.operations.CadetStartUpOperationBase"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

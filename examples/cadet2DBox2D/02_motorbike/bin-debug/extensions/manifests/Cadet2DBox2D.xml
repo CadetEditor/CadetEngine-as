@@ -1,0 +1,20 @@
+<manifest prefix="cadet2DBox2D" url="www.unwrong.com/cadet2DBox2D/1.0.0">
+
+  <classMap name="DistanceJointBehaviour" class="cadet2DBox2D.components.behaviours.DistanceJointBehaviour"/>
+  <classMap name="MotorbikeBehaviour" class="cadet2DBox2D.components.behaviours.MotorbikeBehaviour"/>
+  <classMap name="PrismaticJointBehaviour" class="cadet2DBox2D.components.behaviours.PrismaticJointBehaviour"/>
+  <classMap name="RevoluteJointBehaviour" class="cadet2DBox2D.components.behaviours.RevoluteJointBehaviour"/>
+  <classMap name="RigidBodyBehaviour" class="cadet2DBox2D.components.behaviours.RigidBodyBehaviour"/>
+  <classMap name="RigidBodyCollisionDetectBehaviour" class="cadet2DBox2D.components.behaviours.RigidBodyCollisionDetectBehaviour"/>
+  <classMap name="SimpleFootprintBehaviour" class="cadet2DBox2D.components.behaviours.SimpleFootprintBehaviour"/>
+  <classMap name="SimpleVehicleBehaviour" class="cadet2DBox2D.components.behaviours.SimpleVehicleBehaviour"/>
+  <classMap name="SpringBehaviour" class="cadet2DBox2D.components.behaviours.SpringBehaviour"/>
+  <classMap name="VehicleBehaviour" class="cadet2DBox2D.components.behaviours.VehicleBehaviour"/>
+  <classMap name="PhysicsProcess" class="cadet2DBox2D.components.processes.PhysicsProcess"/>
+  <classMap name="PhysicsProcessContactListener" class="cadet2DBox2D.components.processes.PhysicsProcessContactListener"/>
+  <classMap name="PhysicsProcessDestructionListener" class="cadet2DBox2D.components.processes.PhysicsProcessDestructionListener"/>
+  
+  <!-- Flash2D Behaviours -->
+  <classMap name="RigidBodyMouseDragBehaviour" class="cadet2DBox2D.components.behaviours.RigidBodyMouseDragBehaviour"/>
+  
+</manifest>

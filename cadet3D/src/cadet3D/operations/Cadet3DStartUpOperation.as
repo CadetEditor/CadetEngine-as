@@ -12,6 +12,7 @@
 package cadet3D.operations
 {
 	import cadet.core.ICadetScene;
+	import cadet.operations.CadetStartUpOperationBase;
 	import cadet.operations.ReadCadetFileAndDeserializeOperation;
 	
 	import cadet3D.resources.ExternalAway3DResourceParser;
@@ -26,18 +27,15 @@ package cadet3D.operations
 	import flox.app.operations.LoadManifestsOperation;
 	import flox.app.resources.ExternalResourceParserFactory;
 	
-	public class Cadet3DStartUpOperation extends CompoundOperation
-	{
-		private var readAndDeserializeOperation:ReadCadetFileAndDeserializeOperation;
-		
-		private var fspID:String = "cadet.url"; // FileSystemProvider ID: URL FSP assumed. 
-		public var baseURL:String = "files";
-		public var assetsURL:String = "assets/";
-		public var cadetFileURL:String;
-		
+	public class Cadet3DStartUpOperation extends CadetStartUpOperationBase
+	{	
 		public function Cadet3DStartUpOperation( cadetFileURL:String)
 		{
-			this.cadetFileURL = cadetFileURL;
+			super(cadetFileURL);
+			
+			addManifest( baseManifestURL + "Flox.xml");
+			addManifest( baseManifestURL + "Cadet.xml");
+			addManifest( baseManifestURL + "Cadet3D.xml");
 		}
 		
 		override public function execute():void
@@ -54,13 +52,8 @@ package cadet3D.operations
 			// Add ExternalAway3DResourceParser to handle .3ds & .obj files.
 			FloxApp.resourceManager.addResource( new ExternalResourceParserFactory( ExternalAway3DResourceParser, "External Away3D Resource Parser", ["obj", "3ds"] ) );
 			
-			// Specify which manifests to load (e.g. 2D or 3D extension)
-			var config:XML = 
-				<xml>
-					<manifest><url><![CDATA[extensions/manifests/Flox.xml]]></url></manifest>
-					<manifest><url><![CDATA[extensions/manifests/Cadet.xml]]></url></manifest>	
-					<manifest><url><![CDATA[extensions/manifests/Cadet3D.xml]]></url></manifest>
-				</xml>
+			// Specify which manifests to load
+			var config:XML = createConfigXML();
 			
 			// Load manifests
 			var loadManifestsOperation:LoadManifestsOperation = new LoadManifestsOperation(config.manifest);
@@ -72,11 +65,6 @@ package cadet3D.operations
 			addOperation(readAndDeserializeOperation);
 			
 			super.execute();
-		}
-		
-		public function getResult():ICadetScene
-		{
-			return readAndDeserializeOperation.getResult();
 		}
 	}
 }

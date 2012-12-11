@@ -1,5 +1,5 @@
 package
-{	
+{
 	import cadet.core.CadetScene;
 	import cadet.util.ComponentUtil;
 	
@@ -9,7 +9,7 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
-	[SWF( width="700", height="400", backgroundColor="0x002135", frameRate="30" )]
+	[SWF( width="700", height="400", backgroundColor="0x002135", frameRate="60" )]
 	public class Main extends Sprite
 	{
 		private var cadetScene:CadetScene;

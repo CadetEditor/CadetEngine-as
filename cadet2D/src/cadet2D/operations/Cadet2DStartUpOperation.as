@@ -11,7 +11,9 @@
 // For use when loading CadetScenes outside of the CadetEditor, e.g. in a Flash Builder project.
 package cadet2D.operations
 {
+	import cadet.core.CadetScene;
 	import cadet.core.ICadetScene;
+	import cadet.operations.CadetStartUpOperationBase;
 	import cadet.operations.ReadCadetFileAndDeserializeOperation;
 	
 	import flash.events.Event;
@@ -24,18 +26,15 @@ package cadet2D.operations
 	import flox.app.operations.LoadManifestsOperation;
 	import flox.app.resources.ExternalResourceParserFactory;
 	
-	public class Cadet2DStartUpOperation extends CompoundOperation
-	{
-		private var readAndDeserializeOperation:ReadCadetFileAndDeserializeOperation;
-		
-		private var fspID:String = "cadet.url"; // FileSystemProvider ID: URL FSP assumed. 
-		public var baseURL:String = "files";
-		public var assetsURL:String = "assets/";
-		public var cadetFileURL:String;
-		
+	public class Cadet2DStartUpOperation extends CadetStartUpOperationBase
+	{		
 		public function Cadet2DStartUpOperation( cadetFileURL:String )
 		{
-			this.cadetFileURL = cadetFileURL;
+			super(cadetFileURL);
+			
+			addManifest( baseManifestURL + "Flox.xml");
+			addManifest( baseManifestURL + "Cadet.xml");
+			addManifest( baseManifestURL + "Cadet2D.xml");
 		}
 		
 		override public function execute():void
@@ -50,13 +49,7 @@ package cadet2D.operations
 			new ExternalResourceController( FloxApp.resourceManager, new URI(fspID+"/"+assetsURL), FloxApp.fileSystemProvider );
 			
 			// Specify which manifests to load
-			var config:XML =
-					<xml>
-						<manifest><url><![CDATA[extensions/manifests/Flox.xml]]></url></manifest>
-						<manifest><url><![CDATA[extensions/manifests/Cadet.xml]]></url></manifest>	
-						<manifest><url><![CDATA[extensions/manifests/Cadet2D.xml]]></url></manifest>
-						<manifest><url><![CDATA[extensions/manifests/Cadet2DStarling.xml]]></url></manifest>
-					</xml>
+			var config:XML = createConfigXML();
 			
 			// Load manifests
 			var loadManifestsOperation:LoadManifestsOperation = new LoadManifestsOperation(config.manifest);
@@ -68,11 +61,6 @@ package cadet2D.operations
 			addOperation(readAndDeserializeOperation);
 			
 			super.execute();
-		}
-		
-		public function getResult():ICadetScene
-		{
-			return readAndDeserializeOperation.getResult();
 		}
 	}
 }

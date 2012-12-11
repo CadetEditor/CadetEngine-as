@@ -2,6 +2,7 @@
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
   <includeClasses>
     <classEntry path="cadet3D.resources.ExternalAway3DResourceParser"/>
+    <classEntry path="cadet3D.controllers.HoverController"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

@@ -89,13 +89,5 @@ package cadet2D.components.skins
 			_displayObjectContainer.touchable = value;
 		}
 		public function get mouseEnabled():Boolean { return _displayObjectContainer.touchable; }
-		/*
-		[Serializable][Inspectable( label="Mouse children", priority="53" )]
-		public function set mouseChildren( value:Boolean ):void
-		{
-			sprite.touchable = value;
-		}
-		public function get mouseChildren():Boolean { return sprite.touchable; }
-		*/
 	}
 }
