@@ -4,6 +4,7 @@ package
 	import cadet.util.ComponentUtil;
 	
 	import cadet3D.components.core.Renderer3D;
+	import cadet3D.components.primitives.SkyBoxComponent;
 	import cadet3D.operations.Cadet3DStartUpOperation;
 	
 	import flash.display.Sprite;
@@ -37,6 +38,8 @@ package
 			
 			var renderer:Renderer3D = ComponentUtil.getChildOfType(cadetScene, Renderer3D);
 			renderer.enable(this);
+			
+			var skyBoxComponent:SkyBoxComponent
 			
 			cadetScene.validateNow();
 			

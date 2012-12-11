@@ -1,67 +1,75 @@
-<cadet:CadetScene x:id="0" timeScale="1" framerate="30" name="Component" xmlns:cadet="www.unwrong.com/cadet/1.0.0" xmlns:x="flox.app.core.serialization.Serializer" xmlns:flox="www.unwrong.com/flox/1.0.0" xmlns:ns0="cadet3D.components.processes" xmlns:cadet3D="www.unwrong.com/cadet3D/1.0.0">
+<cadet:CadetScene x:id="0" framerate="30" timeScale="1" name="Component" xmlns:cadet="www.unwrong.com/cadet/1.0.0" xmlns:x="flox.app.core.serialization.Serializer" xmlns:flox="www.unwrong.com/flox/1.0.0" xmlns:ns0="cadet3D.components.processes" xmlns:cadet3D="www.unwrong.com/cadet3D/1.0.0" xmlns:ns1="cadet3D.components.primitives" xmlns:ns2="cadet3D.components.materials" xmlns:ns3="cadet3D.components.textures">
   <Object x:name="userData" x:id="1"/>
-  <flox:ArrayCollection x:name="children" x:id="2">
-    <cadet:InputProcess x:name="0" x:id="3" name="Input Process">
-      <flox:ArrayCollection x:name="children" x:id="4">
-        <cadet:InputMapping x:name="0" x:id="5" name="LMB" symbol="LMB"/>
+  <flox:DependencyManager x:name="dependencyManager" x:id="2">
+    <flox:ArrayCollection x:name="dependencyNodes" x:id="3"/>
+  </flox:DependencyManager>
+  <flox:ArrayCollection x:name="children" x:id="4">
+    <cadet:InputProcess x:name="0" x:id="5" name="Input Process">
+      <flox:ArrayCollection x:name="children" x:id="6">
+        <cadet:InputMapping x:name="0" x:id="7" symbol="LMB" name="LMB"/>
       </flox:ArrayCollection>
     </cadet:InputProcess>
-    <ns0:HoverCamProcess x:name="1" x:id="6" mouseMapping="LMB" currentTiltAngle="10" currentPanAngle="55" name="HoverCamProcess" distance="1400">
-      <cadet3D:MeshComponent x:name="lookAtComponent" x:id="7" transform="0.45963090658187866,0,-0.8881100416183472,0,0,1,0,0,0.8881100416183472,0,0.45963090658187866,0,-26.824195861816406,0,1.106109619140625,1" name="Teapot">
-        <cadet3D:ColorMaterialComponent x:name="materialComponent" x:id="8" name="Teapot Material" specularStrength="1" gloss="50" depthCompareMode="less" color="16777215"/>
-        <cadet3D:GeometryComponent x:name="geometryComponent" x:id="9" name="Teapot01_geom" geometry="Primitives.Teapot01_geom"/>
-        <flox:ArrayCollection x:name="children" x:id="10">
-          <x:Ref x:name="0" x:id="8"/>
-          <x:Ref x:name="1" x:id="9"/>
+    <ns0:HoverCamProcess x:name="1" x:id="8" mouseMapping="LMB" currentTiltAngle="10" currentPanAngle="55" name="HoverCamProcess" distance="1400">
+      <cadet3D:MeshComponent x:name="lookAtComponent" x:id="9" transform="0.45963090658187866,0,-0.8881100416183472,0,0,1,0,0,0.8881100416183472,0,0.45963090658187866,0,-26.824195861816406,0,1.106109619140625,1" name="Teapot">
+        <cadet3D:ColorMaterialComponent x:name="materialComponent" x:id="10" specularStrength="1" depthCompareMode="less" name="Teapot Material" gloss="50" color="16777215"/>
+        <cadet3D:GeometryComponent x:name="geometryComponent" x:id="11" geometry="Primitives.Teapot01_geom" name="Teapot01_geom"/>
+        <flox:ArrayCollection x:name="children" x:id="12">
+          <x:Ref x:name="0" x:id="10"/>
+          <x:Ref x:name="1" x:id="11"/>
         </flox:ArrayCollection>
       </cadet3D:MeshComponent>
-      <cadet3D:CameraComponent x:name="targetComponent" x:id="11" transform="-0.5744324326515198,-8.673688967064663e-8,0.8185520172119141,0,-0.38378238677978516,0.883275032043457,-0.2693255543708801,0,-0.723006546497345,-0.46885520219802856,-0.5073818564414978,0,1081.746337890625,615.09228515625,756.9356079101563,1" name="Camera">
-        <flox:ArrayCollection x:name="children" x:id="12"/>
+      <cadet3D:CameraComponent x:name="targetComponent" x:id="13" transform="-0.5378862023353577,-2.0946060885762563e-7,0.8430174589157104,0,-0.28528550267219543,0.9409987926483154,-0.18202582001686096,0,-0.7932783961296082,-0.3384098410606384,-0.5061503052711487,0,1176.4356689453125,420.9812927246094,748.4903564453125,1" name="Camera">
+        <flox:ArrayCollection x:name="children" x:id="14"/>
       </cadet3D:CameraComponent>
     </ns0:HoverCamProcess>
-    <cadet3D:Renderer3D x:name="2" x:id="13" name="Away3D Renderer">
-      <x:Ref x:name="cameraComponent" x:id="11"/>
+    <cadet3D:Renderer3D x:name="2" x:id="15" name="Away3D Renderer">
+      <x:Ref x:name="cameraComponent" x:id="13"/>
     </cadet3D:Renderer3D>
-    <cadet3D:DirectionalLightComponent x:name="3" x:id="14" ambient="0" ambientColor="16777215" specular="0" transform="-0.8361985087394714,0.4759737253189087,-0.2724354565143585,0,0.0534706711769104,-0.4236341118812561,-0.9042538404464722,0,-0.545814037322998,-0.7707030177116394,0.3287915587425232,0,0,0,0,1" name="Directional Light" color="16777215" diffuse="1">
-      <flox:ArrayCollection x:name="children" x:id="15"/>
+    <cadet3D:DirectionalLightComponent x:name="3" x:id="16" transform="-0.8361985087394714,0.4759737253189087,-0.2724354565143585,0,0.0534706711769104,-0.4236341118812561,-0.9042538404464722,0,-0.545814037322998,-0.7707030177116394,0.3287915587425232,0,0,0,0,1" ambient="0" ambientColor="16777215" diffuse="1" specular="0" name="Directional Light" color="16777215">
+      <flox:ArrayCollection x:name="children" x:id="17"/>
     </cadet3D:DirectionalLightComponent>
-    <x:Ref x:name="4" x:id="11"/>
-    <cadet3D:MeshComponent x:name="5" x:id="16" transform="1,0,0,0,0,1,0,0,0,0,1,0,-1232.0589599609375,0,-327.49609375,1" name="Earth">
-      <cadet3D:TextureMaterialComponent x:name="materialComponent" x:id="17" alphaThreshold="0" envMapAlpha="1" name="Earth Material" specularStrength="1" gloss="50" depthCompareMode="less">
-        <cadet3D:BitmapTextureComponent x:name="diffuseTexture" x:id="18" bitmapData="Earth.jpg" name="Earth Texture"/>
+    <x:Ref x:name="4" x:id="13"/>
+    <cadet3D:MeshComponent x:name="5" x:id="18" transform="1,0,0,0,0,1,0,0,0,0,1,0,-1232.0589599609375,0,-327.49609375,1" name="Earth">
+      <cadet3D:TextureMaterialComponent x:name="materialComponent" x:id="19" envMapAlpha="1" specularStrength="1" depthCompareMode="less" alphaThreshold="0" name="Earth Material" gloss="50">
+        <cadet3D:BitmapTextureComponent x:name="diffuseTexture" x:id="20" bitmapData="Earth.jpg" name="Earth Texture"/>
       </cadet3D:TextureMaterialComponent>
-      <cadet3D:SphereGeometryComponent x:name="geometryComponent" x:id="19" radius="231.64318084512428" name="Sphere Geometry" segmentsW="16" segmentsH="12"/>
-      <flox:ArrayCollection x:name="children" x:id="20">
-        <x:Ref x:name="0" x:id="17"/>
-        <x:Ref x:name="1" x:id="18"/>
-        <x:Ref x:name="2" x:id="19"/>
+      <cadet3D:SphereGeometryComponent x:name="geometryComponent" x:id="21" radius="231.64318084512428" segmentsH="12" segmentsW="16" name="Sphere Geometry"/>
+      <flox:ArrayCollection x:name="children" x:id="22">
+        <x:Ref x:name="0" x:id="19"/>
+        <x:Ref x:name="1" x:id="20"/>
+        <x:Ref x:name="2" x:id="21"/>
       </flox:ArrayCollection>
     </cadet3D:MeshComponent>
-    <cadet3D:MeshComponent x:name="6" x:id="21" transform="1,0,0,0,0,1,0,0,0,0,1,0,-966.164306640625,5.684341886080802e-14,-583.59228515625,1" name="Moon">
-      <cadet3D:TextureMaterialComponent x:name="materialComponent" x:id="22" alphaThreshold="0" envMapAlpha="1" name="Moon Material" specularStrength="1" gloss="50" depthCompareMode="less">
-        <cadet3D:BitmapTextureComponent x:name="diffuseTexture" x:id="23" bitmapData="Moon.jpg" name="Moon Texture"/>
+    <cadet3D:MeshComponent x:name="6" x:id="23" transform="1,0,0,0,0,1,0,0,0,0,1,0,-966.164306640625,5.684341886080802e-14,-583.59228515625,1" name="Moon">
+      <cadet3D:TextureMaterialComponent x:name="materialComponent" x:id="24" envMapAlpha="1" specularStrength="1" depthCompareMode="less" alphaThreshold="0" name="Moon Material" gloss="50">
+        <cadet3D:BitmapTextureComponent x:name="diffuseTexture" x:id="25" bitmapData="Moon.jpg" name="Moon Texture"/>
       </cadet3D:TextureMaterialComponent>
-      <cadet3D:SphereGeometryComponent x:name="geometryComponent" x:id="24" radius="60" name="Sphere Geometry" segmentsW="16" segmentsH="12"/>
-      <flox:ArrayCollection x:name="children" x:id="25">
-        <x:Ref x:name="0" x:id="24"/>
-        <x:Ref x:name="1" x:id="22"/>
-        <x:Ref x:name="2" x:id="23"/>
+      <cadet3D:SphereGeometryComponent x:name="geometryComponent" x:id="26" radius="60" segmentsH="12" segmentsW="16" name="Sphere Geometry"/>
+      <flox:ArrayCollection x:name="children" x:id="27">
+        <x:Ref x:name="0" x:id="26"/>
+        <x:Ref x:name="1" x:id="24"/>
+        <x:Ref x:name="2" x:id="25"/>
       </flox:ArrayCollection>
     </cadet3D:MeshComponent>
-    <cadet3D:MeshComponent x:name="7" x:id="26" transform="1,0,0,0,0,1,0,0,0,0,1,0,774.96337890625,10.66904067993164,-130.76698303222656,1" name="Mars">
-      <cadet3D:TextureMaterialComponent x:name="materialComponent" x:id="27" alphaThreshold="0" envMapAlpha="1" name="Mars Material" specularStrength="1" gloss="50" depthCompareMode="less">
-        <cadet3D:BitmapTextureComponent x:name="diffuseTexture" x:id="28" bitmapData="Mars.jpg" name="Mars Texture"/>
+    <cadet3D:MeshComponent x:name="7" x:id="28" transform="1,0,0,0,0,1,0,0,0,0,1,0,774.96337890625,10.66904067993164,-130.76698303222656,1" name="Mars">
+      <cadet3D:TextureMaterialComponent x:name="materialComponent" x:id="29" envMapAlpha="1" specularStrength="1" depthCompareMode="less" alphaThreshold="0" name="Mars Material" gloss="50">
+        <cadet3D:BitmapTextureComponent x:name="diffuseTexture" x:id="30" bitmapData="Mars.jpg" name="Mars Texture"/>
       </cadet3D:TextureMaterialComponent>
-      <cadet3D:SphereGeometryComponent x:name="geometryComponent" x:id="29" radius="200" name="Sphere Geometry" segmentsW="16" segmentsH="12"/>
-      <flox:ArrayCollection x:name="children" x:id="30">
-        <x:Ref x:name="0" x:id="29"/>
-        <x:Ref x:name="1" x:id="27"/>
-        <x:Ref x:name="2" x:id="28"/>
+      <cadet3D:SphereGeometryComponent x:name="geometryComponent" x:id="31" radius="200" segmentsH="12" segmentsW="16" name="Sphere Geometry"/>
+      <flox:ArrayCollection x:name="children" x:id="32">
+        <x:Ref x:name="0" x:id="31"/>
+        <x:Ref x:name="1" x:id="29"/>
+        <x:Ref x:name="2" x:id="30"/>
       </flox:ArrayCollection>
     </cadet3D:MeshComponent>
-    <x:Ref x:name="8" x:id="7"/>
+    <x:Ref x:name="8" x:id="9"/>
+    <ns1:SkyBoxComponent x:name="9" x:id="33" transform="1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1" name="SkyBox">
+      <ns2:SkyBoxMaterialComponent x:name="materialComponent" x:id="34" name="SkyBox Material">
+        <ns3:BitmapCubeTextureComponent x:name="cubeTexture" x:id="35" negativeZ="skybox/space_negZ.jpg" positiveZ="skybox/space_posZ.jpg" negativeY="skybox/space_negY.jpg" name="SkyBox Texture" positiveY="skybox/space_posY.jpg" negativeX="skybox/space_negX.jpg" positiveX="skybox/space_posX.jpg"/>
+      </ns2:SkyBoxMaterialComponent>
+      <flox:ArrayCollection x:name="children" x:id="36"/>
+    </ns1:SkyBoxComponent>
+    <x:Ref x:name="10" x:id="34"/>
+    <x:Ref x:name="11" x:id="35"/>
   </flox:ArrayCollection>
-  <flox:DependencyManager x:name="dependencyManager" x:id="31">
-    <flox:ArrayCollection x:name="dependencyNodes" x:id="32"/>
-  </flox:DependencyManager>
 </cadet:CadetScene>

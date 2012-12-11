@@ -3,6 +3,10 @@
   <includeClasses>
     <classEntry path="cadet3D.resources.ExternalAway3DResourceParser"/>
     <classEntry path="cadet3D.controllers.HoverController"/>
+    <classEntry path="cadet3D.components.primitives.SkyBoxComponent"/>
+    <classEntry path="cadet3D.components.materials.SkyBoxMaterialComponent"/>
+    <classEntry path="cadet3D.primitives.SkyBox"/>
+    <classEntry path="cadet3D.core.partition.SkyBoxNode"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

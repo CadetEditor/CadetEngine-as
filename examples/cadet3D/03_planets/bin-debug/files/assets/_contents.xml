@@ -1,4 +1,5 @@
 <xml>
+  <folder>skybox</folder>
 	<!-- 3D Planets -->
 	<file>Earth.jpg</file>
 	<file>Jupiter.jpg</file>
