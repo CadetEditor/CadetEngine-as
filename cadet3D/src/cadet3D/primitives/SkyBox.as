@@ -15,7 +15,6 @@ package cadet3D.primitives
 	import away3d.materials.SkyBoxMaterial;
 	import away3d.textures.CubeTextureBase;
 	
-	import cadet3D.core.partition.SkyBoxNode;
 	
 	import flash.display3D.IndexBuffer3D;
 	import flash.display3D.VertexBuffer3D;

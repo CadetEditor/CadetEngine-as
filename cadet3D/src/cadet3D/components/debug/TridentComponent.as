@@ -19,11 +19,11 @@ package cadet3D.components.debug
 	import away3d.materials.ColorMaterial;
 	import away3d.tools.commands.Merge;
 	
-	import cadet3D.components.core.Object3DComponent;
+	import cadet3D.components.core.ObjectContainer3DComponent;
 	
 	import flash.geom.Vector3D;
 
-	public class TridentComponent extends Object3DComponent
+	public class TridentComponent extends ObjectContainer3DComponent
 	{
 		private var _mesh				:Mesh;
 		
@@ -43,7 +43,7 @@ package cadet3D.components.debug
 			invalidate( DISPLAY );
 		}
 		
-		[Serializable][Inspectable( priority="1" )]
+		[Serializable][Inspectable( priority="150" )]
 		public function set length( value:uint ):void
 		{
 			if ( _length == value ) return;
@@ -56,7 +56,7 @@ package cadet3D.components.debug
 			return _length;
 		}
 		
-		[Serializable][Inspectable( priority="2" )]
+		[Serializable][Inspectable( priority="151" )]
 		public function set showLetters( value:Boolean ):void
 		{
 			if (_showLetters == value ) return;

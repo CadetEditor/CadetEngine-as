@@ -25,7 +25,7 @@ package cadet3D.components.geom
 			_geometry = sphereGeom = new SphereGeometry()
 		}
 		
-		[Serializable][Inspectable( editor="NumberInput", min="1", max="9999", numDecimalPlaces="2" )]
+		[Serializable][Inspectable( priority="100", editor="NumberInput", min="1", max="9999", numDecimalPlaces="2" )]
 		public function get radius() : Number
 		{
 			return sphereGeom.radius;
@@ -38,7 +38,7 @@ package cadet3D.components.geom
 			invalidate( GEOMETRY );
 		}
 		
-		[Serializable][Inspectable( editor="NumberInput", min="4", max="128", numDecimalPlaces="0" )]
+		[Serializable][Inspectable( priority="101", editor="NumberInput", min="4", max="256", numDecimalPlaces="0" )]
 		public function get segmentsW() : Number
 		{
 			return sphereGeom.segmentsW;
@@ -51,7 +51,7 @@ package cadet3D.components.geom
 			invalidate( GEOMETRY );
 		}
 		
-		[Serializable][Inspectable( editor="NumberInput", min="4", max="128", numDecimalPlaces="0" )]
+		[Serializable][Inspectable( priority="102", editor="NumberInput", min="4", max="256", numDecimalPlaces="0" )]
 		public function get segmentsH() : Number
 		{
 			return sphereGeom.segmentsH;

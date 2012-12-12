@@ -34,7 +34,7 @@ package cadet3D.components.materials
 		/**
 		 * The diffuse color of the surface.
 		 */
-		[Serializable][Inspectable( editor="ColorPicker" )]
+		[Serializable][Inspectable( priority="100", editor="ColorPicker" )]
 		public function get color() : uint
 		{
 			return _colorMaterial.color;

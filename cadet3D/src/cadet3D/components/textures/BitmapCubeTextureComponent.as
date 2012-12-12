@@ -14,7 +14,7 @@ package cadet3D.components.textures
 	
 	import cadet.core.Component;
 	
-	import cadet3D.util.BitmapDataUtil;
+	import cadet.util.BitmapDataUtil;
 	import cadet3D.util.NullBitmap;
 	import cadet3D.util.NullBitmapCubeTexture;
 	
@@ -29,7 +29,7 @@ package cadet3D.components.textures
 			_cubeTexture = _bitmapCubeTexture = NullBitmapCubeTexture.getCopy();
 		}
 		
-		[Serializable( type="resource" )][Inspectable(editor="ResourceItemEditor")]
+		[Serializable( type="resource" )][Inspectable( priority="100", editor="ResourceItemEditor" )]
 		public function set positiveX( value:BitmapData ):void
 		{
 			_bitmapCubeTexture.positiveX = BitmapDataUtil.makePowerOfTwo(value, true) || NullBitmap.instance ;
@@ -40,7 +40,7 @@ package cadet3D.components.textures
 			return _bitmapCubeTexture.positiveX;
 		}
 		
-		[Serializable( type="resource" )][Inspectable(editor="ResourceItemEditor")]
+		[Serializable( type="resource" )][Inspectable( priority="101", editor="ResourceItemEditor" )]
 		public function set negativeX( value:BitmapData ):void
 		{
 			_bitmapCubeTexture.negativeX = BitmapDataUtil.makePowerOfTwo(value, true) || NullBitmap.instance;
@@ -51,7 +51,7 @@ package cadet3D.components.textures
 			return _bitmapCubeTexture.negativeX;
 		}
 		
-		[Serializable( type="resource" )][Inspectable(editor="ResourceItemEditor")]
+		[Serializable( type="resource" )][Inspectable( priority="102", editor="ResourceItemEditor" )]
 		public function set positiveY( value:BitmapData ):void
 		{
 			_bitmapCubeTexture.positiveY = BitmapDataUtil.makePowerOfTwo(value, true) || NullBitmap.instance;
@@ -62,7 +62,7 @@ package cadet3D.components.textures
 			return _bitmapCubeTexture.positiveY;
 		}
 		
-		[Serializable( type="resource" )][Inspectable(editor="ResourceItemEditor")]
+		[Serializable( type="resource" )][Inspectable( priority="103", editor="ResourceItemEditor" )]
 		public function set negativeY( value:BitmapData ):void
 		{
 			_bitmapCubeTexture.negativeY = BitmapDataUtil.makePowerOfTwo(value, true) || NullBitmap.instance;
@@ -73,7 +73,7 @@ package cadet3D.components.textures
 			return _bitmapCubeTexture.negativeY;
 		}
 		
-		[Serializable( type="resource" )][Inspectable(editor="ResourceItemEditor")]
+		[Serializable( type="resource" )][Inspectable( priority="104", editor="ResourceItemEditor" )]
 		public function set positiveZ( value:BitmapData ):void
 		{
 			_bitmapCubeTexture.positiveZ = BitmapDataUtil.makePowerOfTwo(value, true) || NullBitmap.instance;
@@ -84,7 +84,7 @@ package cadet3D.components.textures
 			return _bitmapCubeTexture.positiveZ;
 		}
 		
-		[Serializable( type="resource" )][Inspectable(editor="ResourceItemEditor")]
+		[Serializable( type="resource" )][Inspectable( priority="105", editor="ResourceItemEditor" )]
 		public function set negativeZ( value:BitmapData ):void
 		{
 			_bitmapCubeTexture.negativeZ = BitmapDataUtil.makePowerOfTwo(value, true) || NullBitmap.instance;

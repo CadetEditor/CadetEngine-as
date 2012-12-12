@@ -32,7 +32,7 @@ package cadet3D.components.geom
 		/**
 		 * The size of the cube along its X-axis.
 		 */
-		[Serializable][Inspectable( priority="2", editor="NumberInput", min="1", max="9999", numDecimalPlaces="2" )]
+		[Serializable][Inspectable( priority="100", editor="NumberInput", min="1", max="9999", numDecimalPlaces="2" )]
 		public function get width() : Number
 		{
 			return cubeGeom.width;
@@ -48,7 +48,7 @@ package cadet3D.components.geom
 		/**
 		 * The size of the cube along its Y-axis.
 		 */
-		[Serializable][Inspectable( priority="3", editor="NumberInput", min="1", max="9999", numDecimalPlaces="2" )]
+		[Serializable][Inspectable( priority="101", editor="NumberInput", min="1", max="9999", numDecimalPlaces="2" )]
 		public function get height() : Number
 		{
 			return cubeGeom.height;
@@ -64,7 +64,7 @@ package cadet3D.components.geom
 		/**
 		 * The size of the cube along its Z-axis.
 		 */
-		[Serializable][Inspectable( priority="4", editor="NumberInput", min="1", max="9999", numDecimalPlaces="2" )]
+		[Serializable][Inspectable( priority="102", editor="NumberInput", min="1", max="9999", numDecimalPlaces="2" )]
 		public function get depth() : Number
 		{
 			return cubeGeom.depth;
@@ -80,7 +80,7 @@ package cadet3D.components.geom
 		/**
 		 * The number of segments that make up the cube along the X-axis. Defaults to 1.
 		 */
-		[Serializable][Inspectable( priority="5", editor="NumberInput", min="1", max="128", numDecimalPlaces="0" )]
+		[Serializable][Inspectable( priority="103", editor="NumberInput", min="1", max="128", numDecimalPlaces="0" )]
 		public function get segmentsW() : Number
 		{
 			return cubeGeom.segmentsW;
@@ -96,7 +96,7 @@ package cadet3D.components.geom
 		/**
 		 * The number of segments that make up the cube along the Y-axis. Defaults to 1.
 		 */
-		[Serializable][Inspectable( priority="6", editor="NumberInput", min="1", max="128", numDecimalPlaces="0" )]
+		[Serializable][Inspectable( priority="104", editor="NumberInput", min="1", max="128", numDecimalPlaces="0" )]
 		public function get segmentsH() : Number
 		{
 			return cubeGeom.segmentsH;
@@ -112,7 +112,7 @@ package cadet3D.components.geom
 		/**
 		 * The number of segments that make up the cube along the Z-axis. Defaults to 1.
 		 */
-		[Serializable][Inspectable( priority="7", editor="NumberInput", min="1", max="128", numDecimalPlaces="0" )]
+		[Serializable][Inspectable( priority="105", editor="NumberInput", min="1", max="128", numDecimalPlaces="0" )]
 		public function get segmentsD() : Number
 		{
 			return cubeGeom.segmentsD;
@@ -129,7 +129,7 @@ package cadet3D.components.geom
 		 * The type of uv mapping to use. When true, a texture will be subdivided in a 2x3 grid, each used for a single
 		 * face. When false, the entire image is mapped on each face.
 		 */
-		[Serializable][Inspectable( priority="8" )]
+		[Serializable][Inspectable( priority="106" )]
 		public function get tile6() : Boolean
 		{
 			return cubeGeom.tile6;

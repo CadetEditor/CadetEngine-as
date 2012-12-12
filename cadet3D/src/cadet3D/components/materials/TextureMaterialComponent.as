@@ -29,9 +29,11 @@ package cadet3D.components.materials
 	public class TextureMaterialComponent extends AbstractMaterialComponent
 	{
 		private var _textureMaterial			:TextureMaterial;
+		private var _ambientTexture				:AbstractTexture2DComponent;
 		private var _diffuseTexture				:AbstractTexture2DComponent;
-		private var _normalTexture				:AbstractTexture2DComponent;
-		private var _environmentTexture			:BitmapCubeTextureComponent;
+		private var _normalMap					:AbstractTexture2DComponent;
+		private var _specularMap				:AbstractTexture2DComponent;
+		private var _environmentMap				:BitmapCubeTextureComponent;
 		private var _envMapMethod				:EnvMapMethod;
 		private var _envMapAlpha				:Number = 1;
 		
@@ -43,31 +45,60 @@ package cadet3D.components.materials
 		override public function dispose():void
 		{
 			diffuseTexture = null;
-			normalTexture = null;
+			normalMap = null;
 			super.dispose();
 		}
 		
-		[Serializable][Inspectable(editor="Slider", min="0", max="1", snapInterval="0.01", showMarkers="false" )]
+		[Serializable][Inspectable( priority="100", editor="Slider", min="0", max="1", snapInterval="0.01", showMarkers="false" )]
 		public function set alphaThreshold( value:Number ):void
 		{
 			_material.alphaThreshold = value;
 		}
-		
 		public function get alphaThreshold():Number
 		{
 			return _material.alphaThreshold;
 		}
 		
-		[Serializable][Inspectable(editor="ComponentList", scope="scene")]
+		[Serializable][Inspectable( priority="101", editor="Slider", min="0", max="1", snapInterval="0.01", showMarkers="false" )]
+		public function set envMapAlpha( value:Number ):void
+		{
+			if ( _envMapMethod )
+			{
+				_envMapMethod.alpha = value;
+			}
+			_envMapAlpha = value;
+		}
+		public function get envMapAlpha():Number
+		{
+			return _envMapAlpha;
+		}
+		
+		[Serializable][Inspectable( priority="102",editor="ComponentList", scope="scene")]
+		public function set ambientTexture( value:AbstractTexture2DComponent  ):void
+		{
+			if ( _ambientTexture ) {
+				_ambientTexture.removeEventListener(InvalidationEvent.INVALIDATE, invalidateDiffuseTextureHandler);
+			}
+			_ambientTexture = value;
+			if ( _ambientTexture ) {
+				_ambientTexture.addEventListener(InvalidationEvent.INVALIDATE, invalidateDiffuseTextureHandler);
+			}
+			updateAmbientTexture();
+		}
+		
+		public function get ambientTexture():AbstractTexture2DComponent
+		{
+			return _ambientTexture;
+		}
+		
+		[Serializable][Inspectable( priority="103", editor="ComponentList", scope="scene")]
 		public function set diffuseTexture( value:AbstractTexture2DComponent  ):void
 		{
-			if ( _diffuseTexture )
-			{
+			if ( _diffuseTexture ) {
 				_diffuseTexture.removeEventListener(InvalidationEvent.INVALIDATE, invalidateDiffuseTextureHandler);
 			}
 			_diffuseTexture = value;
-			if ( _diffuseTexture )
-			{
+			if ( _diffuseTexture ) {
 				_diffuseTexture.addEventListener(InvalidationEvent.INVALIDATE, invalidateDiffuseTextureHandler);
 			}
 			updateDiffuseTexture();
@@ -78,122 +109,132 @@ package cadet3D.components.materials
 			return _diffuseTexture;
 		}
 		
-		[Serializable][Inspectable(editor="ComponentList", scope="scene")]
-		public function set normalTexture( value:AbstractTexture2DComponent  ):void
+		[Serializable][Inspectable( priority="104", editor="ComponentList", scope="scene")]
+		public function set environmentMap( value:BitmapCubeTextureComponent  ):void
 		{
-			if ( _normalTexture )
-			{
-				_normalTexture.removeEventListener(InvalidationEvent.INVALIDATE, invalidateNormalTextureHandler);
+			if ( _environmentMap ) {
+				_environmentMap.removeEventListener(InvalidationEvent.INVALIDATE, invalidateEnvironmentMapHandler);
 			}
-			_normalTexture = value;
-			if ( _normalTexture )
-			{
-				_normalTexture.addEventListener(InvalidationEvent.INVALIDATE, invalidateNormalTextureHandler);
+			_environmentMap = value;
+			if ( _environmentMap ) {
+				_environmentMap.addEventListener(InvalidationEvent.INVALIDATE, invalidateEnvironmentMapHandler);
 			}
-			updateNormalTexture();
+			updateEnvironmentMap();
 		}
 		
-		public function get normalTexture():AbstractTexture2DComponent
+		public function get environmentMap():BitmapCubeTextureComponent
 		{
-			return _normalTexture;
+			return _environmentMap;
 		}
 		
-		[Serializable][Inspectable(editor="ComponentList", scope="scene")]
-		public function set environmentTexture( value:BitmapCubeTextureComponent  ):void
+		[Serializable][Inspectable( priority="105", editor="ComponentList", scope="scene")]
+		public function set normalMap( value:AbstractTexture2DComponent  ):void
 		{
-			if ( _environmentTexture )
-			{
-				_environmentTexture.removeEventListener(InvalidationEvent.INVALIDATE, invalidateEnvironmentTextureHandler);
+			if ( _normalMap ) {
+				_normalMap.removeEventListener(InvalidationEvent.INVALIDATE, invalidateNormalMapHandler);
 			}
-			_environmentTexture = value;
-			if ( _environmentTexture )
-			{
-				_environmentTexture.addEventListener(InvalidationEvent.INVALIDATE, invalidateEnvironmentTextureHandler);
+			_normalMap = value;
+			if ( _normalMap ) {
+				_normalMap.addEventListener(InvalidationEvent.INVALIDATE, invalidateNormalMapHandler);
 			}
-			updateEnvironmentTexture();
+			updateNormalMap();
 		}
 		
-		public function get environmentTexture():BitmapCubeTextureComponent
+		public function get normalMap():AbstractTexture2DComponent
 		{
-			return _environmentTexture;
+			return _normalMap;
 		}
 		
-		[Serializable][Inspectable(editor="Slider", min="0", max="1", snapInterval="0.01", showMarkers="false" )]
-		public function set envMapAlpha( value:Number ):void
+		[Serializable][Inspectable( priority="106", editor="ComponentList", scope="scene")]
+		public function set specularMap( value:AbstractTexture2DComponent  ):void
 		{
-			if ( _envMapMethod )
-			{
-				_envMapMethod.alpha = value;
+			if ( _specularMap ) {
+				_specularMap.removeEventListener(InvalidationEvent.INVALIDATE, invalidateSpecularMapHandler);
 			}
-			_envMapAlpha = value;
+			_specularMap = value;
+			if ( _specularMap ) {
+				_specularMap.addEventListener(InvalidationEvent.INVALIDATE, invalidateSpecularMapHandler);
+			}
+			updateSpecularMap();
 		}
 		
-		public function get envMapAlpha():Number
+		public function get specularMap():AbstractTexture2DComponent
 		{
-			return _envMapAlpha;
+			return _specularMap;
 		}
+		
 		
 		private function invalidateDiffuseTextureHandler( event:InvalidationEvent ):void
 		{
 			updateDiffuseTexture();
 		}
 		
-		private function invalidateNormalTextureHandler( event:InvalidationEvent ):void
+		private function invalidateNormalMapHandler( event:InvalidationEvent ):void
 		{
-			updateNormalTexture();
+			updateNormalMap();
 		}
 		
-		private function invalidateEnvironmentTextureHandler( event:InvalidationEvent ):void
+		private function invalidateEnvironmentMapHandler( event:InvalidationEvent ):void
 		{
-			updateEnvironmentTexture();
+			updateEnvironmentMap();
+		}
+		
+		private function invalidateSpecularMapHandler( event:InvalidationEvent ):void
+		{
+			updateSpecularMap();
+		}
+		
+		private function updateAmbientTexture():void
+		{
+			if ( _ambientTexture ) {
+				_textureMaterial.ambientTexture = _ambientTexture.texture2D;
+			} else {
+				_textureMaterial.ambientTexture = NullBitmapTexture.instance;
+			}
 		}
 		
 		private function updateDiffuseTexture():void
 		{
-			if ( _diffuseTexture )
-			{
+			if ( _diffuseTexture ) {
 				_textureMaterial.texture = _diffuseTexture.texture2D;
-			}
-			else
-			{
+			} else {
 				_textureMaterial.texture = NullBitmapTexture.instance;
 			}
 		}
 		
-		private function updateNormalTexture():void
+		private function updateEnvironmentMap():void
 		{
-			if ( _normalTexture )
-			{
-				_textureMaterial.normalMap = _normalTexture.texture2D;
+			if ( _environmentMap ) {
+				if ( _envMapMethod == null ) {
+					_envMapMethod = new EnvMapMethod( _environmentMap.cubeTexture );
+					_material.addMethod(_envMapMethod);
+					_envMapMethod.alpha = _envMapAlpha;
+				} else {
+					_envMapMethod.envMap = _environmentMap.cubeTexture;
+				}
+			} else {
+				if ( _envMapMethod ) {
+					_material.removeMethod(_envMapMethod);
+					_envMapMethod = null;
+				}
 			}
-			else
-			{
+		}
+		
+		private function updateNormalMap():void
+		{
+			if ( _normalMap ) {
+				_textureMaterial.normalMap = _normalMap.texture2D;
+			} else {
 				_textureMaterial.normalMap = NullBitmapTexture.instance;
 			}
 		}
 		
-		private function updateEnvironmentTexture():void
+		private function updateSpecularMap():void
 		{
-			if ( _environmentTexture )
-			{
-				if ( _envMapMethod == null )
-				{
-					_envMapMethod = new EnvMapMethod( _environmentTexture.cubeTexture );
-					_material.addMethod(_envMapMethod);
-					_envMapMethod.alpha = _envMapAlpha;
-				}
-				else
-				{
-					_envMapMethod.envMap = _environmentTexture.cubeTexture;
-				}
-			}
-			else
-			{
-				if ( _envMapMethod )
-				{
-					_material.removeMethod(_envMapMethod);
-					_envMapMethod = null;
-				}
+			if ( _specularMap ) {
+				_textureMaterial.specularMap = _specularMap.texture2D;
+			} else {
+				_textureMaterial.specularMap = NullBitmapTexture.instance;
 			}
 		}
 	}

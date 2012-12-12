@@ -4,13 +4,13 @@ package cadet3D.components.primitives
 	import away3d.textures.BitmapCubeTexture;
 	import away3d.textures.CubeTextureBase;
 	
-	import cadet3D.components.core.Object3DComponent;
+	import cadet3D.components.core.ObjectContainer3DComponent;
 	import cadet3D.components.materials.SkyBoxMaterialComponent;
 	import cadet3D.primitives.SkyBox;
 	
 	import flash.display.BitmapData;
 	
-	public class SkyBoxComponent extends Object3DComponent
+	public class SkyBoxComponent extends ObjectContainer3DComponent
 	{
 		private var _skyBox				:SkyBox;
 		private var _materialComponent	:SkyBoxMaterialComponent;
@@ -22,7 +22,7 @@ package cadet3D.components.primitives
 			_object3D = _skyBox = new SkyBox(new BitmapCubeTexture(defaultBitmapData, defaultBitmapData, defaultBitmapData, defaultBitmapData, defaultBitmapData, defaultBitmapData));
 		}
 		
-		[Serializable][Inspectable( editor="ComponentList", scope="scene" )]
+		[Serializable][Inspectable( priority="150", editor="ComponentList", scope="scene" )]
 		public function get materialComponent():SkyBoxMaterialComponent
 		{
 			return _materialComponent;

@@ -23,7 +23,7 @@ package cadet3D.components.core
 	
 	import flash.events.Event;
 	
-	public class MeshComponent extends Object3DComponent
+	public class MeshComponent extends ObjectContainer3DComponent
 	{
 		private var _mesh		:Mesh;
 		
@@ -52,7 +52,7 @@ package cadet3D.components.core
 			return _mesh;
 		}
 		
-		[Serializable][Inspectable( editor="ComponentList", scope="scene" )]
+		[Serializable][Inspectable( priority="150", editor="ComponentList", scope="scene" )]
 		public function set geometryComponent( value:AbstractGeometryComponent ):void
 		{
 			if ( _geometryComponent == value ) return;
@@ -79,7 +79,7 @@ package cadet3D.components.core
 			return _geometryComponent;
 		}
 		
-		[Serializable][Inspectable( editor="ComponentList", scope="scene" )]
+		[Serializable][Inspectable( priority="151", editor="ComponentList", scope="scene" )]
 		public function get materialComponent():AbstractMaterialComponent
 		{
 			return _materialComponent;
@@ -88,12 +88,9 @@ package cadet3D.components.core
 		public function set materialComponent(value : AbstractMaterialComponent) : void
 		{
 			_materialComponent = value;
-			if ( _materialComponent )
-			{
+			if ( _materialComponent ) {
 				_mesh.material = _materialComponent.material;
-			}
-			else
-			{
+			} else {
 				_mesh.material = null;
 			}
 		}

@@ -117,7 +117,7 @@ package cadet3D.components.core
 			super.dispose();
 		}
 		
-		public function getComponentForObject3D( object3D:ObjectContainer3D ):Object3DComponent
+		public function getComponentForObject3D( object3D:ObjectContainer3D ):ObjectContainer3DComponent
 		{
 			return object3DComponentTable[object3D];
 		}
@@ -200,8 +200,8 @@ package cadet3D.components.core
 			scene.addEventListener(ComponentEvent.ADDED_TO_SCENE, componentAddedToSceneHandler);
 			scene.addEventListener(ComponentEvent.REMOVED_FROM_SCENE, componentRemovedFromSceneHandler);
 			
-			var allEntityComponents:Vector.<IComponent> = ComponentUtil.getChildrenOfType( scene, Object3DComponent, true );
-			for each ( var entityComponent:Object3DComponent in allEntityComponents )
+			var allEntityComponents:Vector.<IComponent> = ComponentUtil.getChildrenOfType( scene, ObjectContainer3DComponent, true );
+			for each ( var entityComponent:ObjectContainer3DComponent in allEntityComponents )
 			{
 				addObject3DComponent( entityComponent );
 			}
@@ -240,9 +240,9 @@ package cadet3D.components.core
 		
 		private function componentAddedToSceneHandler( event:ComponentEvent ):void
 		{
-			if ( event.component is Object3DComponent )
+			if ( event.component is ObjectContainer3DComponent )
 			{
-				addObject3DComponent( Object3DComponent( event.component ) )
+				addObject3DComponent( ObjectContainer3DComponent( event.component ) )
 			}
 			if ( event.component is AbstractLightComponent )
 			{
@@ -261,9 +261,9 @@ package cadet3D.components.core
 		
 		private function componentRemovedFromSceneHandler( event:ComponentEvent ):void
 		{
-			if ( event.component is Object3DComponent )
+			if ( event.component is ObjectContainer3DComponent )
 			{
-				removeObject3DComponent( Object3DComponent( event.component ) );
+				removeObject3DComponent( ObjectContainer3DComponent( event.component ) );
 			}
 			if ( event.component is AbstractLightComponent )
 			{
@@ -279,7 +279,7 @@ package cadet3D.components.core
 			}
 		}
 		
-		private function addObject3DComponent( entityComponent:Object3DComponent ):void
+		private function addObject3DComponent( entityComponent:ObjectContainer3DComponent ):void
 		{
 			object3DComponentTable[entityComponent.object3D] = entityComponent;
 			if ( entityComponent.parentComponent == _scene )
@@ -288,7 +288,7 @@ package cadet3D.components.core
 			}
 		}
 		
-		private function removeObject3DComponent( entityComponent:Object3DComponent ):void
+		private function removeObject3DComponent( entityComponent:ObjectContainer3DComponent ):void
 		{
 			delete object3DComponentTable[entityComponent.object3D];
 			if ( entityComponent.object3D.parent == _rootContainer )
@@ -317,7 +317,7 @@ package cadet3D.components.core
 			lights.splice(lights.indexOf(lightComponent.light));
 			lightPicker.lights = lights;
 			
-			if ( _shadowMapMethod.castingLight == lightComponent.light )
+			if ( _shadowMapMethod && _shadowMapMethod.castingLight == lightComponent.light )
 			{
 				for each ( var material:DefaultMaterialBase in _materials )
 				{

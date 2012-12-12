@@ -6,7 +6,9 @@
     <classEntry path="cadet3D.components.primitives.SkyBoxComponent"/>
     <classEntry path="cadet3D.components.materials.SkyBoxMaterialComponent"/>
     <classEntry path="cadet3D.primitives.SkyBox"/>
-    <classEntry path="cadet3D.core.partition.SkyBoxNode"/>
+    <classEntry path="cadet3D.components.lights.PointLightComponent"/>
+    <classEntry path="cadet3D.components.core.Sprite3DComponent"/>
+    <classEntry path="cadet3D.primitives.Sprite3D"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

@@ -9,7 +9,7 @@ package cadet3D.components.processes
 	import cadet.util.ComponentUtil;
 	
 	import cadet3D.components.cameras.CameraComponent;
-	import cadet3D.components.core.Object3DComponent;
+	import cadet3D.components.core.ObjectContainer3DComponent;
 	import cadet3D.components.core.Renderer3D;
 	import cadet3D.controllers.HoverController;
 	
@@ -20,8 +20,8 @@ package cadet3D.components.processes
 		
 		private var _controller			:HoverController;
 		
-		private var _targetComponent	:Object3DComponent;
-		private var _lookAtComponent	:Object3DComponent;
+		private var _targetComponent	:ObjectContainer3DComponent;
+		private var _lookAtComponent	:ObjectContainer3DComponent;
 		
 		private var lastPanAngle:Number;
 		private var lastTiltAngle:Number;
@@ -41,47 +41,8 @@ package cadet3D.components.processes
 			addSceneReference( InputProcess, "inputProcess" );
 		}
 		
-		[Serializable][Inspectable( editor="ComponentList", scope="scene" )]
-		public function set targetComponent( target:Object3DComponent ):void
-		{
-			_targetComponent = target;
-			if ( _targetComponent ) {
-				_controller.targetObject = Entity(target.object3D);
-			} else {
-				_controller.targetObject = null;
-			}
-		}
-		public function get targetComponent():Object3DComponent
-		{
-			return _targetComponent;
-		}
 		
-		[Serializable][Inspectable( editor="ComponentList", scope="scene" )]
-		public function set lookAtComponent( target:Object3DComponent ):void
-		{
-			_lookAtComponent = target;
-			if ( _lookAtComponent ) {
-				_controller.lookAtObject = ObjectContainer3D(target.object3D);
-			} else {
-				_controller.lookAtObject = null;
-			}
-		}
-		public function get lookAtComponent():Object3DComponent
-		{
-			return _lookAtComponent;
-		}
-		
-		[Serializable][Inspectable]
-		public function set distance( value:Number ):void
-		{
-			_controller.distance = value;
-		}
-		public function get distance():Number
-		{
-			return _controller.distance;
-		}
-		
-		[Serializable][Inspectable]
+		[Serializable][Inspectable( priority="50" )]
 		public function set currentPanAngle( value:Number ):void
 		{
 			_controller.currentPanAngle = value;
@@ -91,7 +52,7 @@ package cadet3D.components.processes
 			return _controller.currentPanAngle;
 		}
 		
-		[Serializable][Inspectable]
+		[Serializable][Inspectable( priority="51" )]
 		public function set currentTiltAngle( value:Number ):void
 		{
 			_controller.currentTiltAngle = value;
@@ -100,6 +61,47 @@ package cadet3D.components.processes
 		{
 			return _controller.currentTiltAngle;
 		}
+		
+		[Serializable][Inspectable( priority="52" )]
+		public function set distance( value:Number ):void
+		{
+			_controller.distance = value;
+		}
+		public function get distance():Number
+		{
+			return _controller.distance;
+		}
+		
+		[Serializable][Inspectable( priority="53", editor="ComponentList", scope="scene" )]
+		public function set lookAtComponent( target:ObjectContainer3DComponent ):void
+		{
+			_lookAtComponent = target;
+			if ( _lookAtComponent ) {
+				_controller.lookAtObject = ObjectContainer3D(target.object3D);
+			} else {
+				_controller.lookAtObject = null;
+			}
+		}
+		public function get lookAtComponent():ObjectContainer3DComponent
+		{
+			return _lookAtComponent;
+		}
+		
+		[Serializable][Inspectable( priority="54", editor="ComponentList", scope="scene" )]
+		public function set targetComponent( target:ObjectContainer3DComponent ):void
+		{
+			_targetComponent = target;
+			if ( _targetComponent ) {
+				_controller.targetObject = Entity(target.object3D);
+			} else {
+				_controller.targetObject = null;
+			}
+		}
+		public function get targetComponent():ObjectContainer3DComponent
+		{
+			return _targetComponent;
+		}
+		
 		
 		public function step( dt:Number ):void
 		{

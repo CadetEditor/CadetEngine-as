@@ -17,7 +17,8 @@ package cadet3D.components.lights
 		public function DirectionalLightComponent()
 		{
 			_object3D = _light = new DirectionalLight();
-			_light.castsShadows = true;
+			
+			castsShadows = true;
 		}
 	}
 }

@@ -28,7 +28,7 @@ package cadet3D.components.geom
 			this.height = height;
 		}
 		
-		[Serializable][Inspectable( priority="2", editor="NumberInput", min="1", max="9999", numDecimalPlaces="2" )]
+		[Serializable][Inspectable( priority="100", editor="NumberInput", min="1", max="9999", numDecimalPlaces="2" )]
 		public function get width() : Number
 		{
 			return planeGeom.width;
@@ -41,7 +41,7 @@ package cadet3D.components.geom
 			invalidate( GEOMETRY );
 		}
 		
-		[Serializable][Inspectable( priority="3", editor="NumberInput", min="1", max="9999", numDecimalPlaces="2" )]
+		[Serializable][Inspectable( priority="101", editor="NumberInput", min="1", max="9999", numDecimalPlaces="2" )]
 		public function get height() : Number
 		{
 			return planeGeom.height;
@@ -54,7 +54,7 @@ package cadet3D.components.geom
 			invalidate( GEOMETRY );
 		}
 		
-		[Serializable][Inspectable( priority="4", editor="NumberInput", min="1", max="128", numDecimalPlaces="0" )]
+		[Serializable][Inspectable( priority="102", editor="NumberInput", min="1", max="128", numDecimalPlaces="0" )]
 		public function get segmentsW() : Number
 		{
 			return planeGeom.segmentsW;
@@ -67,7 +67,7 @@ package cadet3D.components.geom
 			invalidate( GEOMETRY );
 		}
 		
-		[Serializable][Inspectable( priority="5", editor="NumberInput", min="1", max="128", numDecimalPlaces="0" )]
+		[Serializable][Inspectable( priority="103", editor="NumberInput", min="1", max="128", numDecimalPlaces="0" )]
 		public function get segmentsH() : Number
 		{
 			return planeGeom.segmentsH;

@@ -14,9 +14,9 @@ package cadet3D.components.cameras
 	import away3d.cameras.lenses.OrthographicLens;
 	import away3d.cameras.lenses.PerspectiveLens;
 	
-	import cadet3D.components.core.Object3DComponent;
+	import cadet3D.components.core.ObjectContainer3DComponent;
 	
-	public class CameraComponent extends Object3DComponent
+	public class CameraComponent extends ObjectContainer3DComponent
 	{
 		public static const PERSPECTIVE		:String = "perspective";
 		public static const ORTHOGRAPHIC	:String = "orthographic";
@@ -33,6 +33,16 @@ package cadet3D.components.cameras
 		public function get camera():Camera3D
 		{
 			return _camera;
+		}
+		
+		[Serializable][Inspectable( priority="150" )]
+		public function set lensFar( value:uint ):void
+		{
+			_camera.lens.far = value;
+		}
+		public function get lensFar():uint
+		{
+			return _camera.lens.far;
 		}
 		
 		public function set lensType( value:String ):void

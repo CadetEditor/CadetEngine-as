@@ -13,9 +13,9 @@ package cadet3D.components.lights
 {
 	import away3d.lights.LightBase;
 	
-	import cadet3D.components.core.Object3DComponent;
+	import cadet3D.components.core.ObjectContainer3DComponent;
 	
-	public class AbstractLightComponent extends Object3DComponent
+	public class AbstractLightComponent extends ObjectContainer3DComponent
 	{
 		protected var _light		:LightBase;
 		
@@ -28,26 +28,35 @@ package cadet3D.components.lights
 		{
 			return _light;
 		}
-				
-		/**
-		 * The specular emission strength of the light.
-		 */
-		[Serializable][Inspectable( editor="Slider", min="0", max="1", snapInterval="0.01" )]
-		public function get specular() : Number
+		
+		[Serializable][Inspectable( priority="150" )]
+		public function get castsShadows():Boolean
 		{
-			return _light.specular;
+			return _light.castsShadows;	
+		}
+		public function set castsShadows( value:Boolean ):void
+		{
+			_light.castsShadows = value;
 		}
 		
-		
-		public function set specular(value : Number) : void
+		/**
+		 * The ambient emission strength of the light.
+		 */
+		[Serializable][Inspectable( priority="151", editor="Slider", min="0", max="1", snapInterval="0.01" )]
+		public function get ambient() : Number
 		{
-			_light.specular = value;
+			return _light.ambient;
+		}
+		
+		public function set ambient(value : Number) : void
+		{
+			_light.ambient = value;
 		}
 		
 		/**
 		 * The diffuse emission strength of the light.
 		 */
-		[Serializable][Inspectable( editor="Slider", min="0", max="1", snapInterval="0.01" )]
+		[Serializable][Inspectable( priority="152", editor="Slider", min="0", max="10", snapInterval="0.1" )]
 		public function get diffuse() : Number
 		{
 			return _light.diffuse;
@@ -59,9 +68,22 @@ package cadet3D.components.lights
 		}
 		
 		/**
+		 * The specular emission strength of the light.
+		 */
+		[Serializable][Inspectable( priority="153", editor="Slider", min="0", max="1", snapInterval="0.01" )]
+		public function get specular() : Number
+		{
+			return _light.specular;
+		}
+		public function set specular(value : Number) : void
+		{
+			_light.specular = value;
+		}
+		
+		/**
 		 * The color of the light.
 		 */
-		[Serializable][Inspectable( editor="ColorPicker" )]
+		[Serializable][Inspectable( priority="154", editor="ColorPicker" )]
 		public function get color() : uint
 		{
 			return _light.color;
@@ -72,21 +94,7 @@ package cadet3D.components.lights
 			light.color = value;
 		}
 		
-		/**
-		 * The ambient emission strength of the light.
-		 */
-		[Serializable][Inspectable( editor="Slider", min="0", max="1", snapInterval="0.01" )]
-		public function get ambient() : Number
-		{
-			return _light.ambient;
-		}
-		
-		public function set ambient(value : Number) : void
-		{
-			_light.ambient = value;
-		}
-		
-		[Serializable][Inspectable( editor="ColorPicker" )]
+		[Serializable][Inspectable( priority="155", editor="ColorPicker" )]
 		public function get ambientColor() : uint
 		{
 			return _light.ambientColor;

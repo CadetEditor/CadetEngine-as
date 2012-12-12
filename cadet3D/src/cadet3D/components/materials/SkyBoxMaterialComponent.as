@@ -6,6 +6,7 @@ package cadet3D.components.materials
 	import cadet.core.Component;
 	
 	import cadet3D.components.textures.BitmapCubeTextureComponent;
+	import cadet3D.util.NullBitmapCubeTexture;
 	
 	import flash.display.BitmapData;
 
@@ -13,31 +14,31 @@ package cadet3D.components.materials
 	{
 		private var _skyBoxMaterial:SkyBoxMaterial;
 		private var _bmpCubeTextureComponent:BitmapCubeTextureComponent;
-		private var defaultBitmapData	:BitmapData = new BitmapData(256, 256, false, 0xFF0000);
+		//private var defaultBitmapData	:BitmapData = new BitmapData(256, 256, false, 0xFF0000);
 		
 		public function SkyBoxMaterialComponent()
 		{
-			_skyBoxMaterial = new SkyBoxMaterial( new BitmapCubeTexture(defaultBitmapData, defaultBitmapData, defaultBitmapData, defaultBitmapData, defaultBitmapData, defaultBitmapData));
+			_skyBoxMaterial = new SkyBoxMaterial( NullBitmapCubeTexture.getCopy() );
 		}
 		
-		[Serializable][Inspectable(editor="ComponentList", scope="scene")]
+		public function get material():SkyBoxMaterial
+		{
+			return _skyBoxMaterial;
+		}
+		
+		[Serializable][Inspectable( priority="100", editor="ComponentList", scope="scene" )]
 		public function set cubeTexture(value : BitmapCubeTextureComponent) : void
 		{
 			_bmpCubeTextureComponent = value;
 			if ( value ) {
 				_skyBoxMaterial.cubeMap = value.cubeTexture;
 			} else {
-				_skyBoxMaterial.cubeMap = new BitmapCubeTexture(defaultBitmapData, defaultBitmapData, defaultBitmapData, defaultBitmapData, defaultBitmapData, defaultBitmapData);
+				_skyBoxMaterial.cubeMap = NullBitmapCubeTexture.getCopy();
 			}
 		}
 		public function get cubeTexture():BitmapCubeTextureComponent
 		{
 			return _bmpCubeTextureComponent;
-		}
-		
-		public function get material():SkyBoxMaterial
-		{
-			return _skyBoxMaterial;
 		}
 	}
 }

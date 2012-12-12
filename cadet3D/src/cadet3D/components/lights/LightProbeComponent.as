@@ -27,7 +27,7 @@ package cadet3D.components.lights
 			_object3D = _light = _lightProbe = new LightProbe(NullBitmapCubeTexture.instance, NullBitmapCubeTexture.instance);
 		}
 		
-		[Serializable][Inspectable(editor="ComponentList", scope="scene")]
+		[Serializable][Inspectable( priority="200", editor="ComponentList", scope="scene" )]
 		public function set diffuseMap( value:AbstractCubeTextureComponent  ):void
 		{
 			if ( _diffuseMap )

@@ -1,10 +1,9 @@
-package cadet3D.core.partition
+package cadet3D.primitives
 {
 	import away3d.cameras.Camera3D;
 	import away3d.core.partition.EntityNode;
 	import away3d.core.traverse.PartitionTraverser;
 	
-	import cadet3D.primitives.SkyBox;
 	
 	/**
 	 * SkyBoxNode is a space partitioning leaf node that contains a SkyBox object.
