@@ -4,6 +4,7 @@ package cadet3D.components.materials
 	import away3d.textures.BitmapCubeTexture;
 	
 	import cadet.core.Component;
+	import cadet.events.InvalidationEvent;
 	
 	import cadet3D.components.textures.BitmapCubeTextureComponent;
 	import cadet3D.util.NullBitmapCubeTexture;
@@ -29,16 +30,40 @@ package cadet3D.components.materials
 		[Serializable][Inspectable( priority="100", editor="ComponentList", scope="scene" )]
 		public function set cubeTexture(value : BitmapCubeTextureComponent) : void
 		{
-			_bmpCubeTextureComponent = value;
-			if ( value ) {
-				_skyBoxMaterial.cubeMap = value.cubeTexture;
-			} else {
-				_skyBoxMaterial.cubeMap = NullBitmapCubeTexture.getCopy();
+			if ( _bmpCubeTextureComponent  ) {
+				_bmpCubeTextureComponent.removeEventListener(InvalidationEvent.INVALIDATE, invalidateTextureHandler);
 			}
+			
+			_bmpCubeTextureComponent = value;
+			
+			if ( _bmpCubeTextureComponent  ) {
+				_bmpCubeTextureComponent.addEventListener(InvalidationEvent.INVALIDATE, invalidateTextureHandler);
+			}
+			
+			updateCubeTexture();
 		}
 		public function get cubeTexture():BitmapCubeTextureComponent
 		{
 			return _bmpCubeTextureComponent;
 		}
+		
+		
+		private function invalidateTextureHandler( event:InvalidationEvent ):void
+		{
+			updateCubeTexture();
+		}
+		
+		private function updateCubeTexture():void
+		{
+			if ( _bmpCubeTextureComponent  ) {
+				_skyBoxMaterial.cubeMap = _bmpCubeTextureComponent.cubeTexture;
+			} else {
+				_skyBoxMaterial.cubeMap = NullBitmapCubeTexture.getCopy();
+			}
+		}
 	}
 }
+
+
+
+

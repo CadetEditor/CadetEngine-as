@@ -8,7 +8,7 @@
     </cadet:InputProcess>
     <ns0:HoverCamProcess x:name="1" x:id="6" mouseMapping="LMB" currentTiltAngle="10" currentPanAngle="180" name="HoverCamProcess" distance="200">
       <cadet3D:MeshComponent x:name="lookAtComponent" x:id="7" transform="1,0,0,0,0,1,0,0,0,0,1,0,0,100,0,1" name="CameraTarget">
-        <cadet3D:ColorMaterialComponent x:name="materialComponent" x:id="8" name="Default Primitive Material" specularStrength="1" gloss="50" depthCompareMode="less" color="13421772"/>
+        <cadet3D:ColorMaterialComponent x:name="materialComponent" x:id="8" name="Default Primitive Material" specular="1" gloss="50" depthCompareMode="less" color="13421772"/>
         <cadet3D:SphereGeometryComponent x:name="geometryComponent" x:id="9" radius="1" name="Sphere Geometry" segmentsW="16" segmentsH="12"/>
         <flox:ArrayCollection x:name="children" x:id="10">
           <x:Ref x:name="0" x:id="9"/>
@@ -27,7 +27,7 @@
     </cadet3D:DirectionalLightComponent>
     <x:Ref x:name="5" x:id="11"/>
     <cadet3D:MeshComponent x:name="6" x:id="16" transform="10.143118858337402,0,0,0,0,10.143118858337402,0,0,0,0,10.143118858337402,0,0,0,0,1" name="RobotMesh">
-      <cadet3D:TextureMaterialComponent x:name="materialComponent" x:id="17" alphaThreshold="0" envMapAlpha="1" name="RobotMaterial" specularStrength="0" gloss="36" depthCompareMode="less">
+      <cadet3D:TextureMaterialComponent x:name="materialComponent" x:id="17" alphaThreshold="0" envMapAlpha="1" name="RobotMaterial" specular="0" gloss="36" depthCompareMode="less">
         <cadet3D:BitmapTextureComponent x:name="diffuseTexture" x:id="18" bitmapData="RobotDiffuse.png" name="RobotoDiffuse"/>
       </cadet3D:TextureMaterialComponent>
       <cadet3D:GeometryComponent x:name="geometryComponent" x:id="19" name="Robot_geom" geometry="Robot.Robot_geom"/>

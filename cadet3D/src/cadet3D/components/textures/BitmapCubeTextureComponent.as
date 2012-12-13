@@ -33,6 +33,7 @@ package cadet3D.components.textures
 		public function set positiveX( value:BitmapData ):void
 		{
 			_bitmapCubeTexture.positiveX = BitmapDataUtil.makePowerOfTwo(value, true) || NullBitmap.instance ;
+			invalidate("*");
 		}
 		
 		public function get positiveX():BitmapData
@@ -44,6 +45,7 @@ package cadet3D.components.textures
 		public function set negativeX( value:BitmapData ):void
 		{
 			_bitmapCubeTexture.negativeX = BitmapDataUtil.makePowerOfTwo(value, true) || NullBitmap.instance;
+			invalidate("*");
 		}
 		
 		public function get negativeX():BitmapData
@@ -55,6 +57,7 @@ package cadet3D.components.textures
 		public function set positiveY( value:BitmapData ):void
 		{
 			_bitmapCubeTexture.positiveY = BitmapDataUtil.makePowerOfTwo(value, true) || NullBitmap.instance;
+			invalidate("*");
 		}
 		
 		public function get positiveY():BitmapData
@@ -66,6 +69,7 @@ package cadet3D.components.textures
 		public function set negativeY( value:BitmapData ):void
 		{
 			_bitmapCubeTexture.negativeY = BitmapDataUtil.makePowerOfTwo(value, true) || NullBitmap.instance;
+			invalidate("*");
 		}
 		
 		public function get negativeY():BitmapData
@@ -77,6 +81,7 @@ package cadet3D.components.textures
 		public function set positiveZ( value:BitmapData ):void
 		{
 			_bitmapCubeTexture.positiveZ = BitmapDataUtil.makePowerOfTwo(value, true) || NullBitmap.instance;
+			invalidate("*");
 		}
 		
 		public function get positiveZ():BitmapData
@@ -88,6 +93,7 @@ package cadet3D.components.textures
 		public function set negativeZ( value:BitmapData ):void
 		{
 			_bitmapCubeTexture.negativeZ = BitmapDataUtil.makePowerOfTwo(value, true) || NullBitmap.instance;
+			invalidate("*");
 		}
 		
 		public function get negativeZ():BitmapData

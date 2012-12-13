@@ -7,6 +7,7 @@ package cadet3D.components.primitives
 	import cadet3D.components.core.ObjectContainer3DComponent;
 	import cadet3D.components.materials.SkyBoxMaterialComponent;
 	import cadet3D.primitives.SkyBox;
+	import cadet3D.util.NullBitmapCubeTexture;
 	
 	import flash.display.BitmapData;
 	
@@ -14,12 +15,11 @@ package cadet3D.components.primitives
 	{
 		private var _skyBox				:SkyBox;
 		private var _materialComponent	:SkyBoxMaterialComponent;
-		private var defaultBitmapData	:BitmapData = new BitmapData(256, 256, false, 0xFF0000);
+		//private var defaultBitmapData	:BitmapData = new BitmapData(256, 256, false, 0xFF0000);
 		
 		public function SkyBoxComponent()
 		{
-			
-			_object3D = _skyBox = new SkyBox(new BitmapCubeTexture(defaultBitmapData, defaultBitmapData, defaultBitmapData, defaultBitmapData, defaultBitmapData, defaultBitmapData));
+			_object3D = _skyBox = new SkyBox(NullBitmapCubeTexture.getCopy());
 		}
 		
 		[Serializable][Inspectable( priority="150", editor="ComponentList", scope="scene" )]
@@ -35,7 +35,7 @@ package cadet3D.components.primitives
 				_skyBox.material = _materialComponent.material;
 			}
 			else {
-				_skyBox.material = new SkyBoxMaterial(new BitmapCubeTexture(defaultBitmapData, defaultBitmapData, defaultBitmapData, defaultBitmapData, defaultBitmapData, defaultBitmapData));
+				_skyBox.material = new SkyBoxMaterial(NullBitmapCubeTexture.getCopy());
 			}
 		}
 	}

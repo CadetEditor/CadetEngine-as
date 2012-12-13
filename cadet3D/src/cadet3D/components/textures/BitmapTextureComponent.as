@@ -55,7 +55,6 @@ package cadet3D.components.textures
 //			_bitmapTexture.bitmapData = BitmapDataUtil.makePowerOfTwo(value) || NullBitmap.instance;
 			_bitmapData = value;
 			updateTexture();
-			invalidate("*");
 		}
 		
 		public function get bitmapData():BitmapData
