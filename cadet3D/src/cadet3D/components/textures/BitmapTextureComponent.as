@@ -23,8 +23,6 @@ package cadet3D.components.textures
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	
-	import spark.utils.BitmapUtil;
-	
 	public class BitmapTextureComponent extends AbstractTexture2DComponent
 	{
 		private var _bitmapTexture	:BitmapTexture
