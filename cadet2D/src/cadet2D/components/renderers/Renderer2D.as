@@ -10,6 +10,12 @@
 
 package cadet2D.components.renderers
 {
+	import flash.display.DisplayObjectContainer;
+	import flash.geom.Matrix;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+	import flash.utils.Dictionary;
+	
 	import cadet.core.Component;
 	import cadet.core.IComponent;
 	import cadet.events.ComponentEvent;
@@ -21,24 +27,15 @@ package cadet2D.components.renderers
 	import cadet2D.components.skins.ISkin2D;
 	import cadet2D.overlays.Overlay;
 	
-	import flash.display.DisplayObjectContainer;
-	import flash.events.Event;
-	import flash.geom.Matrix;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	import flash.utils.Dictionary;
-	
 	import flox.app.util.AsynchronousUtil;
 	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
-	import starling.display.Shape;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
 	
 	[Event( type="cadet.events.RendererEvent", name="initialised" )]
 	public class Renderer2D extends Component implements IRenderer2D
@@ -93,11 +90,14 @@ package cadet2D.components.renderers
 		private var overlaysTable			:Dictionary;
 		private var _backgroundColor		:uint = 0x303030;
 		
+		public const BASELINE:String = "baseline";
+		public const BASELINECONSTRAINED:String = "baselineConstrained";
+		
+		public var defaultProfile:String = BASELINE;
+		
 		public function Renderer2D()
 		{
 			name = "Starling Renderer";
-			_viewportWidth = 800;
-			_viewportHeight = 600;	
 			
 			identityMatrix = new Matrix();
 			skinTable = new Dictionary();
@@ -119,7 +119,7 @@ package cadet2D.components.renderers
 			_viewportHeight = parent.stage.stageHeight;
 			
 			if (!Starling.current) {
-				star = new Starling( Sprite, parent.stage );
+				star = new Starling( Sprite, parent.stage, null, null, "auto", defaultProfile );
 				star.addEventListener(starling.events.Event.ROOT_CREATED, onRootCreatedHandler);
 				star.antiAliasing = 1;
 				star.start();	// TouchEvents require start() to be called...
@@ -291,6 +291,8 @@ package cadet2D.components.renderers
 			
 			var viewportRect:Rectangle = new Rectangle(_viewportX, _viewportY, _viewportWidth, _viewportHeight);
 			
+			//trace("Starling stage: x "+_parent.stage.x+" y "+_parent.stage.y+ " w "+_parent.stage.stageWidth+" h "+_parent.stage.stageHeight+" viewportRect "+viewportRect);
+		
 			star.viewPort = viewportRect;
 		}
 		
