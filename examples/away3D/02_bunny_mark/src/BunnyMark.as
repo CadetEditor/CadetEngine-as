@@ -4,9 +4,7 @@ package
 	import away3d.containers.View3D;
 	import away3d.debug.Trident;
 	import away3d.entities.Sprite3D;
-	import away3d.materials.ColorMaterial;
 	import away3d.materials.TextureMaterial;
-	import away3d.primitives.CubeGeometry;
 	import away3d.textures.BitmapTexture;
 	
 	import cadet.core.CadetScene;
@@ -14,10 +12,8 @@ package
 	import components.behaviours.BounceBehaviour;
 	
 	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.geom.Vector3D;
 	

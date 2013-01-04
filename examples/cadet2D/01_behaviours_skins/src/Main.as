@@ -2,7 +2,6 @@ package
 {
 	import cadet.core.CadetScene;
 	import cadet.events.RendererEvent;
-	import cadet.util.ComponentUtil;
 	
 	import cadet2D.components.core.Entity;
 	import cadet2D.components.geom.CircleGeometry;
@@ -16,7 +15,6 @@ package
 	import components.skins.ShadedCircleSkin;
 	
 	import flash.display.Sprite;
-	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	
 	[SWF( width="700", height="400", backgroundColor="0x002135", frameRate="60" )]

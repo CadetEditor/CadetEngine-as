@@ -9,7 +9,10 @@
 // =================================================================================================
 
 package cadet2D.components.skins
-{
+{	
+	import flash.display.BitmapData;
+	import flash.geom.Matrix;
+	
 	import cadet.components.geom.IGeometry;
 	import cadet.events.InvalidationEvent;
 	
@@ -19,16 +22,10 @@ package cadet2D.components.skins
 	import cadet2D.components.geom.PolygonGeometry;
 	import cadet2D.geom.QuadraticBezier;
 	import cadet2D.geom.Vertex;
-	import cadet2D.util.QuadraticBezierUtil;
-	
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.LineScaleMode;
-	import flash.geom.Matrix;
 	
 	import starling.display.Graphics;
 	import starling.display.Shape;
-	
+
 	public class GeometrySkin extends AbstractSkin2D implements ISkin2D
 	{
 		private var _lineThickness	:Number;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="Main.as" projectUUID="86db474e-7bbb-4589-af43-2d2bcb409bad" version="10">
-  <compiler additionalCompilerArguments="-locale en_US -use-network=false -include-libraries /CadetEngine/bin/CadetEngine.swc /CadetEngine_Extension_3D/bin/CadetEngine_Extension_3D.swc" autoRSLOrdering="true" copyDependentFiles="false" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+<actionScriptProperties analytics="false" mainApplicationPath="Main.as" projectUUID="86db474e-7bbb-4589-af43-2d2bcb409bad" version="11">
+  <compiler additionalCompilerArguments="-locale en_US -use-network=false -include-libraries ../../../../CadetEngine/bin/CadetEngine.swc ../../../../CadetEngine_Extension_3D/bin/CadetEngine_Extension_3D.swc" advancedTelemetry="false" autoRSLOrdering="true" copyDependentFiles="false" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" useFlashSDK="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="4" path="">
@@ -38,6 +38,7 @@
     <application path="Main.as"/>
   </applications>
   <modules/>
+  <workers/>
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
 </actionScriptProperties>
