@@ -12,9 +12,6 @@ package cadet3D.resources
 {
 	import away3d.containers.ObjectContainer3D;
 	
-	import mx.core.Container;
-	
-	import flox.app.resources.FactoryResource;
 	import flox.app.resources.IFactoryResource;
 	
 	public class Away3DContainer3DResource implements IFactoryResource

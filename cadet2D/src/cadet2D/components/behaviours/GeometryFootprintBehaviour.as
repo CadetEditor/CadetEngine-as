@@ -140,8 +140,9 @@ package cadet2D.components.behaviours
 			var y:int;
 			var m:Matrix = new Matrix();
 			
-			var polygon:PolygonGeometry = PolygonGeometry( _geometry );
-				
+			//var polygon:PolygonGeometry = PolygonGeometry( _geometry );
+			polygon = PolygonGeometry( _geometry );
+			
 			var transformedVertices:Array = VertexUtil.copy(polygon.vertices);
 			VertexUtil.transform(transformedVertices, _transform.matrix);
 			

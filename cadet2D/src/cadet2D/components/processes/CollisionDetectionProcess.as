@@ -69,7 +69,7 @@ package cadet2D.components.processes
 			
 			if ( event.component is BoundingSphere )
 			{
-				boundingSpheres.splice(boundingSpheres.indexOf(event.component),1);
+				boundingSpheres.splice(boundingSpheres.indexOf(BoundingSphere(event.component)),1);
 			}
 		}
 		

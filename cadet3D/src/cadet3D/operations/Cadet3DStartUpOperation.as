@@ -11,19 +11,15 @@
 // For use when loading CadetScenes outside of the CadetEditor, e.g. in a Flash Builder project.
 package cadet3D.operations
 {
-	import cadet.core.ICadetScene;
 	import cadet.operations.CadetStartUpOperationBase;
 	import cadet.operations.ReadCadetFileAndDeserializeOperation;
 	
 	import cadet3D.resources.ExternalAway3DResourceParser;
 	
-	import flash.events.Event;
-	
 	import flox.app.FloxApp;
 	import flox.app.controllers.ExternalResourceController;
 	import flox.app.entities.URI;
 	import flox.app.managers.fileSystemProviders.url.URLFileSystemProvider;
-	import flox.app.operations.CompoundOperation;
 	import flox.app.operations.LoadManifestsOperation;
 	import flox.app.resources.ExternalResourceParserFactory;
 	

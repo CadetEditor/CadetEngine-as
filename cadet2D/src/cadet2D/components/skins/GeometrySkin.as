@@ -128,7 +128,9 @@ package cadet2D.components.skins
 		
 		protected function renderPolygon( polygon:PolygonGeometry, graphics:Graphics ):void
 		{
-			var graphics:Graphics = _shape.graphics;
+			//var graphics:Graphics = _shape.graphics;
+			graphics = _shape.graphics;
+			
 			var vertices:Array = polygon.vertices;
 			var firstVertex:Vertex = vertices[0];
 			if ( !firstVertex ) return;
@@ -169,7 +171,9 @@ package cadet2D.components.skins
 		
 		protected function renderCircle( circle:CircleGeometry, graphics:Graphics ):void
 		{
-			var graphics:Graphics = _shape.graphics;
+			//var graphics:Graphics = _shape.graphics;
+			graphics = _shape.graphics;
+			
 			//TODO: handle further arguments
 			if ( _lineThickness != 0 ) graphics.lineStyle( _lineThickness, _lineColor, _lineAlpha );//, false, LineScaleMode.NONE );
 			

@@ -38,7 +38,7 @@ package cadet2D.overlays
 			if ( _invalidationTable["*"] ) return true;
 			if ( type == "*" )
 			{
-				for each ( var type:String in _invalidationTable )
+				for each ( var val:String in _invalidationTable )
 				{
 					return true;
 				}

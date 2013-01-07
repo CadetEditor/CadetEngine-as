@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
-  <includeClasses>
-    <classEntry path="cadet.components.geom.IGeometry"/>
-    <classEntry path="cadet.operations.CadetStartUpOperationBase"/>
-    <classEntry path="cadet.util.BitmapDataUtil"/>
-    <classEntry path="cadet.util.TextureUtils"/>
-  </includeClasses>
+  <includeClasses/>
   <includeResources/>
   <namespaceManifests/>
 </flexLibProperties>
