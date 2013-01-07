@@ -8,6 +8,8 @@
 //
 // =================================================================================================
 
+// Inspectable Priority range 0-49
+
 package cadet.core
 {
 	import cadet.events.ComponentEvent;
@@ -17,8 +19,6 @@ package cadet.core
 	import flash.events.EventDispatcher;
 	
 	import flox.core.events.PropertyChangeEvent;
-	
-	import flox.app.util.IntrospectionUtil;
 	
 	[Event( type="cadet.events.ComponentEvent", name="addedToParent" )]
 	[Event( type="cadet.events.ComponentEvent", name="removedFromParent" )]

@@ -24,9 +24,9 @@ package cadet2D.util
 	{
 		private static const PRECISION:Number = 1e-10;
 		
-		public static function clone( segments:Array ):Array
+		public static function clone( segments:Vector.<QuadraticBezier> ):Vector.<QuadraticBezier>
 		{
-			var clonedSegments:Array = [];
+			var clonedSegments:Vector.<QuadraticBezier> = new Vector.<QuadraticBezier>();
 			for ( var i:int = 0; i < segments.length; i++ )
 			{
 				clonedSegments.push( segments[i].clone() );
@@ -34,7 +34,7 @@ package cadet2D.util
 			return clonedSegments;
 		}
 		
-		public static function transform( segments:Array, matrix:Matrix ):void
+		public static function transform( segments:Vector.<QuadraticBezier>, matrix:Matrix ):void
 		{
 			var start:Point = new Point();
 			var end:Point = new Point();
@@ -62,7 +62,7 @@ package cadet2D.util
 			}
 		}
 		
-		public static function draw( graphics:Graphics, segments:Array ):void
+		public static function draw( graphics:Graphics, segments:Vector.<QuadraticBezier> ):void
 		{
 			for ( var i:int = 0; i < segments.length; i++ )
 			{
@@ -72,7 +72,7 @@ package cadet2D.util
 			}
 		}
 		
-		public static function evaluatePosition( segments:Array, ratio:Number, vertex:Vertex = null ):Vertex
+		public static function evaluatePosition( segments:Vector.<QuadraticBezier>, ratio:Number, vertex:Vertex = null ):Vertex
 		{
 			ratio = ratio < 0 ? 0 : ratio > 1 ? 1 : ratio;
 			
@@ -105,7 +105,7 @@ package cadet2D.util
 			return evaluateSegmentPosition(segments[segmentIndex], localRatio, vertex );
 		}
 		
-		public static function makeContinuous( segmentA:cadet2D.geom.QuadraticBezier, segmentB:QuadraticBezier ):void
+		public static function makeContinuous( segmentA:QuadraticBezier, segmentB:QuadraticBezier ):void
 		{
 			var dx:Number = segmentA.controlX - segmentA.endX;
 			var dy:Number = segmentA.controlY - segmentA.endY;
@@ -113,7 +113,7 @@ package cadet2D.util
 			segmentB.controlY = segmentB.startY - dy;
 		}
 				
-		public static function getLength( segments:Array ):Number
+		public static function getLength( segments:Vector.<QuadraticBezier> ):Number
 		{
 			var length:Number = 0;
 			for each ( var segment:QuadraticBezier in segments )
@@ -123,7 +123,7 @@ package cadet2D.util
 			return length;
 		}
 		
-		public static function getBounds( segments:Array ):flash.geom.Rectangle
+		public static function getBounds( segments:Vector.<QuadraticBezier> ):flash.geom.Rectangle
 		{
 			var xMin:Number = Number.POSITIVE_INFINITY;
 			var xMax:Number = Number.NEGATIVE_INFINITY;
@@ -144,7 +144,7 @@ package cadet2D.util
 			return new flash.geom.Rectangle(xMin,yMin,xMax-xMin,yMax-yMin);
 		}
 		
-		public static function getClosestRatio(segments:Array, x:Number, y:Number):Number 
+		public static function getClosestRatio(segments:Vector.<QuadraticBezier>, x:Number, y:Number):Number 
 		{
 			var closestDistance:Number = Number.POSITIVE_INFINITY;
 			var closestIndex:int;

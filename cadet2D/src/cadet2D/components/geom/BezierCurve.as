@@ -10,23 +10,25 @@
 
 package cadet2D.components.geom
 {	
+	import cadet2D.geom.QuadraticBezier;
+
 	public class BezierCurve extends AbstractGeometry
 	{
-		protected var _segments		:Array;
+		protected var _segments		:Vector.<QuadraticBezier>;
 		
 		public function BezierCurve()
 		{
 			name = "BezierCurve";
-			_segments = [];
+			_segments = new Vector.<QuadraticBezier>();
 		}
 		
 		[Serializable]
-		public function set segments( value:Array ):void
+		public function set segments( value:Vector.<QuadraticBezier> ):void
 		{
 			_segments = value;
 			invalidate("geometry");
 		}
-		public function get segments():Array { return _segments; }
+		public function get segments():Vector.<QuadraticBezier> { return _segments; }
 
 	}
 }

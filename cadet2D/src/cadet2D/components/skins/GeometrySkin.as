@@ -8,6 +8,8 @@
 //
 // =================================================================================================
 
+// Inspectable Priority range 100-149
+
 package cadet2D.components.skins
 {	
 	import flash.display.BitmapData;
@@ -196,17 +198,30 @@ package cadet2D.components.skins
 			draw( graphics, bezierCurve.segments);
 		}
 	
-		private function draw( graphics:Graphics, segments:Array ):void
+		private function draw( graphics:Graphics, segments:Vector.<QuadraticBezier> ):void
 		{
+			if (segments.length == 0) return;
+			
+			var segment:QuadraticBezier = segments[0];
+			graphics.moveTo(segment.startX, segment.startY);
+			
 			for ( var i:int = 0; i < segments.length; i++ )
 			{
-				var segment:QuadraticBezier = segments[i];
-				graphics.moveTo(segment.startX, segment.startY);
+				segment = segments[i];
+				//graphics.moveTo(segment.startX, segment.startY);
 				graphics.curveTo(segment.controlX, segment.controlY, segment.endX, segment.endY);
 			}
 		}
 		
-		[Serializable][Inspectable( label="Line thickness", priority="1", editor="Slider", min="0.1", max="100", snapInterval="0.1" )]
+		[Serializable][Inspectable( label="Line alpha", priority="100", editor="Slider", min="0", max="1" )]
+		public function set lineAlpha( value:Number ):void
+		{
+			_lineAlpha = value;
+			invalidate( DISPLAY );
+		}
+		public function get lineAlpha():Number { return _lineAlpha; }
+		
+		[Serializable][Inspectable( label="Line thickness", priority="101", editor="Slider", min="0.1", max="100", snapInterval="0.1" )]
 		public function set lineThickness( value:Number ):void
 		{
 			_lineThickness = value;
@@ -214,7 +229,7 @@ package cadet2D.components.skins
 		}
 		public function get lineThickness():Number { return _lineThickness; }
 		
-		[Serializable][Inspectable( label="Line colour", priority="2", editor="ColorPicker" )]
+		[Serializable][Inspectable( label="Line colour", priority="102", editor="ColorPicker" )]
 		public function set lineColor( value:uint ):void
 		{
 			_lineColor = value;
@@ -223,23 +238,7 @@ package cadet2D.components.skins
 		public function get lineColor():uint { return _lineColor; }
 		
 		
-		[Serializable][Inspectable( label="Line alpha", priority="3", editor="Slider", min="0", max="1" )]
-		public function set lineAlpha( value:Number ):void
-		{
-			_lineAlpha = value;
-			invalidate( DISPLAY );
-		}
-		public function get lineAlpha():Number { return _lineAlpha; }
-		
-		[Serializable][Inspectable( label="Fill colour", priority="4", editor="ColorPicker" )]
-		public function set fillColor( value:uint ):void
-		{
-			_fillColor = value;
-			invalidate( DISPLAY );
-		}
-		public function get fillColor():uint { return _fillColor; }
-		
-		[Serializable][Inspectable( label="Fill alpha", priority="5", editor="Slider", min="0", max="1" )]
+		[Serializable][Inspectable( label="Fill alpha", priority="103", editor="Slider", min="0", max="1" )]
 		public function set fillAlpha( value:Number ):void
 		{
 			_fillAlpha = value;
@@ -247,23 +246,15 @@ package cadet2D.components.skins
 		}
 		public function get fillAlpha():Number { return _fillAlpha; }
 		
-		[Serializable][Inspectable]
-		public function set fillXOffset( value:Number ):void
+		[Serializable][Inspectable( label="Fill colour", priority="104", editor="ColorPicker" )]
+		public function set fillColor( value:uint ):void
 		{
-			_fillXOffset = value;
+			_fillColor = value;
 			invalidate( DISPLAY );
 		}
-		public function get fillXOffset():Number { return _fillXOffset; }
+		public function get fillColor():uint { return _fillColor; }
 		
-		[Serializable][Inspectable]
-		public function set fillYOffset( value:Number ):void
-		{
-			_fillYOffset = value;
-			invalidate( DISPLAY );
-		}
-		public function get fillYOffset():Number { return _fillYOffset; }			
-		
-		[Serializable( type="resource" )][Inspectable( label="Fill bitmap", priority="6", editor="ResourceItemEditor")]
+		[Serializable( type="resource" )][Inspectable( label="Fill bitmap", priority="105", editor="ResourceItemEditor")]
 		public function set fillBitmap( value:BitmapData ):void
 		{
 			_fillBitmap = value;
@@ -271,7 +262,24 @@ package cadet2D.components.skins
 		}
 		public function get fillBitmap():BitmapData { return _fillBitmap; }
 		
-		[Serializable][Inspectable( label="Draw vertices", priority="7" )]
+		
+		[Serializable][Inspectable( priority="106")]
+		public function set fillXOffset( value:Number ):void
+		{
+			_fillXOffset = value;
+			invalidate( DISPLAY );
+		}
+		public function get fillXOffset():Number { return _fillXOffset; }
+		
+		[Serializable][Inspectable( priority="107")]
+		public function set fillYOffset( value:Number ):void
+		{
+			_fillYOffset = value;
+			invalidate( DISPLAY );
+		}
+		public function get fillYOffset():Number { return _fillYOffset; }			
+		
+		[Serializable][Inspectable( label="Draw vertices", priority="108" )]
 		public function set drawVertices( value:Boolean ):void
 		{
 			_drawVertices = value;

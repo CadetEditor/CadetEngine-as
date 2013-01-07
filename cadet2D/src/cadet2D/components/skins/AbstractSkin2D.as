@@ -8,6 +8,8 @@
 //
 // =================================================================================================
 
+// Inspectable Priority range 50-99
+
 package cadet2D.components.skins
 {
 	import cadet.core.Component;

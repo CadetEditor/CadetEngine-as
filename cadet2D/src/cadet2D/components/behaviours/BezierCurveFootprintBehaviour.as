@@ -105,7 +105,7 @@ package cadet2D.components.behaviours
 			var dy:Number;
 			var d:Number;
 			
-			var segments:Array = QuadraticBezierUtil.clone(_curve.segments);
+			var segments:Vector.<QuadraticBezier> = QuadraticBezierUtil.clone(_curve.segments);
 			QuadraticBezierUtil.transform(segments, _transform.matrix);
 			bounds = QuadraticBezierUtil.getBounds(segments);
 			bounds.inflate(thickness, thickness);
