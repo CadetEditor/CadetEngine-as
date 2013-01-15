@@ -10,25 +10,22 @@
 
 package cadet2D.components.skins
 {
-	import cadet.events.InvalidationEvent;
-	
-	import cadet2D.components.geom.RectangleGeometry;
-	import cadet2D.components.textures.TextureComponent;
-	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.display.Sprite;
-	import flash.geom.Matrix;
+	
+	import cadet2D.components.textures.TextureComponent;
+	import cadet2D.util.NullBitmapTexture;
 	
 	import starling.core.Starling;
+	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.textures.Texture;
 	
-	public class AssetSkin extends AbstractSkin2D
+	public class ImageSkin extends AbstractSkin2D
 	{
 		protected var ASSET				:String = "asset";
 		
-		private var _fillTexture		:TextureComponent;
+		private var _textureComponent		:TextureComponent;
 		private var _fillXOffset		:Number = 0;
 		private var _fillYOffset		:Number = 0;
 		
@@ -36,9 +33,12 @@ package cadet2D.components.skins
 		// DEPRECATED
 		private var _fillBitmap			:BitmapData;
 		
-		public function AssetSkin()
+		public function ImageSkin()
 		{
 			name = "AssetSkin";
+			
+//			image = new Image(NullBitmapTexture.instance);
+//			_displayObject = image;
 		}		
 		
 		[Serializable][Inspectable]
@@ -68,12 +68,12 @@ package cadet2D.components.skins
 		
 		
 		[Serializable][Inspectable( editor="ComponentList", scope="scene" )]
-		public function set fillTexture( value:TextureComponent ):void
+		public function set textureComponent( value:TextureComponent ):void
 		{
-			_fillTexture = value;
+			_textureComponent = value;
 			invalidate( ASSET );
 		}
-		public function get fillTexture():TextureComponent { return _fillTexture; }	
+		public function get textureComponent():TextureComponent { return _textureComponent; }	
 		
 		
 		override public function validateNow():void
@@ -88,15 +88,18 @@ package cadet2D.components.skins
 		
 		protected function validateAsset():void
 		{
-			if ( image && displayObjectContainer.contains(image) ) {
+			if ( displayObject is DisplayObjectContainer ) {
+				var displayObjectContainer:DisplayObjectContainer = DisplayObjectContainer(displayObject);
+			}
+			if ( image && displayObjectContainer && displayObjectContainer.contains(image) ) {
 				displayObjectContainer.removeChild(image);
 			}
 			
 			if (!Starling.context) return;
 			
 			var texture:Texture;
-			if ( _fillTexture ) {
-				texture = _fillTexture.texture;
+			if ( _textureComponent ) {
+				texture = _textureComponent.texture;
 			}
 			else if ( _fillBitmap ) {
 				texture = Texture.fromBitmap( new Bitmap(_fillBitmap), false );
@@ -104,10 +107,17 @@ package cadet2D.components.skins
 			
 			if (!texture) return;
 			
+//			image.texture = texture;
+//			image.width = texture.width;
+//			image.height = texture.height;
+			
 			image = new Image(texture);
 			image.x = _fillXOffset;
 			image.y = _fillYOffset;
-			displayObjectContainer.addChild(image);
+			
+			if (displayObjectContainer) {
+				displayObjectContainer.addChild(image);
+			}
 		}		
 	}
 }

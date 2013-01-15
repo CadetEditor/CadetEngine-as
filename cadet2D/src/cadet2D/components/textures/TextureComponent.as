@@ -10,15 +10,16 @@
 
 package cadet2D.components.textures
 {
-	import cadet.core.Component;
-	
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	
+	import cadet.core.Component;
 	
 	import starling.textures.Texture;
 	
 	public class TextureComponent extends Component
 	{
-		private var _asset:Bitmap;
+		private var _bitmapData:BitmapData;
 		private var _texture:Texture;
 		
 		public function TextureComponent()
@@ -27,12 +28,13 @@ package cadet2D.components.textures
 		}
 		
 		[Serializable( type="resource" )][Inspectable(editor="ResourceItemEditor")]
-		public function set asset( value:Bitmap ):void
+		public function set bitmapData( value:BitmapData ):void
 		{
-			_asset = value;
-			_texture = Texture.fromBitmap( value, false );
+			_bitmapData = value;
+			_texture = Texture.fromBitmap( new Bitmap(value), false );
+			trace("texture width "+_texture.width+" height "+_texture.height);
 		}
-		public function get asset():Bitmap { return _asset; }
+		public function get bitmapData():BitmapData { return _bitmapData; }
 		
 		public function get texture():Texture
 		{

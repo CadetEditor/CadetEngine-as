@@ -8,27 +8,23 @@
 //
 // =================================================================================================
 
-package cadet3D.util
+package cadet.util
 {
-	import away3d.textures.BitmapCubeTexture;
-	import cadet.util.NullBitmap;
-	
-	public class NullBitmapCubeTexture
+	import flash.display.BitmapData;
+
+	public class NullBitmap
 	{
-		private static var _instance		:BitmapCubeTexture;
+		[Embed(source="NullBitmap.png")]
+		private static var NullBitmap	:Class;
+		private static var _instance	:BitmapData;
 		
-		public static function get instance():BitmapCubeTexture
+		public static function get instance():BitmapData
 		{
 			if ( _instance == null )
 			{
-				_instance = getCopy();
+				_instance = new NullBitmap().bitmapData;
 			}
 			return _instance;
-		}
-		
-		public static function getCopy():BitmapCubeTexture
-		{
-			return new BitmapCubeTexture( NullBitmap.instance, NullBitmap.instance, NullBitmap.instance, NullBitmap.instance, NullBitmap.instance, NullBitmap.instance );
 		}
 	}
 }

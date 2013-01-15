@@ -20,7 +20,6 @@ package cadet2DBox2D.components.behaviours
 	import cadet.core.ISteppableComponent;
 	import cadet.events.RendererEvent;
 	
-	import cadet2D.components.renderers.IRenderer2D;
 	import cadet2D.components.renderers.Renderer2D;
 	import cadet2D.components.skins.AbstractSkin2D;
 	import cadet2D.components.skins.ISkin2D;
@@ -30,7 +29,6 @@ package cadet2DBox2D.components.behaviours
 	import flash.geom.Point;
 	
 	import starling.display.DisplayObject;
-	import starling.display.Stage;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -154,7 +152,7 @@ package cadet2DBox2D.components.behaviours
 			var body:b2Body = _rigidBodyBehaviour.getBody()
 			if ( !body ) return;
 			
-			var dispObj:DisplayObject = DisplayObject(_skin.displayObjectContainer);
+			var dispObj:DisplayObject = DisplayObject(_skin.displayObject);
 			var touches:Vector.<Touch> = event.getTouches(dispObj);
 			
 			if (!touches || touches.length == 0) return;

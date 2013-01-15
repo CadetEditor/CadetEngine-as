@@ -4,7 +4,7 @@ package components.processes
 	import cadet.core.ISteppableComponent;
 	
 	import cadet2D.components.core.Entity;
-	import cadet2D.components.skins.AssetSkin;
+	import cadet2D.components.skins.ImageSkin;
 	import cadet2D.components.textures.TextureComponent;
 	import cadet2D.components.transforms.Transform2D;
 	
@@ -46,8 +46,8 @@ package components.processes
 			bunnyEntity.children.addItem(bounceBehaviour);
 			
 			// Add a Skin to the Entity
-			var skin:AssetSkin = new AssetSkin();
-			skin.fillTexture = textureComponent;
+			var skin:ImageSkin = new ImageSkin();
+			skin.textureComponent = textureComponent;
 			bunnyEntity.children.addItem(skin);			
 		}
 		

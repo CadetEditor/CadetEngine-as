@@ -6,7 +6,7 @@ package
 	import cadet2D.components.core.Entity;
 	import cadet2D.components.geom.RectangleGeometry;
 	import cadet2D.components.renderers.Renderer2D;
-	import cadet2D.components.skins.AssetSkin;
+	import cadet2D.components.skins.ImageSkin;
 	import cadet2D.components.textures.TextureComponent;
 	import cadet2D.components.transforms.Transform2D;
 	
@@ -18,8 +18,6 @@ package
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
-	import starling.textures.Texture;
 	
 	[SWF( width="700", height="400", backgroundColor="0x002135", frameRate="60" )]
 	public class BunnyMark extends Sprite
@@ -49,7 +47,7 @@ package
 		{
 			// Create the shared TextureComponent
 			textureComponent = new TextureComponent();
-			textureComponent.asset = new BunnyAsset();
+			textureComponent.bitmapData = new BunnyAsset().bitmapData;
 			
 			addEventListener( Event.ENTER_FRAME, enterFrameHandler );			
 		}
@@ -84,8 +82,8 @@ package
 			bunnyEntity.children.addItem(bounceBehaviour);
 			
 			// Add a Skin to the Entity
-			var skin:AssetSkin = new AssetSkin();
-			skin.fillTexture = textureComponent;
+			var skin:ImageSkin = new ImageSkin();
+			skin.textureComponent = textureComponent;
 			bunnyEntity.children.addItem(skin);			
 		}
 	}

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
-  <includeClasses/>
+  <includeClasses>
+    <classEntry path="cadet2D.components.skins.MovieClipSkin"/>
+    <classEntry path="cadet2D.util.NullBitmapTexture"/>
+    <classEntry path="cadet2D.components.textures.TextureAtlasComponent"/>
+  </includeClasses>
   <includeResources/>
   <namespaceManifests/>
 </flexLibProperties>

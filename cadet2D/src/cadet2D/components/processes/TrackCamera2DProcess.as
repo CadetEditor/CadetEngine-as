@@ -99,7 +99,7 @@ package cadet2D.components.processes
 			if ( !skin ) return;
 			
 			// Calculate the components position relative to the container.
-			var bounds:Rectangle = AbstractSkin2D(skin).displayObjectContainer.getBounds(DisplayObject(Renderer2D(_renderer).worldContainer));
+			var bounds:Rectangle = AbstractSkin2D(skin).displayObject.getBounds(DisplayObject(Renderer2D(_renderer).worldContainer));
 			
 			if ( bounds.width == 0 ) return;
 			if ( bounds.height == 0 ) return;

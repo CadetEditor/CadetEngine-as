@@ -19,7 +19,7 @@ package cadet3D.components.materials
 	
 	import cadet3D.components.textures.AbstractTexture2DComponent;
 	import cadet3D.components.textures.BitmapCubeTextureComponent;
-	import cadet3D.util.NullBitmap;
+	import cadet.util.NullBitmap;
 	import cadet3D.util.NullBitmapCubeTexture;
 	import cadet3D.util.NullBitmapTexture;
 	

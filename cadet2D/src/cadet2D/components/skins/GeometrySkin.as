@@ -17,6 +17,7 @@ package cadet2D.components.skins
 	
 	import cadet.components.geom.IGeometry;
 	import cadet.events.InvalidationEvent;
+	import cadet.util.BitmapDataUtil;
 	
 	import cadet2D.components.geom.BezierCurve;
 	import cadet2D.components.geom.CircleGeometry;
@@ -36,8 +37,8 @@ package cadet2D.components.skins
 		private var _fillColor		:uint;
 		private var _fillAlpha		:Number;
 		private var _fillBitmap		:BitmapData;
-		private var _fillXOffset	:Number = 0;
-		private var _fillYOffset	:Number = 0;
+//		private var _fillXOffset	:Number = 0;
+//		private var _fillYOffset	:Number = 0;
 		private var _drawVertices	:Boolean = false;
 		
 		private var _geometry	:IGeometry;
@@ -53,8 +54,8 @@ package cadet2D.components.skins
 			this.fillColor = fillColor;
 			this.fillAlpha = fillAlpha;
 			
-			_displayObjectContainer = new Shape();
-			_shape = Shape(_displayObjectContainer);
+			_displayObject = new Shape();
+			_shape = Shape(_displayObject);
 		}
 		
 		override protected function addedToScene():void
@@ -141,7 +142,7 @@ package cadet2D.components.skins
 			if ( _fillBitmap )
 			{
 				var m:Matrix = new Matrix();
-				m.translate(_fillXOffset, _fillYOffset);
+				//m.translate(_fillXOffset, _fillYOffset);
 				try {
 					graphics.beginBitmapFill(_fillBitmap, m);
 				} catch ( e:Error ) {
@@ -180,7 +181,7 @@ package cadet2D.components.skins
 			if ( _fillBitmap )
 			{
 				var m:Matrix = new Matrix();
-				m.translate(_fillXOffset, _fillYOffset);
+				//m.translate(_fillXOffset, _fillYOffset);
 				graphics.beginBitmapFill(_fillBitmap, m);
 			}
 			else if ( _fillAlpha > 0 )
@@ -261,13 +262,15 @@ package cadet2D.components.skins
 		[Serializable( type="resource" )][Inspectable( label="Fill bitmap", priority="105", editor="ResourceItemEditor")]
 		public function set fillBitmap( value:BitmapData ):void
 		{
-			_fillBitmap = value;
+			// Needs to be a power of two in order to be tileable
+			_fillBitmap = BitmapDataUtil.makePowerOfTwo(value);
+			
 			invalidate( DISPLAY );
 		}
 		public function get fillBitmap():BitmapData { return _fillBitmap; }
 		
 		
-		[Serializable][Inspectable( priority="106")]
+/*		[Serializable][Inspectable( priority="106")]
 		public function set fillXOffset( value:Number ):void
 		{
 			_fillXOffset = value;
@@ -281,7 +284,7 @@ package cadet2D.components.skins
 			_fillYOffset = value;
 			invalidate( DISPLAY );
 		}
-		public function get fillYOffset():Number { return _fillYOffset; }			
+		public function get fillYOffset():Number { return _fillYOffset; }*/			
 		
 		[Serializable][Inspectable( label="Draw vertices", priority="108" )]
 		public function set drawVertices( value:Boolean ):void

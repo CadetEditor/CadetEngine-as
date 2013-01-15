@@ -36,7 +36,7 @@ package
 		{
 			// Create the shared TextureComponent
 			var textureComponent:TextureComponent = new TextureComponent();
-			textureComponent.asset = new BunnyAsset();
+			textureComponent.bitmapData = new BunnyAsset().bitmapData;
 			
 			// Create the BunnySpawner Process
 			var bunnySpawner:BunnySpawner = new BunnySpawner();

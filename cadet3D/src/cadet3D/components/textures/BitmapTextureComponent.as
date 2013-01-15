@@ -16,7 +16,7 @@ package cadet3D.components.textures
 	import cadet.core.Component;
 	import cadet.util.BitmapDataUtil;
 	
-	import cadet3D.util.NullBitmap;
+	import cadet.util.NullBitmap;
 	
 	import flash.display.BitmapData;
 	import flash.display.BitmapDataChannel;

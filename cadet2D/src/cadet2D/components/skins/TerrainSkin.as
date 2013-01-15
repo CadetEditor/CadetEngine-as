@@ -17,7 +17,6 @@ package cadet2D.components.skins
 	import cadet2D.util.VertexUtil;
 	
 	import flash.display.BitmapData;
-	import flash.events.Event;
 	import flash.geom.Matrix;
 	
 	import flox.app.dataStructures.ObjectPool;
@@ -49,8 +48,8 @@ package cadet2D.components.skins
 		
 		public function TerrainSkin()
 		{
-			_displayObjectContainer = new Shape();
-			_shape = Shape(_displayObjectContainer);
+			_displayObject = new Shape();
+			_shape = Shape(_displayObject);
 			
 			init();
 		}

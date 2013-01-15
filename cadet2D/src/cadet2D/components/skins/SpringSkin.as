@@ -45,8 +45,8 @@ package cadet2D.components.skins
 			this.numZigZags = numZigZags;
 			this.width = width;
 			
-			_displayObjectContainer = new Shape();
-			_shape = Shape(_displayObjectContainer);
+			_displayObject = new Shape();
+			_shape = Shape(_displayObject);
 		}
 		
 		override protected function addedToScene():void

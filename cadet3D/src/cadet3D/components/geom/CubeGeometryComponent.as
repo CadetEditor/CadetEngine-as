@@ -10,11 +10,7 @@
 
 package cadet3D.components.geom
 {
-	import away3d.core.base.Geometry;
 	import away3d.primitives.CubeGeometry;
-	
-	import cadet.core.Component;
-	import cadet.events.InvalidationEvent;
 
 	public class CubeGeometryComponent extends AbstractGeometryComponent
 	{

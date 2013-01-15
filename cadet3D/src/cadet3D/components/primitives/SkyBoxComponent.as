@@ -1,15 +1,11 @@
 package cadet3D.components.primitives
 {
 	import away3d.materials.SkyBoxMaterial;
-	import away3d.textures.BitmapCubeTexture;
-	import away3d.textures.CubeTextureBase;
 	
 	import cadet3D.components.core.ObjectContainer3DComponent;
 	import cadet3D.components.materials.SkyBoxMaterialComponent;
 	import cadet3D.primitives.SkyBox;
 	import cadet3D.util.NullBitmapCubeTexture;
-	
-	import flash.display.BitmapData;
 	
 	public class SkyBoxComponent extends ObjectContainer3DComponent
 	{

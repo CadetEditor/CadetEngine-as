@@ -11,6 +11,7 @@
 package cadet3D.util
 {
 	import away3d.textures.BitmapTexture;
+	import cadet.util.NullBitmap;
 
 	public class NullBitmapTexture
 	{

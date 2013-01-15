@@ -42,8 +42,8 @@ package cadet2D.components.skins
 			this.fillAlpha = fillAlpha;
 			this.radius = radius;
 			
-			_displayObjectContainer = new Shape();
-			_shape = Shape(_displayObjectContainer);
+			_displayObject = new Shape();
+			_shape = Shape(_displayObject);
 		}
 		
 		override protected function addedToScene():void

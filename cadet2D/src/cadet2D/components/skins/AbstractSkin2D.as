@@ -18,7 +18,7 @@ package cadet2D.components.skins
 	import cadet2D.components.transforms.Transform2D;
 	import cadet2D.components.renderers.Renderer2D;
 	
-	import starling.display.DisplayObjectContainer;
+	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 
 	public class AbstractSkin2D extends Component implements ISkin2D
@@ -28,14 +28,14 @@ package cadet2D.components.skins
 		protected static const CONTAINER:String = "container";
 		protected static const TRANSFORM:String = "transform";
 		
-		protected var _displayObjectContainer	:DisplayObjectContainer;
+		protected var _displayObject			:DisplayObject;
 		protected var _layerIndex				:int = 0;
 		protected var _containerID				:String = Renderer2D.WORLD_CONTAINER;
 		protected var _transform2D				:Transform2D;
 		
 		public function AbstractSkin2D()
 		{
-			_displayObjectContainer = new Sprite();
+			_displayObject = new Sprite();
 		}
 		
 		override protected function addedToScene():void
@@ -43,7 +43,7 @@ package cadet2D.components.skins
 			addSiblingReference(Transform2D, "transform2D");
 		}
 		
-		public function get displayObjectContainer():DisplayObjectContainer { return _displayObjectContainer; }
+		public function get displayObject():DisplayObject { return _displayObject; }
 		
 		[Serializable]
 		public function set transform2D( value:Transform2D ):void
@@ -56,14 +56,14 @@ package cadet2D.components.skins
 			if ( _transform2D )
 			{
 				_transform2D.addEventListener(InvalidationEvent.INVALIDATE, invalidateTransformHandler);
-				_displayObjectContainer.transformationMatrix = _transform2D.matrix;
+				_displayObject.transformationMatrix = _transform2D.matrix;
 			}
 		}
 		public function get transform2D():Transform2D { return _transform2D; }
 				
 		private function invalidateTransformHandler( event:InvalidationEvent ):void
 		{
-			_displayObjectContainer.transformationMatrix = _transform2D.matrix;
+			_displayObject.transformationMatrix = _transform2D.matrix;
 			invalidate(TRANSFORM);
 		}
 		
@@ -88,8 +88,8 @@ package cadet2D.components.skins
 		[Serializable][Inspectable( label="Mouse enabled", priority="52" )]
 		public function set mouseEnabled( value:Boolean ):void
 		{
-			_displayObjectContainer.touchable = value;
+			_displayObject.touchable = value;
 		}
-		public function get mouseEnabled():Boolean { return _displayObjectContainer.touchable; }
+		public function get mouseEnabled():Boolean { return _displayObject.touchable; }
 	}
 }

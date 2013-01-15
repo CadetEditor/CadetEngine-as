@@ -6,7 +6,6 @@ package components.skins
 	import cadet2D.components.skins.AbstractSkin2D;
 	
 	import flash.display.GradientType;
-	import flash.geom.Matrix;
 	
 	import starling.display.Shape;
 	import starling.textures.GradientTexture;
@@ -20,8 +19,8 @@ package components.skins
 		
 		public function ShadedCircleSkin()
 		{
-			_displayObjectContainer = new Shape();
-			_shape = Shape(_displayObjectContainer);
+			_displayObject = new Shape();
+			_shape = Shape(_displayObject);
 		}
 		
 		override protected function addedToParent():void
