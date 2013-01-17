@@ -14,24 +14,18 @@ package cadet2D.components.skins
 	public class MovieClipSkin extends AbstractSkin2D
 	{
 		private static const TEXTURES		:String = "textures";
-		private static const ANIMATE		:String = "animate";
+		private static const LOOP			:String = "loop";
 		
 		private var _movieclip				:MovieClip;
 		
 		private var _textureAtlas			:TextureAtlasComponent;
 		private var _texturesPrefix			:String;
 		
-		private var _animate				:Boolean;
-		private var _animateDirty			:Boolean;
+		private var _loop					:Boolean;
+		private var _loopDirty				:Boolean;
 		
-		public function MovieClipSkin(textures:Vector.<Texture> = null)
+		public function MovieClipSkin()
 		{
-			if (!textures) {
-				//var textures:Vector.<Texture>
-				textures = new Vector.<Texture>();
-				textures.push(NullBitmapTexture.instance);
-			}
-			
 //			movieclip = new MovieClip(textures);
 //			_displayObject = movieclip;
 		}
@@ -66,28 +60,28 @@ package cadet2D.components.skins
 		}
 		
 		[Serializable][Inspectable]
-		public function set animate( value:Boolean ):void
+		public function set loop( value:Boolean ):void
 		{
-			_animate = value;
+			_loop = value;
 			
-			invalidate( ANIMATE );
+			invalidate( LOOP );
 		}
-		public function get animate():Boolean
+		public function get loop():Boolean
 		{
-			return _animate;
+			return _loop;
 		}
 		
 		override public function validateNow():void
 		{
-			if ( _animateDirty ) {
-				invalidate( ANIMATE );
+			if ( _loopDirty ) {
+				invalidate(LOOP);
 			}
 			
 			if ( isInvalid(TEXTURES) )
 			{
 				validateTextures();
 			}
-			if ( isInvalid(ANIMATE) )
+			if ( isInvalid(LOOP) )
 			{
 				validateAnimate();
 			}
@@ -123,17 +117,17 @@ package cadet2D.components.skins
 		{
 			var renderer:Renderer2D = ComponentUtil.getChildOfType(scene, Renderer2D, true);
 			if ( !renderer || !_movieclip ) {
-				_animateDirty = true;
+				_loopDirty = true;
 				return;
 			}
 			
-			if ( _animate ) {
+			if ( _loop ) {
 				renderer.addToJuggler( this );
 			} else {
 				renderer.removeFromJuggler( this );
 			}
 			
-			_animateDirty = false;
+			_loopDirty = false;
 		}
 		
 		private function invalidateAtlasHandler( event:InvalidationEvent ):void

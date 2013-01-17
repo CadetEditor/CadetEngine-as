@@ -10,17 +10,16 @@
 
 package cadet.components.processes
 {
+	import flash.display.DisplayObjectContainer;
+	import flash.events.Event;
+	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
+	
 	import cadet.core.ComponentContainer;
 	import cadet.core.IComponent;
 	import cadet.core.IRenderer;
 	import cadet.events.InputProcessEvent;
 	import cadet.events.RendererEvent;
-	
-	import flash.display.DisplayObjectContainer;
-	import flash.display.Stage;
-	import flash.events.Event;
-	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
 
 	[Event( type="cadet.events.InputProcessEvent", name="inputDown" ) ]
 	[Event( type="cadet.events.InputProcessEvent", name="inputUp" ) ]
@@ -80,7 +79,7 @@ package cadet.components.processes
 			parent.stage.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
 			parent.stage.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
 			parent.stage.addEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);
-			
+			parent.stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler);
 		}
 		
 		private function removedFromStageHandler( event:Event = null ):void
@@ -90,6 +89,7 @@ package cadet.components.processes
 			parent.stage.removeEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
 			parent.stage.removeEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
 			parent.stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);
+			parent.stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler);
 		}
 		
 		
@@ -118,7 +118,7 @@ package cadet.components.processes
 		
 		private function mouseDownHandler( event:MouseEvent ):void
 		{
-			var mapping:InputMapping = getMappingForSymbol("LMB");
+			var mapping:InputMapping = getMappingForInput(InputMapping.LMB);
 			if (!mapping) return;
 			inputTable[mapping.name] = true;
 			
@@ -127,11 +127,20 @@ package cadet.components.processes
 		
 		private function mouseUpHandler( event:MouseEvent ):void
 		{
-			var mapping:InputMapping = getMappingForSymbol("LMB");
+			var mapping:InputMapping = getMappingForInput(InputMapping.LMB);
 			if (!mapping) return;
 			inputTable[mapping.name] = null;
 			
 			dispatchEvent( new InputProcessEvent( InputProcessEvent.INPUT_DOWN, mapping.name ) );
+		}
+		
+		private function mouseMoveHandler( event:MouseEvent ):void
+		{
+			var mapping:InputMapping = getMappingForInput(InputMapping.MOUSE_MOVE);
+			if (!mapping) return;
+			inputTable[mapping.name] = true;
+			
+			dispatchEvent( new InputProcessEvent( InputProcessEvent.UPDATE, mapping.name ) );
 		}
 		
 		private function getMappingForKeyCode( keyCode:int ):InputMapping
@@ -143,12 +152,12 @@ package cadet.components.processes
 			return null;
 		}
 		
-		private function getMappingForSymbol( symbol:String ):InputMapping
+		private function getMappingForInput( input:String ):InputMapping
 		{
 			for each ( var child:IComponent in _children )
 			{
 				if ( child is InputMapping == false ) continue
-				if ( InputMapping(child).symbol == symbol ) return InputMapping(child);
+				if ( InputMapping(child).input == input ) return InputMapping(child);
 			}
 			return null;
 		}

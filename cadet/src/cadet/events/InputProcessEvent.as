@@ -17,6 +17,8 @@ package cadet.events
 		public static const INPUT_DOWN		:String = "inputDown";
 		public static const INPUT_UP		:String = "inputUp";
 		
+		public static const UPDATE			:String = "update";
+		
 		public var name		:String;
 		
 		public function InputProcessEvent(type:String, name:String)

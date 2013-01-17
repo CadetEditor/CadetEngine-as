@@ -14,18 +14,21 @@ package cadet2D.components.behaviours
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import cadet2D.components.geom.BezierCurve;
-	import cadet2D.components.processes.FootprintManagerProcess;
 	import cadet.core.Component;
 	import cadet.events.InvalidationEvent;
-	import cadet2D.geom.QuadraticBezier;
+	
+	import cadet2D.components.geom.BezierCurve;
+	import cadet2D.components.processes.FootprintManagerProcess;
 	import cadet2D.components.transforms.Transform2D;
+	import cadet2D.geom.QuadraticBezier;
 	import cadet2D.geom.Vertex;
 	import cadet2D.util.QuadraticBezierUtil;
 	import cadet2D.util.VertexUtil;
 
 	public class BezierCurveFootprintBehaviour extends Component implements IFootprint
 	{
+		private const VALUES			:String = "values";
+		
 		private var _thickness			:Number;
 		private var _capEnds			:Boolean = false;
 		
@@ -42,7 +45,7 @@ package cadet2D.components.behaviours
 		private var _footprintManager		:FootprintManagerProcess;
 		protected var _curve				:BezierCurve;
 		
-		private var _transform	:Transform2D
+		private var _transform	:Transform2D;
 		
 		public function BezierCurveFootprintBehaviour()
 		{
@@ -72,14 +75,14 @@ package cadet2D.components.behaviours
 				_footprintManager.removeFootprint(this);
 			}
 			_footprintManager = value;
-			invalidate("values");
+			invalidate(VALUES);
 		}
 		public function get footprintManager():FootprintManagerProcess { return _footprintManager; }
 		
 		
 		override public function validateNow():void
 		{
-			if ( isInvalid("values") )
+			if ( isInvalid(VALUES) )
 			{
 				validateValues();
 			}
@@ -211,7 +214,7 @@ package cadet2D.components.behaviours
 			{
 				_curve.addEventListener(InvalidationEvent.INVALIDATE, invalidateCurveHandler)
 			}
-			invalidate("values");
+			invalidate(VALUES);
 		}
 		public function get curve():BezierCurve { return _curve; }
 		
@@ -227,7 +230,7 @@ package cadet2D.components.behaviours
 			{
 				_transform.addEventListener(InvalidationEvent.INVALIDATE, invalidateTransformHandler);
 			}
-			invalidate("values");
+			invalidate(VALUES);
 		}
 		public function get transform():Transform2D { return _transform; }
 		
@@ -236,7 +239,7 @@ package cadet2D.components.behaviours
 		{
 			_thickness = value;
 			thicknessSquared = _thickness*_thickness;
-			invalidate("values");
+			invalidate(VALUES);
 		}
 		public function get thickness():Number { return _thickness; }
 		
@@ -244,18 +247,18 @@ package cadet2D.components.behaviours
 		public function set capEnds( value:Boolean ):void
 		{
 			_capEnds = value;
-			invalidate("values");
+			invalidate(VALUES);
 		}
 		public function get capEnds():Boolean { return _capEnds; }
 		
 		protected function invalidateCurveHandler( event:InvalidationEvent ):void
 		{
-			invalidate("values");
+			invalidate(VALUES);
 		}
 		
 		private function invalidateTransformHandler( event:InvalidationEvent ):void
 		{
-			invalidate("values");
+			invalidate(VALUES);
 		}
 		
 		public function get x():int { return _x; }

@@ -10,8 +10,6 @@
 
 package cadet.components.behaviours
 {
-	import flash.ui.Keyboard;
-	
 	import cadet.components.processes.InputProcess;
 	import cadet.core.Component;
 	import cadet.core.ISteppableComponent;

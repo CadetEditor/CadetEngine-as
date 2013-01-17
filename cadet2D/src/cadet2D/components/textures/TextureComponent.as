@@ -30,6 +30,8 @@ package cadet2D.components.textures
 		[Serializable( type="resource" )][Inspectable(editor="ResourceItemEditor")]
 		public function set bitmapData( value:BitmapData ):void
 		{
+			if ( !value ) return;
+			
 			_bitmapData = value;
 			_texture = Texture.fromBitmap( new Bitmap(value), false );
 			trace("texture width "+_texture.width+" height "+_texture.height);
