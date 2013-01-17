@@ -9,12 +9,8 @@
 // =================================================================================================
 
 package cadet2D.components.skins
-{
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	
+{	
 	import cadet2D.components.textures.TextureComponent;
-	import cadet2D.util.NullBitmapTexture;
 	
 	import starling.core.Starling;
 	import starling.display.DisplayObjectContainer;
@@ -26,12 +22,12 @@ package cadet2D.components.skins
 		protected var ASSET				:String = "asset";
 		
 		private var _textureComponent		:TextureComponent;
-		private var _fillXOffset		:Number = 0;
-		private var _fillYOffset		:Number = 0;
+/*		private var _fillXOffset		:Number = 0;
+		private var _fillYOffset		:Number = 0;*/
 		
 		private var image		:Image;
 		// DEPRECATED
-		private var _fillBitmap			:BitmapData;
+		//private var _fillBitmap			:BitmapData;
 		
 		public function ImageSkin()
 		{
@@ -40,7 +36,7 @@ package cadet2D.components.skins
 //			image = new Image(NullBitmapTexture.instance);
 //			_displayObject = image;
 		}		
-		
+/*		
 		[Serializable][Inspectable]
 		public function set fillXOffset( value:Number ):void
 		{
@@ -65,15 +61,15 @@ package cadet2D.components.skins
 			invalidate( ASSET );
 		}
 		public function get fillBitmap():BitmapData { return _fillBitmap; }	
-		
+*/		
 		
 		[Serializable][Inspectable( editor="ComponentList", scope="scene" )]
-		public function set textureComponent( value:TextureComponent ):void
+		public function set texture( value:TextureComponent ):void
 		{
 			_textureComponent = value;
 			invalidate( ASSET );
 		}
-		public function get textureComponent():TextureComponent { return _textureComponent; }	
+		public function get texture():TextureComponent { return _textureComponent; }	
 		
 		
 		override public function validateNow():void
@@ -101,9 +97,9 @@ package cadet2D.components.skins
 			if ( _textureComponent ) {
 				texture = _textureComponent.texture;
 			}
-			else if ( _fillBitmap ) {
-				texture = Texture.fromBitmap( new Bitmap(_fillBitmap), false );
-			}
+//			else if ( _fillBitmap ) {
+//				texture = Texture.fromBitmap( new Bitmap(_fillBitmap), false );
+//			}
 			
 			if (!texture) return;
 			
@@ -112,8 +108,8 @@ package cadet2D.components.skins
 //			image.height = texture.height;
 			
 			image = new Image(texture);
-			image.x = _fillXOffset;
-			image.y = _fillYOffset;
+//			image.x = _fillXOffset;
+//			image.y = _fillYOffset;
 			
 			if (displayObjectContainer) {
 				displayObjectContainer.addChild(image);

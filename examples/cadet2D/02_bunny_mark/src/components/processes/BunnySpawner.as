@@ -47,7 +47,7 @@ package components.processes
 			
 			// Add a Skin to the Entity
 			var skin:ImageSkin = new ImageSkin();
-			skin.textureComponent = textureComponent;
+			skin.texture = textureComponent;
 			bunnyEntity.children.addItem(skin);			
 		}
 		

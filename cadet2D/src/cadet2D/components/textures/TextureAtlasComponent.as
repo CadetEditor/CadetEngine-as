@@ -6,11 +6,13 @@ package cadet2D.components.textures
 	
 	public class TextureAtlasComponent extends Component
 	{
-		protected var ASSET				:String = "asset";
+		protected var ATLAS				:String = "atlas";
 		
 		private var _textureAtlas		:TextureAtlas;
 		private var _textureComponent	:TextureComponent;
-		private var _xml				:XML;			
+		private var _xml				:XML;
+		
+		private var _atlas				:TextureAtlas;
 		
 		public function TextureAtlasComponent()
 		{
@@ -21,32 +23,41 @@ package cadet2D.components.textures
 		public function set xml( value:XML ):void
 		{
 			_xml = value;
-			invalidate( ASSET );
+			invalidate( ATLAS );
 		}
 		public function get xml():XML { return _xml; }
 		
 		[Serializable][Inspectable( editor="ComponentList", scope="scene" )]
-		public function set textureComponent( value:TextureComponent ):void
+		public function set texture( value:TextureComponent ):void
 		{
 			_textureComponent = value;
-			invalidate( ASSET );
+			invalidate( ATLAS );
 		}
-		public function get textureComponent():TextureComponent { return _textureComponent; }
+		public function get texture():TextureComponent { return _textureComponent; }
 		
 		
 		override public function validateNow():void
 		{
-			if ( isInvalid(ASSET) )
+			if ( isInvalid(ATLAS) )
 			{
-				validateAsset();
+				validateAtlas();
 			}
 			
 			super.validateNow();
 		}
 		
-		protected function validateAsset():void
+		protected function validateAtlas():void
 		{
-
+			if (!_textureComponent || !_textureComponent.texture ) {
+				return;
+			}
+			
+			_atlas = new TextureAtlas(_textureComponent.texture, _xml );
+		}
+		
+		public function get atlas():TextureAtlas
+		{
+			return _atlas;
 		}
 	}
 }

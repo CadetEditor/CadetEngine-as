@@ -25,10 +25,12 @@ package cadet2D.components.renderers
 	
 	import cadet2D.components.skins.AbstractSkin2D;
 	import cadet2D.components.skins.ISkin2D;
+	import cadet2D.components.skins.MovieClipSkin;
 	import cadet2D.overlays.Overlay;
 	
 	import flox.app.util.AsynchronousUtil;
 	
+	import starling.animation.Juggler;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
@@ -258,6 +260,16 @@ package cadet2D.components.renderers
 			invalidate(RendererInvalidationTypes.VIEWPORT);
 		}
 		public function get backgroundColor():uint { return _backgroundColor; }*/
+		
+		public function addToJuggler( movieClipSkin:MovieClipSkin ):void
+		{
+			Starling.juggler.add(movieClipSkin.movieclip);
+		}
+		
+		public function removeFromJuggler( movieClipSkin:MovieClipSkin ):void
+		{
+			Starling.juggler.remove( movieClipSkin.movieclip);
+		}
 		
 		override public function validateNow():void
 		{
