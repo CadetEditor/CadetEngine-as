@@ -28,6 +28,7 @@ package cadet2D.components.skins
 		private var image		:Image;
 		// DEPRECATED
 		//private var _fillBitmap			:BitmapData;
+		private var _imageDirty				:Boolean;
 		
 		public function ImageSkin()
 		{
@@ -74,6 +75,10 @@ package cadet2D.components.skins
 		
 		override public function validateNow():void
 		{
+			if ( _imageDirty ) {
+				invalidate(ASSET);
+			}
+			
 			if ( isInvalid(ASSET) )
 			{
 				validateAsset();
@@ -84,36 +89,42 @@ package cadet2D.components.skins
 		
 		protected function validateAsset():void
 		{
+			var texture:Texture;
+			if ( _textureComponent ) {
+				texture = _textureComponent.texture;
+			}
+			
+			if (!Starling.context) {// || !texture) {
+				_imageDirty = true;
+				return;
+			}
+			
 			if ( displayObject is DisplayObjectContainer ) {
 				var displayObjectContainer:DisplayObjectContainer = DisplayObjectContainer(displayObject);
 			}
 			if ( image && displayObjectContainer && displayObjectContainer.contains(image) ) {
 				displayObjectContainer.removeChild(image);
 			}
-			
-			if (!Starling.context) return;
-			
-			var texture:Texture;
-			if ( _textureComponent ) {
-				texture = _textureComponent.texture;
-			}
+
 //			else if ( _fillBitmap ) {
 //				texture = Texture.fromBitmap( new Bitmap(_fillBitmap), false );
 //			}
-			
-			if (!texture) return;
 			
 //			image.texture = texture;
 //			image.width = texture.width;
 //			image.height = texture.height;
 			
-			image = new Image(texture);
-//			image.x = _fillXOffset;
-//			image.y = _fillYOffset;
-			
-			if (displayObjectContainer) {
-				displayObjectContainer.addChild(image);
+			if (texture) {
+				image = new Image(texture);
+	//			image.x = _fillXOffset;
+	//			image.y = _fillYOffset;
+				
+				if (displayObjectContainer) {
+					displayObjectContainer.addChild(image);
+				}
 			}
+			
+			_imageDirty = false;
 		}		
 	}
 }

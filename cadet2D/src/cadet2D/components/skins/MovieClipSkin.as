@@ -5,7 +5,6 @@ package cadet2D.components.skins
 	
 	import cadet2D.components.renderers.Renderer2D;
 	import cadet2D.components.textures.TextureAtlasComponent;
-	import cadet2D.util.NullBitmapTexture;
 	
 	import starling.display.DisplayObjectContainer;
 	import starling.display.MovieClip;
@@ -22,7 +21,10 @@ package cadet2D.components.skins
 		private var _texturesPrefix			:String;
 		
 		private var _loop					:Boolean;
+		// "dirty" vars are for when display list changes are made but Starling isn't ready yet.
+		// These vars make sure it keeps on trying.
 		private var _loopDirty				:Boolean;
+		private var _texturesDirty			:Boolean;
 		
 		public function MovieClipSkin()
 		{
@@ -76,6 +78,9 @@ package cadet2D.components.skins
 			if ( _loopDirty ) {
 				invalidate(LOOP);
 			}
+			if ( _texturesDirty ) {
+				invalidate(TEXTURES);
+			}
 			
 			if ( isInvalid(TEXTURES) )
 			{
@@ -91,7 +96,8 @@ package cadet2D.components.skins
 		
 		protected function validateTextures():void
 		{
-			if (!_textureAtlas || !_textureAtlas.atlas || !_texturesPrefix ) {
+			if ((_textureAtlas && !_textureAtlas.atlas) || !_texturesPrefix ) {
+				_texturesDirty = true;
 				return;
 			}
 			
@@ -100,6 +106,11 @@ package cadet2D.components.skins
 			}
 			if ( _movieclip && displayObjectContainer && displayObjectContainer.contains(_movieclip) ) {
 				displayObjectContainer.removeChild(_movieclip);
+			}
+			
+			// textureAtlas has been set to null, quit out after removing current textures
+			if (!_textureAtlas) {
+				return;
 			}
 			
 			var textures:Vector.<Texture> = _textureAtlas.atlas.getTextures(_texturesPrefix);
@@ -111,6 +122,8 @@ package cadet2D.components.skins
 			if (displayObjectContainer) {
 				displayObjectContainer.addChild(_movieclip);
 			}
+			
+			_texturesDirty = false;
 		}
 		
 		private function validateAnimate():void

@@ -30,7 +30,6 @@ package cadet2D.components.renderers
 	
 	import flox.app.util.AsynchronousUtil;
 	
-	import starling.animation.Juggler;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;

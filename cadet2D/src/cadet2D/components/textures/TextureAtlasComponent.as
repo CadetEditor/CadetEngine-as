@@ -14,6 +14,8 @@ package cadet2D.components.textures
 		
 		private var _atlas				:TextureAtlas;
 		
+		private var _atlasDirty			:Boolean;
+		
 		public function TextureAtlasComponent()
 		{
 			super();
@@ -38,6 +40,10 @@ package cadet2D.components.textures
 		
 		override public function validateNow():void
 		{
+			if ( _atlasDirty ) {
+				invalidate(ATLAS);
+			}
+			
 			if ( isInvalid(ATLAS) )
 			{
 				validateAtlas();
@@ -49,10 +55,12 @@ package cadet2D.components.textures
 		protected function validateAtlas():void
 		{
 			if (!_textureComponent || !_textureComponent.texture ) {
+				_atlasDirty = true;
 				return;
 			}
 			
 			_atlas = new TextureAtlas(_textureComponent.texture, _xml );
+			_atlasDirty = false;
 		}
 		
 		public function get atlas():TextureAtlas

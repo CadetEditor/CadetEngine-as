@@ -4,7 +4,6 @@
     <classEntry path="cadet2D.components.skins.MovieClipSkin"/>
     <classEntry path="cadet2D.util.NullBitmapTexture"/>
     <classEntry path="cadet2D.components.textures.TextureAtlasComponent"/>
-    <classEntry path="cadet2D.components.behaviours.MoveToMouseBehaviour"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

@@ -34,7 +34,7 @@ package cadet2D.components.textures
 			
 			_bitmapData = value;
 			_texture = Texture.fromBitmap( new Bitmap(value), false );
-			trace("texture width "+_texture.width+" height "+_texture.height);
+			//trace("texture width "+_texture.width+" height "+_texture.height);
 		}
 		public function get bitmapData():BitmapData { return _bitmapData; }
 		

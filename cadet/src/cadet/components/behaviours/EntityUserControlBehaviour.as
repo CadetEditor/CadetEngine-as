@@ -10,7 +10,7 @@
 
 package cadet.components.behaviours
 {
-	import cadet.components.processes.InputProcess;
+	import cadet.components.processes.KeyboardInputProcess;
 	import cadet.core.Component;
 	import cadet.core.ISteppableComponent;
 	
@@ -27,7 +27,7 @@ package cadet.components.behaviours
 		[Serializable][Inspectable]
 		public var spaceMapping			:String = "SPACE";
 		
-		public var inputProcess		:InputProcess;
+		public var inputProcess		:KeyboardInputProcess;
 		public var entityBehaviour	:IEntityUserControlledBehaviour;
 		
 		public function EntityUserControlBehaviour()
@@ -38,7 +38,7 @@ package cadet.components.behaviours
 		override protected function addedToScene():void
 		{
 			addSiblingReference(IEntityUserControlledBehaviour, "entityBehaviour");
-			addSceneReference( InputProcess, "inputProcess" );
+			addSceneReference( KeyboardInputProcess, "inputProcess" );
 		}
 		
 		public function step(dt:Number):void

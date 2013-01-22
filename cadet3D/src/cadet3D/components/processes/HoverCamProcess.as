@@ -3,7 +3,7 @@ package cadet3D.components.processes
 	import away3d.containers.ObjectContainer3D;
 	import away3d.entities.Entity;
 	
-	import cadet.components.processes.InputProcess;
+	import cadet.components.processes.KeyboardInputProcess;
 	import cadet.core.Component;
 	import cadet.core.ISteppableComponent;
 	import cadet.util.ComponentUtil;
@@ -28,7 +28,7 @@ package cadet3D.components.processes
 		private var lastMouseX:Number;
 		private var lastMouseY:Number;
 		
-		public var inputProcess			:InputProcess;
+		public var inputProcess			:KeyboardInputProcess;
 		private var _active				:Boolean;
 		
 		public function HoverCamProcess()
@@ -38,7 +38,7 @@ package cadet3D.components.processes
 		
 		override protected function addedToScene():void
 		{
-			addSceneReference( InputProcess, "inputProcess" );
+			addSceneReference( KeyboardInputProcess, "inputProcess" );
 		}
 		
 		

@@ -13,7 +13,6 @@ package cadet.components.processes
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
 	
 	import cadet.core.ComponentContainer;
 	import cadet.core.IComponent;
@@ -24,13 +23,13 @@ package cadet.components.processes
 	[Event( type="cadet.events.InputProcessEvent", name="inputDown" ) ]
 	[Event( type="cadet.events.InputProcessEvent", name="inputUp" ) ]
 
-	public class InputProcess extends ComponentContainer
+	public class KeyboardInputProcess extends ComponentContainer
 	{
 		private var _renderer		:IRenderer;
 		
 		private var inputTable		:Object;
 		
-		public function InputProcess()
+		public function KeyboardInputProcess()
 		{
 			name = "InputProcess";
 			inputTable = {}
@@ -45,9 +44,6 @@ package cadet.components.processes
 		{
 			if ( _renderer )
 			{
-				//_renderer.viewport.removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-				//_renderer.viewport.removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
-				
 				if ( _renderer.initialised ) {
 					removedFromStageHandler();
 				}
@@ -55,9 +51,6 @@ package cadet.components.processes
 			_renderer = value;
 			if ( _renderer )
 			{
-//				_renderer.viewport.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-//				_renderer.viewport.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
-//				
 				if ( _renderer.initialised ) {
 					addedToStageHandler();
 				} else {
@@ -77,9 +70,6 @@ package cadet.components.processes
 			var parent:DisplayObjectContainer = _renderer.getParent();
 			parent.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
 			parent.stage.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
-			parent.stage.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
-			parent.stage.addEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);
-			parent.stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler);
 		}
 		
 		private function removedFromStageHandler( event:Event = null ):void
@@ -87,9 +77,6 @@ package cadet.components.processes
 			var parent:DisplayObjectContainer = _renderer.getParent();
 			parent.stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
 			parent.stage.removeEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
-			parent.stage.removeEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
-			parent.stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);
-			parent.stage.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler);
 		}
 		
 		
@@ -100,7 +87,7 @@ package cadet.components.processes
 		
 		private function keyDownHandler( event:KeyboardEvent ):void
 		{
-			var mapping:InputMapping = getMappingForKeyCode(event.keyCode);
+			var mapping:KeyboardInputMapping = getMappingForKeyCode(event.keyCode);
 			if (!mapping) return;
 			inputTable[mapping.name] = true;
 			
@@ -109,55 +96,28 @@ package cadet.components.processes
 		
 		private function keyUpHandler( event:KeyboardEvent ):void
 		{
-			var mapping:InputMapping = getMappingForKeyCode(event.keyCode);
+			var mapping:KeyboardInputMapping = getMappingForKeyCode(event.keyCode);
 			if (!mapping) return;
 			inputTable[mapping.name] = null;
 			
 			dispatchEvent( new InputProcessEvent( InputProcessEvent.INPUT_UP, mapping.name ) );
 		}
 		
-		private function mouseDownHandler( event:MouseEvent ):void
+		private function getMappingForKeyCode( keyCode:int ):KeyboardInputMapping
 		{
-			var mapping:InputMapping = getMappingForInput(InputMapping.LMB);
-			if (!mapping) return;
-			inputTable[mapping.name] = true;
-			
-			dispatchEvent( new InputProcessEvent( InputProcessEvent.INPUT_DOWN, mapping.name ) );
-		}
-		
-		private function mouseUpHandler( event:MouseEvent ):void
-		{
-			var mapping:InputMapping = getMappingForInput(InputMapping.LMB);
-			if (!mapping) return;
-			inputTable[mapping.name] = null;
-			
-			dispatchEvent( new InputProcessEvent( InputProcessEvent.INPUT_DOWN, mapping.name ) );
-		}
-		
-		private function mouseMoveHandler( event:MouseEvent ):void
-		{
-			var mapping:InputMapping = getMappingForInput(InputMapping.MOUSE_MOVE);
-			if (!mapping) return;
-			inputTable[mapping.name] = true;
-			
-			dispatchEvent( new InputProcessEvent( InputProcessEvent.UPDATE, mapping.name ) );
-		}
-		
-		private function getMappingForKeyCode( keyCode:int ):InputMapping
-		{
-			for each ( var child:InputMapping in _children )
+			for each ( var child:KeyboardInputMapping in _children )
 			{
 				if ( child.getKeyCode() == keyCode ) return child;
 			}
 			return null;
 		}
 		
-		private function getMappingForInput( input:String ):InputMapping
+		private function getMappingForInput( input:String ):KeyboardInputMapping
 		{
 			for each ( var child:IComponent in _children )
 			{
-				if ( child is InputMapping == false ) continue
-				if ( InputMapping(child).input == input ) return InputMapping(child);
+				if ( child is KeyboardInputMapping == false ) continue
+				if ( KeyboardInputMapping(child).input == input ) return KeyboardInputMapping(child);
 			}
 			return null;
 		}
