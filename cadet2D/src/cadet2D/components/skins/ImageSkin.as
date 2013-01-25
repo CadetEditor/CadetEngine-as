@@ -10,6 +10,9 @@
 
 package cadet2D.components.skins
 {	
+	import cadet.events.InvalidationEvent;
+	
+	import cadet2D.components.textures.TextureAtlasComponent;
 	import cadet2D.components.textures.TextureComponent;
 	
 	import starling.core.Starling;
@@ -19,20 +22,24 @@ package cadet2D.components.skins
 	
 	public class ImageSkin extends AbstractSkin2D
 	{
-		protected var ASSET				:String = "asset";
+		private static const TEXTURE	:String = "texture";
 		
 		private var _textureComponent		:TextureComponent;
 /*		private var _fillXOffset		:Number = 0;
 		private var _fillYOffset		:Number = 0;*/
 		
-		private var image		:Image;
+		private var image					:Image;
+		
+		private var _textureAtlas			:TextureAtlasComponent;
+		private var _texturesPrefix			:String;
+		
 		// DEPRECATED
 		//private var _fillBitmap			:BitmapData;
 		private var _imageDirty				:Boolean;
 		
 		public function ImageSkin()
 		{
-			name = "AssetSkin";
+			name = "ImageSkin";
 			
 //			image = new Image(NullBitmapTexture.instance);
 //			_displayObject = image;
@@ -65,10 +72,39 @@ package cadet2D.components.skins
 */		
 		
 		[Serializable][Inspectable( editor="ComponentList", scope="scene" )]
+		public function set textureAtlas( value:TextureAtlasComponent ):void
+		{
+			if ( _textureAtlas ) {
+				_textureAtlas.removeEventListener(InvalidationEvent.INVALIDATE, invalidateAtlasHandler);
+			}
+			_textureAtlas = value;
+			if ( _textureAtlas ) {
+				_textureAtlas.addEventListener(InvalidationEvent.INVALIDATE, invalidateAtlasHandler);
+			}
+			
+			invalidate( TEXTURE );
+		}
+		public function get textureAtlas():TextureAtlasComponent
+		{
+			return _textureAtlas;
+		}
+		
+		[Serializable][Inspectable]
+		public function set texturesPrefix( value:String ):void
+		{
+			_texturesPrefix = value;
+			invalidate( TEXTURE );
+		}
+		public function get texturesPrefix():String
+		{
+			return _texturesPrefix;
+		}
+		
+		[Serializable][Inspectable( editor="ComponentList", scope="scene" )]
 		public function set texture( value:TextureComponent ):void
 		{
 			_textureComponent = value;
-			invalidate( ASSET );
+			invalidate( TEXTURE );
 		}
 		public function get texture():TextureComponent { return _textureComponent; }	
 		
@@ -76,25 +112,33 @@ package cadet2D.components.skins
 		override public function validateNow():void
 		{
 			if ( _imageDirty ) {
-				invalidate(ASSET);
+				invalidate(TEXTURE);
 			}
 			
-			if ( isInvalid(ASSET) )
+			if ( isInvalid(TEXTURE) )
 			{
-				validateAsset();
+				validateTexture();
 			}
 			
 			super.validateNow();
 		}
 		
-		protected function validateAsset():void
+		protected function validateTexture():void
 		{
 			var texture:Texture;
-			if ( _textureComponent ) {
+			
+			if ( _textureAtlas && _textureAtlas.atlas ) {
+				var textures:Vector.<Texture> = _textureAtlas.atlas.getTextures(_texturesPrefix);
+				if (textures.length > 0)	texture = textures[0];
+			} else if ( _textureComponent ) {
 				texture = _textureComponent.texture;
 			}
 			
-			if (!Starling.context) {// || !texture) {
+			// If Starling isn't ready, wait until it is, then try and validateAsset() again.
+			// Else, if the user has selected a TextureComponent and that TextureComponent doesn't have a Texture,
+			// Assume that the Texture is yet to load its BitmapData in order to initialise, so the ImageSkin should
+			// wait for this to happen before validateAsset().
+			if (!Starling.context || (_textureComponent && !texture)) {
 				_imageDirty = true;
 				return;
 			}
@@ -125,7 +169,12 @@ package cadet2D.components.skins
 			}
 			
 			_imageDirty = false;
-		}		
+		}
+		
+		private function invalidateAtlasHandler( event:InvalidationEvent ):void
+		{
+			invalidate( TEXTURE );
+		}
 	}
 }
 

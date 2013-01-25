@@ -29,7 +29,7 @@ package cadet2D.components.skins
 	import starling.display.Graphics;
 	import starling.display.Shape;
 
-	public class GeometrySkin extends AbstractSkin2D implements ISkin2D
+	public class GeometrySkin extends AbstractSkin2D implements IRenderable
 	{
 		private var _lineThickness	:Number;
 		private var _lineColor		:uint;

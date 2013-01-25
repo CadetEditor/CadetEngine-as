@@ -19,7 +19,7 @@ package cadet2D.components.processes
 	import cadet2D.components.renderers.IRenderer2D;
 	import cadet2D.components.renderers.Renderer2D;
 	import cadet2D.components.skins.AbstractSkin2D;
-	import cadet2D.components.skins.ISkin2D;
+	import cadet2D.components.skins.IRenderable;
 	
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
@@ -94,7 +94,7 @@ package cadet2D.components.processes
 			if ( !_renderer || !_renderer.initialised ) return;
 			if ( !_target ) return;
 			
-			var skin:ISkin2D = ComponentUtil.getChildOfType(_target, ISkin2D, false);
+			var skin:IRenderable = ComponentUtil.getChildOfType(_target, IRenderable, false);
 			
 			if ( !skin ) return;
 			

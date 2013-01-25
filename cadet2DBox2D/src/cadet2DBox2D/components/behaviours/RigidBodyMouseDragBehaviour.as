@@ -10,10 +10,12 @@
 
 package cadet2DBox2D.components.behaviours
 {
+	import flash.geom.Point;
+	
 	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.Joints.b2MouseJoint;
 	import Box2D.Dynamics.Joints.b2MouseJointDef;
-	import Box2D.Dynamics.b2Body;
 	
 	import cadet.core.Component;
 	import cadet.core.IRenderer;
@@ -22,11 +24,9 @@ package cadet2DBox2D.components.behaviours
 	
 	import cadet2D.components.renderers.Renderer2D;
 	import cadet2D.components.skins.AbstractSkin2D;
-	import cadet2D.components.skins.ISkin2D;
+	import cadet2D.components.skins.IRenderable;
 	
 	import cadet2DBox2D.components.processes.PhysicsProcess;
-	
-	import flash.geom.Point;
 	
 	import starling.display.DisplayObject;
 	import starling.events.Touch;
@@ -55,7 +55,7 @@ package cadet2DBox2D.components.behaviours
 		
 		override protected function addedToScene():void
 		{
-			addSiblingReference(ISkin2D, "skin");
+			addSiblingReference(IRenderable, "skin");
 			addSiblingReference(RigidBodyBehaviour, "rigidBodyBehaviour");
 			addSceneReference( PhysicsProcess, "physicsProcess" );
 			addSceneReference( IRenderer, "renderer" );
@@ -66,7 +66,7 @@ package cadet2DBox2D.components.behaviours
 			destroyJoint();
 		}
 		
-		public function set skin( value:ISkin2D ):void
+		public function set skin( value:IRenderable ):void
 		{
 			destroyJoint();
 			
@@ -74,7 +74,7 @@ package cadet2DBox2D.components.behaviours
 			
 			_skin = AbstractSkin2D(value);
 		}
-		public function get skin():ISkin2D { return _skin; }
+		public function get skin():IRenderable { return _skin; }
 		
 		public function set rigidBodyBehaviour( value:RigidBodyBehaviour ):void
 		{

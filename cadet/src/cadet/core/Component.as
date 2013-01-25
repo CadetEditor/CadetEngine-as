@@ -12,11 +12,11 @@
 
 package cadet.core
 {
+	import flash.events.EventDispatcher;
+	
 	import cadet.events.ComponentEvent;
 	import cadet.events.InvalidationEvent;
 	import cadet.util.ComponentReferenceUtil;
-	
-	import flash.events.EventDispatcher;
 	
 	import flox.core.events.PropertyChangeEvent;
 	
@@ -33,7 +33,10 @@ package cadet.core
 	 */	
 	public class Component extends EventDispatcher implements IComponent
 	{
+		public static const INDEX:String = "index";
+		
 		protected var _name					:String;
+		protected var _index				:int = -1;
 		
 		protected var _scene				:CadetScene;
 		protected var _parentComponent		:IComponentContainer;
@@ -130,6 +133,14 @@ package cadet.core
 		}
 		public function get scene():CadetScene { return _scene; }
 		
+		public function set index( value:int ):void
+		{
+			_index = value;
+		}
+		public function get index():int
+		{
+			return _index;
+		}
 		
 		[Serializable][Inspectable( label="Name", priority="0" )]
 		public function set name( value:String ):void
@@ -165,8 +176,20 @@ package cadet.core
 		
 		public function validateNow():void
 		{
+			if ( isInvalid(INDEX) )
+			{
+				validateIndex();
+			}
+			
 			validate();
 			_invalidationTable = {};
+		}
+		
+		private function validateIndex():void
+		{
+			if (parentComponent) {
+				index = parentComponent.children.getItemIndex(this);
+			}
 		}
 		
 		protected function validate():void

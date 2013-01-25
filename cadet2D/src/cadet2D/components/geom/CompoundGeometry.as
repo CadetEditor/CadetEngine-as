@@ -22,9 +22,9 @@ package cadet2D.components.geom
 			name = "CompoundGeometry";
 		}
 		
-		override protected function childAdded(child:IComponent):void
+		override protected function childAdded(child:IComponent, index:uint):void
 		{
-			super.childAdded(child);
+			super.childAdded(child, index);
 			if ( child is IGeometry == false )
 			{
 				throw( new Error( "CompoundGeometry only supports children of type IGeometry" ));

@@ -12,14 +12,10 @@
 package cadet3D.components.core
 {
 	import away3d.containers.ObjectContainer3D;
-	import away3d.core.base.Object3D;
-	import away3d.entities.Entity;
-	
-	import cadet.core.Component;
+
 	import cadet.core.ComponentContainer;
 	import cadet.core.IComponent;
 	
-	import flash.geom.Matrix;
 	import flash.geom.Matrix3D;
 
 	[Event(name="object3DAdded", type="cadetAway3D4.events.Object3DComponentEvent")]
@@ -42,9 +38,9 @@ package cadet3D.components.core
 			}
 		}
 		
-		override protected function childAdded( child:IComponent ):void
+		override protected function childAdded( child:IComponent, index:uint ):void
 		{
-			super.childAdded(child);
+			super.childAdded(child, index);
 			
 			var object3DComponent:ObjectContainer3DComponent = child as ObjectContainer3DComponent;
 			if ( !object3DComponent ) return;

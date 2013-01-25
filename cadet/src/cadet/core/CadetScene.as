@@ -90,9 +90,9 @@ package cadet.core
 		}
 		public function get timeScale():Number { return _timeScale; }
 		
-		override protected function childAdded(child:IComponent):void
+		override protected function childAdded(child:IComponent, index:uint):void
 		{
-			super.childAdded(child);
+			super.childAdded(child, index);
 			child.scene = this;
 		}
 		

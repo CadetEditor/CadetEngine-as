@@ -21,8 +21,7 @@ package cadet.core
 	[Event( type="cadet.events.ComponentContainerEvent", name="childRemoved" )]
 	
 	/**
-	 * Abstract. This class is not designed to be directly instansiated.
-	 * If you want a basic container to place other components inside, take a look at the GameObject class.
+	 * Abstract. This class is not designed to be directly instantiated.
 	 * @author Jonathan
 	 * 
 	 */	
@@ -91,7 +90,7 @@ package cadet.core
 			switch ( event.kind )
 			{
 				case ArrayCollectionChangeKind.ADD :
-					childAdded( IComponent(event.item) );
+					childAdded( IComponent(event.item), event.index );
 					break;
 				case ArrayCollectionChangeKind.REMOVE :
 					childRemoved( IComponent(event.item) );
@@ -99,12 +98,17 @@ package cadet.core
 				case ArrayCollectionChangeKind.RESET :
 					for each ( var child:IComponent in event.item )
 					{
-						childRemoved(child);
+						childRemoved( child );
 					}
-					for each ( child in _children )
+					for ( var i:uint = 0; i < _children.length; i ++ )
 					{
-						childAdded( child );
+						child = _children[i];
+						childAdded(child, i);
 					}
+/*					for each ( child in _children )
+					{
+						childAdded( child, event.index );
+					}*/
 					
 					break;
 			}
@@ -112,14 +116,16 @@ package cadet.core
 			previousChildSource = children.source.slice();
 		}
 		
-		protected function childAdded( child:IComponent ):void
+		protected function childAdded( child:IComponent, index:uint ):void
 		{
+			child.index = index;
 			child.addEventListener(ComponentEvent.ADDED_TO_PARENT, childEventHandler);
 			child.addEventListener(ComponentEvent.REMOVED_FROM_PARENT, childEventHandler);
 			child.addEventListener(ComponentEvent.ADDED_TO_SCENE, childEventHandler);
 			child.addEventListener(ComponentEvent.REMOVED_FROM_SCENE, childEventHandler);
 			child.parentComponent = this;
 			child.scene = _scene;
+			
 			
 			childAddedEvent.child = child;
 			dispatchEvent( childAddedEvent );
@@ -156,10 +162,16 @@ package cadet.core
 			if ( _children )
 			{
 				_children.addEventListener(ArrayCollectionEvent.CHANGE, childrenChangeHandler);
-				for each ( var child:IComponent in _children )
+				
+				for ( var i:uint = 0; i < _children.length; i ++ )
+				{
+					var child:IComponent = _children[i];
+					childAdded(child, i);
+				}
+/*				for each ( var child:IComponent in _children )
 				{
 					childAdded(child);
-				}
+				}*/
 			}
 		}
 		public function get children():ArrayCollection { return _children; }

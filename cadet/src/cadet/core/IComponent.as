@@ -19,6 +19,9 @@ package cadet.core
 	
 	public interface IComponent extends IEventDispatcher
 	{
+		function set index( value:int ):void
+		function get index():int
+		
 		function set name( value:String ):void
 		function get name():String
 		

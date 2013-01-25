@@ -18,13 +18,14 @@ package cadet2D.components.renderers
 	
 	import cadet.core.Component;
 	import cadet.core.IComponent;
+	import cadet.core.IComponentContainer;
 	import cadet.events.ComponentEvent;
 	import cadet.events.InvalidationEvent;
 	import cadet.events.RendererEvent;
 	import cadet.util.ComponentUtil;
 	
 	import cadet2D.components.skins.AbstractSkin2D;
-	import cadet2D.components.skins.ISkin2D;
+	import cadet2D.components.skins.IRenderable;
 	import cadet2D.components.skins.MovieClipSkin;
 	import cadet2D.overlays.Overlay;
 	
@@ -32,7 +33,6 @@ package cadet2D.components.renderers
 	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
-	import starling.display.DisplayObjectContainer;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -40,19 +40,7 @@ package cadet2D.components.renderers
 	
 	[Event( type="cadet.events.RendererEvent", name="initialised" )]
 	public class Renderer2D extends Component implements IRenderer2D
-	{		
-		// Container ID's
-		public static const WORLD_CONTAINER					:String = "worldContainer";
-		public static const VIEWPORT_BACKGROUND_CONTAINER	:String = "viewportBackgroundContainer";
-		public static const VIEWPORT_FOREGROUND_CONTAINER	:String = "viewportForegroundContainer";
-		public static const VIEWPORT_OVERLAY_CONTAINER		:String = "viewportOverlayContainer";
-		
-		// Config consts
-		public static const NUM_CONTAINER_LAYERS			:int = 8;
-		public static const NUM_VIEWPORT_FOREGROUND_LAYERS	:int = 8;
-		public static const NUM_VIEWPORT_BACKGROUND_LAYERS	:int = 8;
-		public static const NUM_VIEWPORT_OVERLAY_LAYERS		:int = 3;
-		
+	{
 		// Properties
 		protected var _viewportWidth				:Number;
 		protected var _viewportHeight				:Number;
@@ -60,21 +48,14 @@ package cadet2D.components.renderers
 		// Display Hierachy
 		protected var _viewport						:Sprite;
 //		protected var _mask							:flash.display.Shape;
-		protected var viewportBackgroundContainer	:Sprite;
 		protected var _worldContainer				:Sprite;
-		protected var viewportForegroundContainer	:Sprite;
-		protected var viewportOverlayContainer		:Sprite;
-		
-		protected var viewportBackgroundLayers			:Array;	
-		protected var worldContainerLayers				:Array;
-		protected var viewportForegroundLayers			:Array;	
-		protected var viewportOverlayLayers				:Array;
-		
+		protected var _viewportOverlayContainer		:Sprite;
+			
 		// Misc
 		protected var skinTable				:Dictionary;
 		protected var displayObjectTable	:Dictionary;
+		protected var displayListArray		:Array;
 		protected var identityMatrix		:Matrix;
-		protected var layersTable			:Object;
 		
 		private var star					:Starling;
 		
@@ -100,12 +81,7 @@ package cadet2D.components.renderers
 		{
 			name = "Starling Renderer";
 			
-			identityMatrix = new Matrix();
-			skinTable = new Dictionary();
-			displayObjectTable = new Dictionary();
-			
-			layersTable = {};
-			overlaysTable = new Dictionary();
+			reset();
 		}
 		
 		public function enable(parent:flash.display.DisplayObjectContainer, depth:int = -1):void
@@ -163,8 +139,19 @@ package cadet2D.components.renderers
 			init();
 		}
 		
+		private function reset():void
+		{
+			identityMatrix = new Matrix();
+			skinTable = new Dictionary();
+			displayObjectTable = new Dictionary();
+			displayListArray = [];
+			overlaysTable = new Dictionary();
+		}
+		
 		private function init():void
 		{
+			reset();
+			
 			_initialised = true;
 			
 			_viewport = Sprite(star.root);
@@ -173,54 +160,8 @@ package cadet2D.components.renderers
 			_worldContainer = new Sprite();
 			_viewport.addChild(_worldContainer);
 			
-			viewportBackgroundContainer = new Sprite();
-			_viewport.addChild(viewportBackgroundContainer);
-			
-			viewportBackgroundLayers = [];
-			for ( var i:int = 0; i < NUM_VIEWPORT_BACKGROUND_LAYERS; i++ )
-			{
-				var layer:Sprite = new Sprite();
-				viewportBackgroundLayers[i] = layer;
-				viewportBackgroundContainer.addChild(layer);
-			}
-			
-			_worldContainer = new Sprite();
-			_viewport.addChild(_worldContainer);
-			
-			worldContainerLayers = [];
-			for ( i = 0; i < NUM_CONTAINER_LAYERS; i++ )
-			{
-				layer = new Sprite();
-				worldContainerLayers[i] = layer;
-				_worldContainer.addChild(layer);
-			}
-			
-			viewportForegroundContainer = new Sprite();
-			_viewport.addChild(viewportForegroundContainer);
-			
-			viewportForegroundLayers = [];
-			for ( i = 0; i < NUM_VIEWPORT_FOREGROUND_LAYERS; i++ )
-			{
-				layer = new Sprite();
-				viewportForegroundLayers[i] = layer;
-				viewportForegroundContainer.addChild(layer);
-			}
-			
-			viewportOverlayContainer = new Sprite();
-			_viewport.addChild(viewportOverlayContainer);
-			
-			viewportOverlayLayers = [];
-			for ( i = 0; i < NUM_VIEWPORT_OVERLAY_LAYERS; i++ )
-			{
-				layer = new Sprite();
-				viewportOverlayLayers[i] = layer;
-				viewportOverlayContainer.addChild(layer);
-			}
-			
-			layersTable[WORLD_CONTAINER] = worldContainerLayers;
-			layersTable[VIEWPORT_BACKGROUND_CONTAINER] = viewportBackgroundLayers;
-			layersTable[VIEWPORT_FOREGROUND_CONTAINER] = viewportForegroundLayers;
-			layersTable[VIEWPORT_OVERLAY_CONTAINER] = viewportOverlayLayers;
+			_viewportOverlayContainer = new Sprite();
+			_viewport.addChild(_viewportOverlayContainer);
 			
 			addSkins();
 			addOverlays();
@@ -315,7 +256,7 @@ package cadet2D.components.renderers
 			}
 		}
 		
-		public function getSkinForDisplayObject( displayObject:DisplayObject ):ISkin2D
+		public function getSkinForDisplayObject( displayObject:DisplayObject ):IRenderable
 		{
 			return displayObjectTable[displayObject];
 		}
@@ -330,8 +271,8 @@ package cadet2D.components.renderers
 		
 		private function addSkins():void
 		{
-			var allSkins:Vector.<IComponent> = ComponentUtil.getChildrenOfType( scene, ISkin2D, true );
-			for each ( var skin:ISkin2D in allSkins )
+			var allSkins:Vector.<IComponent> = ComponentUtil.getChildrenOfType( scene, IRenderable, true );
+			for each ( var skin:IRenderable in allSkins )
 			{
 				addSkin( skin );
 			}
@@ -339,8 +280,8 @@ package cadet2D.components.renderers
 		
 		private function removeSkins():void
 		{
-			var allSkins:Vector.<IComponent> = ComponentUtil.getChildrenOfType( scene, ISkin2D, true );
-			for each ( var skin:ISkin2D in allSkins )
+			var allSkins:Vector.<IComponent> = ComponentUtil.getChildrenOfType( scene, IRenderable, true );
+			for each ( var skin:IRenderable in allSkins )
 			{
 				removeSkin( skin );
 			}
@@ -348,17 +289,17 @@ package cadet2D.components.renderers
 		
 		private function componentAddedToSceneHandler( event:ComponentEvent ):void
 		{
-			if ( event.component is ISkin2D == false ) return;
-			addSkin( ISkin2D( event.component ) );
+			if ( event.component is IRenderable == false ) return;
+			addSkin( IRenderable( event.component ) );
 		}
 		
 		private function componentRemovedFromSceneHandler( event:ComponentEvent ):void
 		{
-			if ( event.component is ISkin2D == false ) return;
-			removeSkin( ISkin2D( event.component ) );
+			if ( event.component is IRenderable == false ) return;
+			removeSkin( IRenderable( event.component ) );
 		}
 		
-		private function addSkin( skin:ISkin2D ):void
+		private function addSkin( skin:IRenderable ):void
 		{
 			// Could be a Flash Skin of type ISkin2D
 			if (!(skin is AbstractSkin2D)) return;
@@ -375,7 +316,7 @@ package cadet2D.components.renderers
 			displayObjectTable[displayObject] = skin;
 		}
 		
-		private function removeSkin( skin:ISkin2D ):void
+		private function removeSkin( skin:IRenderable ):void
 		{
 			// Could be a Flash Skin of type ISkin2D
 			if (!(skin is AbstractSkin2D)) return;
@@ -390,35 +331,61 @@ package cadet2D.components.renderers
 		
 		private function invalidateSkinHandler( event:InvalidationEvent ):void
 		{
-			var skin:ISkin2D = ISkin2D(event.target);
+			var skin:IRenderable = IRenderable(event.target);
 			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObject;
 			
-			if ( displayObject.parent == null )
+/*			if ( displayObject.parent == null )
 			{
 				addSkinToDisplayList(skin);
-			}
+			}*/
 			
 			// The the layer index, or containerID on a ISkin2D has changed, then re-add them
-			// to the displaylist at the appropritate place
-			if ( event.invalidationType == "layer" || event.invalidationType == "container" )
+			// to the displaylist at the appropriate place
+/*			if ( event.invalidationType == "layer" || event.invalidationType == "container" )
 			{
 				addSkinToDisplayList(skin);
-			}
+			}*/
 		}
 		
-		private function addSkinToDisplayList( skin:ISkin2D ):void
+		private function addSkinToDisplayList( skin:IRenderable ):void
 		{
-			var layers:Array = layersTable[skin.containerID];
-			if ( !layers ) return;
+			if (!_worldContainer) return;
+		
+			var indexStr:String = skin.indexStr;
 			
-			var parent:starling.display.DisplayObjectContainer = layers[skin.layerIndex];
+			displayListArray.push(skin);
+			displayListArray.sortOn("indexStr");
+			
+			var index:int = displayListArray.indexOf(skin);//indexStr);
+			
+			trace("ADD SKIN INDEX "+indexStr+" at index "+index+" dlArray "+displayListArray);
+			
+			// Items in the display order will need to have their indices updated,
+			// so loop through them invalidating their indices and that of their parent's.
+			for ( var i:uint = 0; i < displayListArray.length; i ++ )
+			{
+				var iSkin:AbstractSkin2D = displayListArray[i];
+				iSkin.invalidate(Component.INDEX);
+				var parent:IComponent;
+				while (parent) {
+					parent.invalidate(Component.INDEX);
+					parent = parent.parentComponent;
+				}
+			}
+			
 			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObject;
 			
-			parent.addChild( displayObject );
+			_worldContainer.addChildAt( displayObject, index );
 		}
 		
-		private function removeSkinFromDisplayList( skin:ISkin2D ):void
+		private function removeSkinFromDisplayList( skin:IRenderable ):void
 		{
+			//var indexStr:String = indexStrTable[skin];
+			var index:int = displayListArray.indexOf(skin);//indexStr);
+			displayListArray.splice(index, 1);
+			
+			trace("REMOVE SKIN INDEX "+skin.indexStr+" at index "+index+" dlArray "+displayListArray);
+			
 			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObject;
 			
 			if ( displayObject.parent )
@@ -427,21 +394,16 @@ package cadet2D.components.renderers
 			}
 		}
 		
-		
-		
 		override protected function removedFromScene():void
 		{
 			super.removedFromScene();
-			
-			for each ( var layer:Sprite in worldContainerLayers )
+		
+			while ( _worldContainer.numChildren > 0 )
 			{
-				while ( layer.numChildren > 0 )
-				{
-					var displayObject:starling.display.DisplayObject = layer.getChildAt(0);
-					var skin:ISkin2D = skinTable[displayObject];
-					layer.removeChildAt(0);
-					delete skinTable[displayObject];
-				}
+				var displayObject:starling.display.DisplayObject = _worldContainer.getChildAt(0);
+				var skin:IRenderable = skinTable[displayObject];
+				_worldContainer.removeChildAt(0);
+				delete skinTable[displayObject];
 			}
 		}
 		
@@ -449,27 +411,19 @@ package cadet2D.components.renderers
 		
 		public function addOverlay( overlay:Overlay, layerIndex:uint = 0 ):void
 		{
-			var layers:Array = layersTable[VIEWPORT_OVERLAY_CONTAINER];
-			
-			if (!layers) return;
-			
-			var parent:starling.display.DisplayObjectContainer = layers[layerIndex];
+			if (!_viewportOverlayContainer) return;
 			
 			overlaysTable[overlay] = layerIndex;
 			
-			parent.addChild( overlay );
+			_viewportOverlayContainer.addChild( overlay );
 		}
 		
 		public function removeOverlay( overlay:Overlay ):void
 		{
 			var layerIndex:uint = overlaysTable[overlay];
 			
-			var layers:Array = layersTable[VIEWPORT_OVERLAY_CONTAINER];
-			
-			var parent:starling.display.DisplayObjectContainer = layers[layerIndex];
-			
-			if ( parent.contains( overlay ) ) {
-				parent.removeChild( overlay );
+			if ( _viewportOverlayContainer.contains( overlay ) ) {
+				_viewportOverlayContainer.removeChild( overlay );
 				delete overlaysTable[overlay];
 			}
 		}
@@ -499,8 +453,7 @@ package cadet2D.components.renderers
 			
 			return null;
 		}
-		
-		
+
 		
 		public function get viewport():Sprite { return _viewport; }
 		public function get worldContainer():Sprite { return _worldContainer; }
@@ -531,7 +484,6 @@ package cadet2D.components.renderers
 		public function setWorldContainerTransform( m:Matrix ):void
 		{
 			if (!_worldContainer) return;
-			//_worldContainer.transform.matrix = m;
 			_worldContainer.transformationMatrix = m;
 		}
 		
