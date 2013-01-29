@@ -35,8 +35,7 @@ package cadet2D.components.behaviours
 		
 		public function step(dt:Number):void
 		{
-			if ( !transform ) return;
-			if ( !renderer ) return;
+			if ( !transform || !renderer ) return;
 			
 			if ( _constrain != "x" )	transform.x -= (transform.x - targetX) * 0.1;
 			if ( _constrain != "y" )	transform.y -= (transform.y - targetY) * 0.1;

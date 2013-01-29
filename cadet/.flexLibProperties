@@ -2,6 +2,10 @@
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
   <includeClasses>
     <classEntry path="cadet.util.NullBitmap"/>
+    <classEntry path="cadet.entities.ComponentFactory"/>
+    <classEntry path="cadet.validators.ComponentSiblingValidator"/>
+    <classEntry path="cadet.validators.IComponentValidator"/>
+    <classEntry path="cadet.validators.ComponentParentValidator"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
