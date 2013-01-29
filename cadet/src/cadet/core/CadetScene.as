@@ -11,7 +11,6 @@
 package cadet.core
 {
 	import cadet.events.ComponentEvent;
-	import cadet.util.ComponentUtil;
 	
 	import flash.utils.getTimer;
 	
