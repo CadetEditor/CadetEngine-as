@@ -1,3 +1,15 @@
+// =================================================================================================
+//
+//	CadetEngine Framework
+//	Copyright 2012 Unwrong Ltd. All Rights Reserved.
+//
+//	This program is free software. You can redistribute and/or modify it
+//	in accordance with the terms of the accompanying license agreement.
+//
+// =================================================================================================
+
+// Inspectable Priority range 50-99
+
 package cadet2D.components.behaviours
 {
 	import cadet.core.Component;

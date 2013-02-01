@@ -8,6 +8,8 @@
 //
 // =================================================================================================
 
+// Inspectable Priority range 100-149
+
 package cadet2D.components.skins
 {	
 	import cadet.events.InvalidationEvent;
@@ -71,7 +73,7 @@ package cadet2D.components.skins
 		public function get fillBitmap():BitmapData { return _fillBitmap; }	
 */		
 		
-		[Serializable][Inspectable( editor="ComponentList", scope="scene" )]
+		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="100" )]
 		public function set textureAtlas( value:TextureAtlasComponent ):void
 		{
 			if ( _textureAtlas ) {
@@ -89,7 +91,7 @@ package cadet2D.components.skins
 			return _textureAtlas;
 		}
 		
-		[Serializable][Inspectable]
+		[Serializable][Inspectable( priority="101" )]
 		public function set texturesPrefix( value:String ):void
 		{
 			_texturesPrefix = value;
@@ -100,7 +102,7 @@ package cadet2D.components.skins
 			return _texturesPrefix;
 		}
 		
-		[Serializable][Inspectable( editor="ComponentList", scope="scene" )]
+		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="102" )]
 		public function set texture( value:TextureComponent ):void
 		{
 			_textureComponent = value;

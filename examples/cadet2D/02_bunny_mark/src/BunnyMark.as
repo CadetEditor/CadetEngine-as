@@ -4,7 +4,6 @@ package
 	import cadet.events.RendererEvent;
 	
 	import cadet2D.components.core.Entity;
-	import cadet2D.components.geom.RectangleGeometry;
 	import cadet2D.components.renderers.Renderer2D;
 	import cadet2D.components.skins.ImageSkin;
 	import cadet2D.components.textures.TextureComponent;
@@ -12,8 +11,6 @@ package
 	
 	import components.behaviours.BounceBehaviour;
 	
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;

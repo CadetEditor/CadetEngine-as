@@ -1,3 +1,15 @@
+// =================================================================================================
+//
+//	CadetEngine Framework
+//	Copyright 2012 Unwrong Ltd. All Rights Reserved.
+//
+//	This program is free software. You can redistribute and/or modify it
+//	in accordance with the terms of the accompanying license agreement.
+//
+// =================================================================================================
+
+// Inspectable Priority range 100-149
+
 package cadet2D.components.skins
 {
 	import cadet.events.InvalidationEvent;
@@ -32,7 +44,7 @@ package cadet2D.components.skins
 //			_displayObject = movieclip;
 		}
 		
-		[Serializable][Inspectable( editor="ComponentList", scope="scene" )]
+		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="100" )]
 		public function set textureAtlas( value:TextureAtlasComponent ):void
 		{
 			if ( _textureAtlas ) {
@@ -50,7 +62,7 @@ package cadet2D.components.skins
 			return _textureAtlas;
 		}
 		
-		[Serializable][Inspectable]
+		[Serializable][Inspectable( priority="101" )]
 		public function set texturesPrefix( value:String ):void
 		{
 			_texturesPrefix = value;
@@ -61,7 +73,7 @@ package cadet2D.components.skins
 			return _texturesPrefix;
 		}
 		
-		[Serializable][Inspectable]
+		[Serializable][Inspectable( priority="102" )]
 		public function set loop( value:Boolean ):void
 		{
 			_loop = value;

@@ -8,14 +8,17 @@
 //
 // =================================================================================================
 
+// Inspectable Priority range 50-99
+
 package cadet2D.components.transforms
 {
-	import cadet.core.Component;
-	
-	import flash.display.Shape;
 	import flash.geom.Matrix;
 	
+	import cadet.core.Component;
+	
 	import flox.core.events.PropertyChangeEvent;
+	
+	import starling.display.Shape;
 
 	[Cadet( inheritFromTemplate='false' )]
 	public class Transform2D extends Component
@@ -34,45 +37,65 @@ package cadet2D.components.transforms
 			this.scaleY = scaleY;
 		}
 		
-		[Inspectable( priority="1" )]
+		[Inspectable( priority="50" )]
 		public function set x( value:Number ):void
 		{
+			if ( isNaN(value) ) {
+				throw( new Error( "value is not a number" ) );
+			}
+			
 			shape.x = value;
 			invalidate("transform");
 			dispatchEvent( new PropertyChangeEvent( "propertyChange_x", null, value ) );
 		}
 		public function get x():Number { return shape.x; }
 		
-		[Inspectable( priority="2" )]
+		[Inspectable( priority="51" )]
 		public function set y( value:Number ):void
 		{
+			if ( isNaN(value) ) {
+				throw( new Error( "value is not a number" ) );
+			}
+			
 			shape.y = value;
 			invalidate("transform");
 			dispatchEvent( new PropertyChangeEvent( "propertyChange_y", null, value ) );
 		}
 		public function get y():Number { return shape.y; }
 		
-		[Inspectable( label="Scale X", priority="3" )]
+		[Inspectable( priority="52" )]
 		public function set scaleX( value:Number ):void
 		{
+			if ( isNaN(value) ) {
+				throw( new Error( "value is not a number" ) );
+			}
+			
 			shape.scaleX = value;
 			invalidate("transform");
 			dispatchEvent( new PropertyChangeEvent( "propertyChange_scaleX", null, value ) );
 		}
 		public function get scaleX():Number { return shape.scaleX; }
 		
-		[Inspectable( label="Scale Y", priority="4" )]
+		[Inspectable( priority="53" )]
 		public function set scaleY( value:Number ):void
 		{
+			if ( isNaN(value) ) {
+				throw( new Error( "value is not a number" ) );
+			}
+			
 			shape.scaleY = value;
 			invalidate("transform");
 			dispatchEvent( new PropertyChangeEvent( "propertyChange_scaleY", null, value ) );
 		}
 		public function get scaleY():Number { return shape.scaleY; }
 		
-		[Inspectable( label="Rotation", priority="5" )]
+		[Inspectable( priority="54" )]
 		public function set rotation( value:Number ):void
 		{
+			if ( isNaN(value) ) {
+				throw( new Error( "value is not a number" ) );
+			}
+			
 			shape.rotation = value;
 			invalidate("transform");
 			dispatchEvent( new PropertyChangeEvent( "propertyChange_rotation", null, value ) );
@@ -81,7 +104,7 @@ package cadet2D.components.transforms
 		
 		public function set matrix( value:Matrix ):void
 		{
-			shape.transform.matrix = value;
+			shape.transformationMatrix = value;
 			invalidate( "transform" );
 			dispatchEvent( new PropertyChangeEvent( "propertyChange_x", null, shape.x ) );
 			dispatchEvent( new PropertyChangeEvent( "propertyChange_y", null, shape.y ) );
@@ -89,7 +112,7 @@ package cadet2D.components.transforms
 			dispatchEvent( new PropertyChangeEvent( "propertyChange_scaleY", null, shape.scaleY ) );
 			dispatchEvent( new PropertyChangeEvent( "propertyChange_rotation", null, shape.rotation ) );
 		}
-		public function get matrix():Matrix { return shape.transform.matrix; }
+		public function get matrix():Matrix { return shape.transformationMatrix; }
 		
 		[Serializable(alias="matrix")]
 		public function set serializedMatrix( value:String ):void

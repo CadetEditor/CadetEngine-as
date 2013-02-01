@@ -8,6 +8,8 @@
 //
 // =================================================================================================
 
+// Inspectable Priority range 50-99
+
 package cadet2D.components.renderers
 {
 	import flash.display.DisplayObjectContainer;
@@ -18,7 +20,6 @@ package cadet2D.components.renderers
 	
 	import cadet.core.Component;
 	import cadet.core.IComponent;
-	import cadet.core.IComponentContainer;
 	import cadet.events.ComponentEvent;
 	import cadet.events.InvalidationEvent;
 	import cadet.events.RendererEvent;
@@ -72,10 +73,12 @@ package cadet2D.components.renderers
 		private var overlaysTable			:Dictionary;
 		private var _backgroundColor		:uint = 0x303030;
 		
-		public const BASELINE:String = "baseline";
-		public const BASELINECONSTRAINED:String = "baselineConstrained";
+		public const BASELINE				:String = "baseline";
+		public const BASELINECONSTRAINED	:String = "baselineConstrained";
 		
-		public var defaultProfile:String = BASELINE;
+		public var defaultProfile			:String = BASELINE;
+		
+		private var _depthSort				:Boolean = false;
 		
 		public function Renderer2D()
 		{
@@ -171,6 +174,14 @@ package cadet2D.components.renderers
 			invalidate(RendererInvalidationTypes.VIEWPORT);			
 		}
 		
+		[Serializable][Inspectable( priority="50" )]
+		public function set depthSort( value:Boolean ):void
+		{
+			_depthSort = value;
+			//dispatchEvent( new PropertyChangeEvent( "propertyChange_name", null, _name ) );
+		}
+		public function get depthSort():Boolean { return _depthSort; }
+		
 		[Inspectable]//[Serializable]
 		public function set viewportWidth( value:Number ):void
 		{
@@ -190,16 +201,6 @@ package cadet2D.components.renderers
 			invalidate(RendererInvalidationTypes.VIEWPORT);
 		}
 		public function get viewportHeight():Number { return _viewportHeight; }
-		
-/*		[Serializable][Inspectable( label="Background colour", priority="1", editor="ColorPicker" )]
-		public function set backgroundColor( value:uint ):void
-		{
-			if ( _backgroundColor == value ) return;
-			
-			_backgroundColor = value;
-			invalidate(RendererInvalidationTypes.VIEWPORT);
-		}
-		public function get backgroundColor():uint { return _backgroundColor; }*/
 		
 		public function addToJuggler( movieClipSkin:MovieClipSkin ):void
 		{
@@ -265,8 +266,6 @@ package cadet2D.components.renderers
 		{
 			scene.addEventListener(ComponentEvent.ADDED_TO_SCENE, componentAddedToSceneHandler);
 			scene.addEventListener(ComponentEvent.REMOVED_FROM_SCENE, componentRemovedFromSceneHandler);
-			
-//			addSkins();
 		}
 		
 		private function addSkins():void
@@ -351,31 +350,35 @@ package cadet2D.components.renderers
 		{
 			if (!_worldContainer) return;
 		
-			var indexStr:String = skin.indexStr;
-			
-			displayListArray.push(skin);
-			displayListArray.sortOn("indexStr");
-			
-			var index:int = displayListArray.indexOf(skin);//indexStr);
-			
-			trace("ADD SKIN INDEX "+indexStr+" at index "+index+" dlArray "+displayListArray);
-			
-			// Items in the display order will need to have their indices updated,
-			// so loop through them invalidating their indices and that of their parent's.
-			for ( var i:uint = 0; i < displayListArray.length; i ++ )
-			{
-				var iSkin:AbstractSkin2D = displayListArray[i];
-				iSkin.invalidate(Component.INDEX);
-				var parent:IComponent;
-				while (parent) {
-					parent.invalidate(Component.INDEX);
-					parent = parent.parentComponent;
-				}
-			}
-			
 			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObject;
 			
-			_worldContainer.addChildAt( displayObject, index );
+			if (depthSort) {
+				var indexStr:String = skin.indexStr;
+				
+				displayListArray.push(skin);
+				displayListArray.sortOn("indexStr");
+				
+				var index:int = displayListArray.indexOf(skin);
+				
+				trace("ADD SKIN INDEX "+indexStr+" at index "+index+" dlArray "+displayListArray);
+				
+				// Items in the display order will need to have their indices updated,
+				// so loop through them invalidating their indices and that of their parent's.
+	/*			for ( var i:uint = 0; i < displayListArray.length; i ++ )
+				{
+					var iSkin:AbstractSkin2D = displayListArray[i];
+					iSkin.invalidate(Component.INDEX);
+					var parent:IComponent;
+					while (parent) {
+						parent.invalidate(Component.INDEX);
+						parent = parent.parentComponent;
+					}
+				}*/
+								
+				_worldContainer.addChildAt( displayObject, index );
+			} else {
+				_worldContainer.addChild( displayObject );
+			}
 		}
 		
 		private function removeSkinFromDisplayList( skin:IRenderable ):void

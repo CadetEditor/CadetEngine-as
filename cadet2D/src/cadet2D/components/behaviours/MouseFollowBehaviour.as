@@ -19,8 +19,8 @@ package cadet2D.components.behaviours
 		private var _renderer		:Renderer2D;
 		private var _constrain		:String;
 		
-		private var targetX			:Number;
-		private var targetY			:Number;
+		private var targetX			:Number = 0;
+		private var targetY			:Number = 0;
 		
 		public function MouseFollowBehaviour()
 		{

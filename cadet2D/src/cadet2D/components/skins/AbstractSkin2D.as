@@ -13,6 +13,7 @@
 package cadet2D.components.skins
 {
 	import cadet.core.Component;
+	import cadet.core.IComponent;
 	import cadet.core.IComponentContainer;
 	import cadet.events.InvalidationEvent;
 	
@@ -20,21 +21,25 @@ package cadet2D.components.skins
 	
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;
-	import cadet.core.IComponent;
 
 	public class AbstractSkin2D extends Component implements IRenderable
 	{
-		protected static const DISPLAY	:String = "display";
-//		protected static const LAYER	:String = "layer";
-//		protected static const CONTAINER:String = "container";
-		protected static const TRANSFORM:String = "transform";
+		protected static const DISPLAY			:String = "display";
+		protected static const TRANSFORM		:String = "transform";
 		
 		protected var _displayObject			:DisplayObject;
-//		protected var _layerIndex				:int = 0;
-//		protected var _containerID				:String = Renderer2D.WORLD_CONTAINER;
 		protected var _transform2D				:Transform2D;
 		
 		private var _indexStr					:String;
+		
+		private var _x							:Number = 0;
+		private var _y							:Number = 0;
+		private var _scaleX						:Number = 1;
+		private var _scaleY						:Number = 1;
+		private var _rotation					:Number = 0;
+		
+//		private var _width						:Number;
+//		private var _height						:Number;
 		
 		public function AbstractSkin2D()
 		{
@@ -102,30 +107,103 @@ package cadet2D.components.skins
 			_displayObject.transformationMatrix = _transform2D.matrix;
 			invalidate(TRANSFORM);
 		}
-/*		
-		[Serializable][Inspectable( label="Layer index", priority="50", editor="NumericStepper", min="0", max="7" )]
-		public function set layerIndex( value:int ):void
-		{
-			if ( value == _layerIndex ) return;
-			_layerIndex = value;
-			invalidate(LAYER);
-		}
-		public function get layerIndex():int { return _layerIndex; }
 		
-		[Serializable][Inspectable( label="Render layer", priority="51", editor="DropDownMenu", dataProvider="[worldContainer,viewportForegroundContainer,viewportBackgroundContainer]" )]
-		public function set containerID( value:String ):void
+		override public function validateNow():void
 		{
-			if ( value == _containerID ) return;
-			_containerID = value;
-			invalidate(CONTAINER);
+			if (isInvalid(TRANSFORM)) {
+				validateTransform();
+			}
+//			if (isInvalid(DISPLAY)) {
+//				validateDisplay();
+//			}
+			super.validateNow();
 		}
-		public function get containerID():String { return _containerID; }
-		*/
-		[Serializable][Inspectable( label="Mouse enabled", priority="52" )]
-		public function set mouseEnabled( value:Boolean ):void
+		
+		private function validateTransform():void
+		{
+			// A sibling transform component takes precedence over directly setting x, y, etc.
+			if (_transform2D) {
+				_x = _transform2D.x;
+				_y = _transform2D.y;
+				_scaleX = _transform2D.scaleX;
+				_scaleY = _transform2D.scaleY;
+				_rotation = _transform2D.rotation;
+				return;
+			}
+			
+			_displayObject.x = _x;
+			_displayObject.y = _y;
+			_displayObject.scaleX = _scaleX;
+			_displayObject.scaleY = _scaleY;
+			_displayObject.rotation = _rotation;
+		}
+/*		private function validateDisplay():void
+		{
+			_displayObject.width = _width;
+			_displayObject.height = _height;
+		}*/
+		
+		[Serializable][Inspectable( priority="50" )]
+		public function set x( value:Number ):void
+		{
+			_x = value;
+			invalidate(TRANSFORM);
+		}
+		public function get x():Number { return _x; }
+		
+		[Serializable][Inspectable( priority="51" )]
+		public function set y( value:Number ):void
+		{
+			_y = value;
+			invalidate(TRANSFORM);
+		}
+		public function get y():Number { return _y; }
+		
+		[Serializable][Inspectable( priority="52" )]
+		public function set scaleX( value:Number ):void
+		{
+			_scaleX = value;
+			invalidate(TRANSFORM);
+		}
+		public function get scaleX():Number { return _scaleX; }
+		
+		[Serializable][Inspectable( priority="53" )]
+		public function set scaleY( value:Number ):void
+		{
+			_scaleY = value;
+			invalidate(TRANSFORM);
+		}
+		public function get scaleY():Number { return _scaleY; }
+		
+		[Serializable][Inspectable( priority="54" )]
+		public function set rotation( value:Number ):void
+		{
+			_rotation = value;
+			invalidate(TRANSFORM);
+		}
+		public function get rotation():Number { return _rotation; }
+		
+/*		[Serializable][Inspectable( priority="55" )]
+		public function set width( value:Number ):void
+		{
+			_width = value;
+			invalidate(DISPLAY);
+		}
+		public function get width():Number { return _width; }
+		
+		[Serializable][Inspectable( priority="56" )]
+		public function set height( value:Number ):void
+		{
+			_height = value;
+			invalidate(DISPLAY);
+		}
+		public function get height():Number { return _height; }*/
+		
+		[Serializable][Inspectable( priority="57" )]
+		public function set touchable( value:Boolean ):void
 		{
 			_displayObject.touchable = value;
 		}
-		public function get mouseEnabled():Boolean { return _displayObject.touchable; }
+		public function get touchable():Boolean { return _displayObject.touchable;	 }
 	}
 }

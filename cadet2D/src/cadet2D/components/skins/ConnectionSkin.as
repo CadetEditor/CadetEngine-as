@@ -20,7 +20,7 @@ package cadet2D.components.skins
 	import starling.display.Graphics;
 	import starling.display.Shape;
 
-	[CadetBuilder( transformable="false" )]
+	[CadetEditor( transformable="false" )]
 	public class ConnectionSkin extends AbstractSkin2D
 	{
 		private static const DISPLAY		:String = "display";
