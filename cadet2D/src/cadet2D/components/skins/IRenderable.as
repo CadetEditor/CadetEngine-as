@@ -10,6 +10,8 @@
 
 package cadet2D.components.skins
 {
+	import flash.geom.Matrix;
+	
 	import cadet.core.IComponent;
 	
 	import cadet2D.components.transforms.Transform2D;
@@ -18,8 +20,8 @@ package cadet2D.components.skins
 	{
 		function get transform2D():Transform2D
 		function get indexStr():String
+		function get matrix():Matrix
+		function set matrix(value:Matrix):void
 		//function get displayObject():DisplayObject //TODO: Not sure about this...
-//		function get containerID():String
-//		function get layerIndex():int
 	}
 }

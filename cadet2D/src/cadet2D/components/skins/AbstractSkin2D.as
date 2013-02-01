@@ -12,6 +12,8 @@
 
 package cadet2D.components.skins
 {
+	import flash.geom.Matrix;
+	
 	import cadet.core.Component;
 	import cadet.core.IComponent;
 	import cadet.core.IComponentContainer;
@@ -52,6 +54,22 @@ package cadet2D.components.skins
 		}
 		
 		public function get displayObject():DisplayObject { return _displayObject; }
+		
+		public function get matrix():Matrix
+		{
+			return _displayObject.transformationMatrix;
+		}
+		public function set matrix( value:Matrix ):void
+		{
+			_displayObject.transformationMatrix = value;
+			_x = _displayObject.x;
+			_y = _displayObject.y;
+			_scaleX = _displayObject.scaleX;
+			_scaleY = _displayObject.scaleY;
+			_rotation = _displayObject.rotation;
+			
+			invalidate(TRANSFORM);
+		}
 		
 		override public function toString():String
 		{
