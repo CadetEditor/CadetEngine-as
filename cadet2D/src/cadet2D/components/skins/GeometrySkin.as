@@ -96,7 +96,7 @@ package cadet2D.components.skins
 			super.validateNow();
 		}
 		
-		protected function validateDisplay():void
+		override protected function validateDisplay():void
 		{
 			var graphics:Graphics = _shape.graphics;
 			graphics.clear();

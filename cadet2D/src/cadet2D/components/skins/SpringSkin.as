@@ -23,7 +23,7 @@ package cadet2D.components.skins
 	public class SpringSkin extends AbstractSkin2D
 	{
 		// Invalidation types
-		protected static const DISPLAY	:String = "display";
+		//protected static const DISPLAY	:String = "display";
 		
 		private var _lineThickness:Number;
 		private var _lineColor:Number;
@@ -172,12 +172,12 @@ package cadet2D.components.skins
 		public function get numZigZags():Number { return _numZigZags; }
 		
 		
-		[Serializable][Inspectable]
+/*		[Serializable][Inspectable]
 		public function set width( value:Number ):void
 		{
 			_width = value;
 			invalidate(DISPLAY);
 		}
-		public function get width():Number { return _width; }
+		public function get width():Number { return _width; }*/
 	}
 }

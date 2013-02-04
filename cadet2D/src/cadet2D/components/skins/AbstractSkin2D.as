@@ -32,16 +32,16 @@ package cadet2D.components.skins
 		protected var _displayObject			:DisplayObject;
 		protected var _transform2D				:Transform2D;
 		
-		private var _indexStr					:String;
+		protected var _indexStr					:String;
 		
-		private var _x							:Number = 0;
-		private var _y							:Number = 0;
-		private var _scaleX						:Number = 1;
-		private var _scaleY						:Number = 1;
-		private var _rotation					:Number = 0;
+		protected var _x						:Number = 0;
+		protected var _y						:Number = 0;
+		protected var _scaleX					:Number = 1;
+		protected var _scaleY					:Number = 1;
+		protected var _rotation					:Number = 0;
 		
-//		private var _width						:Number;
-//		private var _height						:Number;
+		protected var _width					:Number;
+		protected var _height					:Number;
 		
 		public function AbstractSkin2D()
 		{
@@ -131,9 +131,9 @@ package cadet2D.components.skins
 			if (isInvalid(TRANSFORM)) {
 				validateTransform();
 			}
-//			if (isInvalid(DISPLAY)) {
-//				validateDisplay();
-//			}
+			if (isInvalid(DISPLAY)) {
+				validateDisplay();
+			}
 			super.validateNow();
 		}
 		
@@ -155,11 +155,13 @@ package cadet2D.components.skins
 			_displayObject.scaleY = _scaleY;
 			_displayObject.rotation = _rotation;
 		}
-/*		private function validateDisplay():void
+		
+		protected function validateDisplay():void
 		{
-			_displayObject.width = _width;
-			_displayObject.height = _height;
-		}*/
+			throw(Error("Abstract method"));
+//			_displayObject.width = _width;
+//			_displayObject.height = _height;
+		}
 		
 		[Serializable][Inspectable( priority="50" )]
 		public function set x( value:Number ):void
@@ -201,7 +203,7 @@ package cadet2D.components.skins
 		}
 		public function get rotation():Number { return _rotation; }
 		
-/*		[Serializable][Inspectable( priority="55" )]
+		[Serializable][Inspectable( priority="55" )]
 		public function set width( value:Number ):void
 		{
 			_width = value;
@@ -215,7 +217,12 @@ package cadet2D.components.skins
 			_height = value;
 			invalidate(DISPLAY);
 		}
-		public function get height():Number { return _height; }*/
+		public function get height():Number { return _height; }
+		
+		public function clone():IRenderable
+		{
+			throw(Error("Abstract method"));
+		}
 		
 		[Serializable][Inspectable( priority="57" )]
 		public function set touchable( value:Boolean ):void

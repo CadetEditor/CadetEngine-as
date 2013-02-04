@@ -22,14 +22,11 @@ package cadet2D.components.skins
 
 	[CadetEditor( transformable="false" )]
 	public class ConnectionSkin extends AbstractSkin2D
-	{
-		private static const DISPLAY		:String = "display";
-		
+	{		
 		private var _lineThickness:Number;
 		private var _lineColor:Number;
 		private var _lineAlpha:Number;
 		private var _radius:Number;
-		private var _width:Number;
 		
 		private var _connection	:Connection;
 		private var _renderer	:Renderer2D;
@@ -161,12 +158,12 @@ package cadet2D.components.skins
 		public function get radius():Number { return _radius; }
 		
 		
-		[Serializable][Inspectable]
+/*		[Serializable][Inspectable]
 		public function set width( value:Number ):void
 		{
 			_width = value;
 			invalidate(DISPLAY);
 		}
-		public function get width():Number { return _width; }
+		public function get width():Number { return _width; }*/
 	}
 }

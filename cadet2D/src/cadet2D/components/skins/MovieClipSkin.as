@@ -106,6 +106,12 @@ package cadet2D.components.skins
 			super.validateNow();
 		}
 		
+		override protected function validateDisplay():void
+		{
+			_displayObject.width = _width;
+			_displayObject.height = _height;
+		}
+		
 		protected function validateTextures():void
 		{
 			if ((_textureAtlas && !_textureAtlas.atlas) || !_texturesPrefix ) {
@@ -133,6 +139,11 @@ package cadet2D.components.skins
 			
 			if (displayObjectContainer) {
 				displayObjectContainer.addChild(_movieclip);
+				// set default width and height
+				//if (!_width) 	
+				_width = _movieclip.width;
+				//if (!_height) 	
+				_height = _movieclip.height;				
 			}
 			
 			_texturesDirty = false;

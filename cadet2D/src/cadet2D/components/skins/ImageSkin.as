@@ -26,7 +26,7 @@ package cadet2D.components.skins
 	{
 		private static const TEXTURE	:String = "texture";
 		
-		private var _textureComponent		:TextureComponent;
+		private var _texture			:TextureComponent;
 /*		private var _fillXOffset		:Number = 0;
 		private var _fillYOffset		:Number = 0;*/
 		
@@ -105,10 +105,10 @@ package cadet2D.components.skins
 		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="102" )]
 		public function set texture( value:TextureComponent ):void
 		{
-			_textureComponent = value;
+			_texture = value;
 			invalidate( TEXTURE );
 		}
-		public function get texture():TextureComponent { return _textureComponent; }	
+		public function get texture():TextureComponent { return _texture; }	
 		
 		
 		override public function validateNow():void
@@ -125,6 +125,12 @@ package cadet2D.components.skins
 			super.validateNow();
 		}
 		
+		override protected function validateDisplay():void
+		{
+			_displayObject.width = _width;
+			_displayObject.height = _height;
+		}
+		
 		protected function validateTexture():void
 		{
 			var texture:Texture;
@@ -132,15 +138,15 @@ package cadet2D.components.skins
 			if ( _textureAtlas && _textureAtlas.atlas ) {
 				var textures:Vector.<Texture> = _textureAtlas.atlas.getTextures(_texturesPrefix);
 				if (textures.length > 0)	texture = textures[0];
-			} else if ( _textureComponent ) {
-				texture = _textureComponent.texture;
+			} else if ( _texture ) {
+				texture = _texture.texture;
 			}
 			
 			// If Starling isn't ready, wait until it is, then try and validateAsset() again.
 			// Else, if the user has selected a TextureComponent and that TextureComponent doesn't have a Texture,
 			// Assume that the Texture is yet to load its BitmapData in order to initialise, so the ImageSkin should
 			// wait for this to happen before validateAsset().
-			if (!Starling.context || (_textureComponent && !texture)) {
+			if (!Starling.context || (_texture && !texture)) {
 				_imageDirty = true;
 				return;
 			}
@@ -167,6 +173,11 @@ package cadet2D.components.skins
 				
 				if (displayObjectContainer) {
 					displayObjectContainer.addChild(image);
+					// set default width and height
+					//if (!_width) 	
+					_width = image.width;
+					//if (!_height) 	
+					_height = image.height;
 				}
 			}
 			
@@ -176,6 +187,22 @@ package cadet2D.components.skins
 		private function invalidateAtlasHandler( event:InvalidationEvent ):void
 		{
 			invalidate( TEXTURE );
+		}
+		
+		override public function clone():IRenderable
+		{
+			var newSkin:ImageSkin = new ImageSkin();
+			newSkin.rotation = _rotation;
+			newSkin.scaleX = _scaleX;
+			newSkin.scaleY = _scaleY;
+			newSkin.texture = _texture;
+			newSkin.textureAtlas = _textureAtlas;
+			newSkin.texturesPrefix = _texturesPrefix;
+			newSkin.touchable = _displayObject.touchable;
+			newSkin.transform2D = _transform2D;
+			newSkin.x = _x;
+			newSkin.y = _y;
+			return newSkin;
 		}
 	}
 }

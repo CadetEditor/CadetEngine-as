@@ -16,12 +16,12 @@ package cadet2D.components.behaviours
 	import cadet.core.ISteppableComponent;
 	
 	import cadet2D.components.skins.AbstractSkin2D;
-	import cadet2D.components.transforms.Transform2D;
 	
 	public class ParallaxBehaviour extends Component implements ISteppableComponent
 	{
-		public var transform		:Transform2D;
 		private var _skin			:AbstractSkin2D;
+		private var _skin1			:AbstractSkin2D;
+		private var _skin2			:AbstractSkin2D;
 		
 		private var _speed			:Number;
 		private var _depth			:Number;
@@ -33,29 +33,60 @@ package cadet2D.components.behaviours
 			name = "ParallaxBehaviour";
 		}
 		
+		// "skin" will be replaced each time a new skin sibling is added, hence usage of
+		// "skin1" and "skin2" when updating skin positions.
 		override protected function addedToScene():void
 		{
-			addSiblingReference( Transform2D, "transform" );
 			addSiblingReference( AbstractSkin2D, "skin" );
 		}
 		
 		public function step(dt:Number):void
 		{
-			if (!transform || !skin) return;
+			if (!_skin) return;
 			
 			// Initialisation of this behaviour will remove the skin and add in two duplicated DisplayObjects
 			// in order to provide the continuous parallax effect. Initialisation has to happen within step() to
 			// ensure this operation only executes while the scene is being stepped, i.e. not while in editor mode.
-			if (!_initialised && _skin.displayObject.parent) {
+			if (!_initialised && _skin.displayObject && _skin.displayObject.parent) {
 				initialise();
 			}
 			
-			transform.x += Math.round(speed * depth);
+			if (_initialised) {
+				_skin1.x += Math.round(speed * depth);
+				_skin2.x += Math.round(speed * depth);
+				
+				// if direction is left
+				if ( speed < 0 ) {
+					if ( _skin1.x + _skin1.width < 0 ) {
+						_skin1.x = _skin2.x + _skin2.width;
+					}
+					if ( _skin2.x + _skin2.width < 0 ) {
+						_skin2.x = _skin1.x + _skin1.width;
+					}
+				} 
+				// if direction is right
+				else {
+					if ( _skin1.x > _skin.displayObject.stage.stageWidth ) {
+						_skin1.x = _skin2.x - _skin1.width;
+					}
+					if ( _skin2.x > _skin.displayObject.stage.stageWidth ) {
+						_skin2.x = _skin1.x - _skin2.width;
+					}					
+				}
+				//trace("stage X "+_skin.displayObject.stage.x+" Y "+_skin.displayObject.stage.y+" W "+_skin.displayObject.stage.stageWidth+" H "+_skin.displayObject.stage.stageHeight);
+			}
+			
+			//transform.x += Math.round(speed * depth);
 		}
 		
 		private function initialise():void
 		{
-			_skin.displayObject.parent.removeChild(_skin.displayObject);
+//			_skin.displayObject.parent.removeChild(_skin.displayObject);
+			_skin1 = _skin;
+			_skin2 = AbstractSkin2D(_skin1.clone());
+			parentComponent.children.addItem(_skin2);
+			_skin2.x = _skin.x + _skin.width;
+			
 			_initialised = true;
 		}
 		
