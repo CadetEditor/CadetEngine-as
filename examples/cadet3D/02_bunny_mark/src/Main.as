@@ -4,9 +4,7 @@ package
 	import away3d.containers.View3D;
 	import away3d.debug.Trident;
 	import away3d.entities.Sprite3D;
-	import away3d.materials.ColorMaterial;
 	import away3d.materials.TextureMaterial;
-	import away3d.primitives.CubeGeometry;
 	import away3d.textures.BitmapTexture;
 	
 	import flash.display.Sprite;

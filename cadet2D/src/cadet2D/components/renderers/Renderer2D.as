@@ -29,6 +29,7 @@ package cadet2D.components.renderers
 	import cadet2D.components.skins.IRenderable;
 	import cadet2D.components.skins.MovieClipSkin;
 	import cadet2D.overlays.Overlay;
+	import cadet2D.util.SkinsUtil;
 	
 	import flox.app.util.AsynchronousUtil;
 	
@@ -356,7 +357,8 @@ package cadet2D.components.renderers
 				var indexStr:String = skin.indexStr;
 				
 				displayListArray.push(skin);
-				displayListArray.sortOn("indexStr");
+				//displayListArray.sortOn("indexStr");
+				displayListArray.sort(SkinsUtil.sortSkinsById);
 				
 				var index:int = displayListArray.indexOf(skin);
 				
@@ -391,8 +393,7 @@ package cadet2D.components.renderers
 			
 			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObject;
 			
-			if ( displayObject.parent )
-			{
+			if ( displayObject.parent ) {
 				displayObject.parent.removeChild(displayObject);
 			}
 		}

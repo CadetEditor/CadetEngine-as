@@ -8,7 +8,7 @@ package components.behaviours
 	{
 		public var transform2D	:Transform2D;
 		
-		public var rotationSpeed	:Number = 30;
+		public var rotationSpeed	:Number = 0.5;
 		
 		public function AnimateRotationBehaviour(name:String=null)
 		{

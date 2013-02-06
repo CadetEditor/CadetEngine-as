@@ -158,9 +158,7 @@ package cadet2D.components.skins
 		
 		protected function validateDisplay():void
 		{
-			throw(Error("Abstract method"));
-//			_displayObject.width = _width;
-//			_displayObject.height = _height;
+			
 		}
 		
 		[Serializable][Inspectable( priority="50" )]

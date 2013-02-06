@@ -28,27 +28,20 @@ package components.processes
 		
 		private function createBunny():void
 		{
-			// Create a Bunny Entity and add it to the CadetScene
-			var bunnyEntity:Entity = new Entity();
-			scene.children.addItem(bunnyEntity);
 			
-			// Add a Transform2D to the Entity (for x & y position)
-			var transform:Transform2D = new Transform2D();
-			transform.x = 100;
-			transform.y = 100;
-			bunnyEntity.children.addItem(transform);
-			
-			// Add the BounceBehaviour to the Entity
+			// Add the BounceBehaviour to the scene
 			var randomVelocity:Point = new Point(Math.random() * 10, (Math.random() * 10) - 5);
 			var bounceBehaviour:BounceBehaviour = new BounceBehaviour();
 			bounceBehaviour.velocity = randomVelocity;
 			bounceBehaviour.screenRect = screenRect;
-			bunnyEntity.children.addItem(bounceBehaviour);
+			scene.children.addItem(bounceBehaviour);
 			
-			// Add a Skin to the Entity
+			// Add a Skin to the scene
 			var skin:ImageSkin = new ImageSkin();
 			skin.texture = textureComponent;
-			bunnyEntity.children.addItem(skin);			
+			scene.children.addItem(skin);
+			
+			bounceBehaviour.skin = skin;			
 		}
 		
 		public function step( dt:Number ):void
