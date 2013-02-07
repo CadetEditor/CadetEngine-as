@@ -114,16 +114,17 @@ package cadet2D.components.skins
 		
 		protected function validateTextures():void
 		{
-			if ((_textureAtlas && !_textureAtlas.atlas) || !_texturesPrefix ) {
-				_texturesDirty = true;
-				return;
-			}
-			
+			// Remove existing asset first
 			if ( displayObject is DisplayObjectContainer ) {
 				var displayObjectContainer:DisplayObjectContainer = DisplayObjectContainer(displayObject);
 			}
 			if ( _movieclip && displayObjectContainer && displayObjectContainer.contains(_movieclip) ) {
 				displayObjectContainer.removeChild(_movieclip);
+			}
+			
+			if ((_textureAtlas && !_textureAtlas.atlas) || !_texturesPrefix ) {
+				_texturesDirty = true;
+				return;
 			}
 			
 			// textureAtlas has been set to null, quit out after removing current textures

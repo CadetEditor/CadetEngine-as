@@ -40,8 +40,8 @@ package cadet2D.components.skins
 		protected var _scaleY					:Number = 1;
 		protected var _rotation					:Number = 0;
 		
-		protected var _width					:Number;
-		protected var _height					:Number;
+		protected var _width					:Number = 0;
+		protected var _height					:Number = 0;
 		
 		public function AbstractSkin2D()
 		{
@@ -164,6 +164,10 @@ package cadet2D.components.skins
 		[Serializable][Inspectable( priority="50" )]
 		public function set x( value:Number ):void
 		{
+			if ( isNaN(value) ) {
+				throw( new Error( "value is not a number" ) );
+			}
+			
 			_x = value;
 			invalidate(TRANSFORM);
 		}
@@ -172,6 +176,10 @@ package cadet2D.components.skins
 		[Serializable][Inspectable( priority="51" )]
 		public function set y( value:Number ):void
 		{
+			if ( isNaN(value) ) {
+				throw( new Error( "value is not a number" ) );
+			}
+			
 			_y = value;
 			invalidate(TRANSFORM);
 		}
@@ -180,6 +188,10 @@ package cadet2D.components.skins
 		[Serializable][Inspectable( priority="52" )]
 		public function set scaleX( value:Number ):void
 		{
+			if ( isNaN(value) ) {
+				throw( new Error( "value is not a number" ) );
+			}
+			
 			_scaleX = value;
 			invalidate(TRANSFORM);
 		}
@@ -188,6 +200,10 @@ package cadet2D.components.skins
 		[Serializable][Inspectable( priority="53" )]
 		public function set scaleY( value:Number ):void
 		{
+			if ( isNaN(value) ) {
+				throw( new Error( "value is not a number" ) );
+			}
+			
 			_scaleY = value;
 			invalidate(TRANSFORM);
 		}
@@ -196,6 +212,10 @@ package cadet2D.components.skins
 		[Serializable][Inspectable( priority="54" )]
 		public function set rotation( value:Number ):void
 		{
+			if ( isNaN(value) ) {
+				throw( new Error( "value is not a number" ) );
+			}
+			
 			_rotation = value;
 			invalidate(TRANSFORM);
 		}
@@ -204,6 +224,10 @@ package cadet2D.components.skins
 		[Serializable][Inspectable( priority="55" )]
 		public function set width( value:Number ):void
 		{
+			if ( isNaN(value) ) {
+				throw( new Error( "value is not a number" ) );
+			}
+			
 			_width = value;
 			invalidate(DISPLAY);
 		}
@@ -212,6 +236,10 @@ package cadet2D.components.skins
 		[Serializable][Inspectable( priority="56" )]
 		public function set height( value:Number ):void
 		{
+			if ( isNaN(value) ) {
+				throw( new Error( "value is not a number" ) );
+			}
+			
 			_height = value;
 			invalidate(DISPLAY);
 		}

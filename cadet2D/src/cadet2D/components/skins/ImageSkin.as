@@ -16,8 +16,8 @@ package cadet2D.components.skins
 	
 	import cadet2D.components.textures.TextureAtlasComponent;
 	import cadet2D.components.textures.TextureComponent;
+	import cadet2D.events.SkinEvent;
 	
-	import starling.core.Starling;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.textures.Texture;
@@ -30,14 +30,14 @@ package cadet2D.components.skins
 /*		private var _fillXOffset		:Number = 0;
 		private var _fillYOffset		:Number = 0;*/
 		
-		private var image					:Image;
+		private var _image					:Image;
 		
 		private var _textureAtlas			:TextureAtlasComponent;
 		private var _texturesPrefix			:String;
 		
 		// DEPRECATED
 		//private var _fillBitmap			:BitmapData;
-		private var _imageDirty				:Boolean;
+		private var _textureDirty			:Boolean;
 		
 		public function ImageSkin()
 		{
@@ -83,7 +83,8 @@ package cadet2D.components.skins
 			if ( _textureAtlas ) {
 				_textureAtlas.addEventListener(InvalidationEvent.INVALIDATE, invalidateAtlasHandler);
 			}
-			
+			// textureAtlas & texture are mutually exclusive values
+			if (value)	_texture = null;
 			invalidate( TEXTURE );
 		}
 		public function get textureAtlas():TextureAtlasComponent
@@ -106,6 +107,8 @@ package cadet2D.components.skins
 		public function set texture( value:TextureComponent ):void
 		{
 			_texture = value;
+			// textureAtlas & texture are mutually exclusive values
+			if (value)	_textureAtlas = null;
 			invalidate( TEXTURE );
 		}
 		public function get texture():TextureComponent { return _texture; }	
@@ -113,7 +116,7 @@ package cadet2D.components.skins
 		
 		override public function validateNow():void
 		{
-			if ( _imageDirty ) {
+			if ( _textureDirty ) {
 				invalidate(TEXTURE);
 			}
 			
@@ -133,57 +136,55 @@ package cadet2D.components.skins
 		
 		protected function validateTexture():void
 		{
-			var texture:Texture;
-			
-			if ( _textureAtlas && _textureAtlas.atlas ) {
-				var textures:Vector.<Texture> = _textureAtlas.atlas.getTextures(_texturesPrefix);
-				if (textures.length > 0)	texture = textures[0];
-			} else if ( _texture ) {
-				texture = _texture.texture;
-			}
-			
-			// If Starling isn't ready, wait until it is, then try and validateAsset() again.
-			// Else, if the user has selected a TextureComponent and that TextureComponent doesn't have a Texture,
-			// Assume that the Texture is yet to load its BitmapData in order to initialise, so the ImageSkin should
-			// wait for this to happen before validateAsset().
-			if (!Starling.context || (_texture && !texture)) {
-				_imageDirty = true;
-				return;
-			}
-			
+			// Remove existing asset first
 			if ( displayObject is DisplayObjectContainer ) {
 				var displayObjectContainer:DisplayObjectContainer = DisplayObjectContainer(displayObject);
 			}
-			if ( image && displayObjectContainer && displayObjectContainer.contains(image) ) {
-				displayObjectContainer.removeChild(image);
+			if ( _image && displayObjectContainer && displayObjectContainer.contains(_image) ) {
+				displayObjectContainer.removeChild(_image);
 			}
-
-//			else if ( _fillBitmap ) {
-//				texture = Texture.fromBitmap( new Bitmap(_fillBitmap), false );
-//			}
 			
-//			image.texture = texture;
-//			image.width = texture.width;
-//			image.height = texture.height;
+			var textures:Vector.<Texture>;
 			
-			if (texture) {
-				image = new Image(texture);
-	//			image.x = _fillXOffset;
-	//			image.y = _fillYOffset;
-				
-				if (displayObjectContainer) {
-					displayObjectContainer.addChild(image);
-					// set default width and height
-					//if (!_width) 	
-					_width = image.width;
-					//if (!_height) 	
-					_height = image.height;
+			if (_texture) {
+				if (_texture.texture) {
+					textures = new Vector.<Texture>();
+					textures.push(_texture.texture);	
+				} else {
+					_textureDirty = true;
+					return;
 				}
+			} else if ((_textureAtlas && !_textureAtlas.atlas) || !_texturesPrefix ) {
+				_textureDirty = true;
+				return;
+			} else if (textureAtlas) {
+				textures = _textureAtlas.atlas.getTextures(_texturesPrefix);
 			}
 			
-			_imageDirty = false;
+			// textureAtlas has been set to null, quit out after removing current textures
+			if (!_textureAtlas && !_texture) {
+				return;
+			}
+			
+			if (!textures || textures.length == 0) return;
+			
+			_image = new Image(textures[0]);
+			
+			if (displayObjectContainer) {
+				displayObjectContainer.addChild(_image);
+				// set default width and height
+				//if (!_width) 	
+				_width = _image.width;
+				//if (!_height) 	
+				_height = _image.height;				
+			}
+			
+			_textureDirty = false;
+			
+			// Useful when not using editor as validation is not immediate
+			dispatchEvent(new SkinEvent(SkinEvent.TEXTURE_VALIDATED));
 		}
-		
+
 		private function invalidateAtlasHandler( event:InvalidationEvent ):void
 		{
 			invalidate( TEXTURE );
@@ -202,6 +203,8 @@ package cadet2D.components.skins
 			newSkin.transform2D = _transform2D;
 			newSkin.x = _x;
 			newSkin.y = _y;
+			newSkin.width = _width;
+			newSkin.height = _height;
 			return newSkin;
 		}
 	}

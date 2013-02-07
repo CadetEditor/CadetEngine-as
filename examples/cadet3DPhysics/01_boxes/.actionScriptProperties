@@ -28,8 +28,8 @@
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_agent.swc" useDefaultLinkType="false"/>
         </excludedEntries>
       </libraryPathEntry>
-      <libraryPathEntry kind="3" linkType="1" path="/CadetEngine_Extension_3D/bin/CadetEngine_Extension_3D.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="3" linkType="1" path="/CadetEngine_Extension_3DPhysics/bin/CadetEngine_Extension_3DPhysics.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="/CadetEngine_Ext_3D/bin/CadetEngine_Ext_3D.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="/CadetEngine_Ext_3DPhysics/bin/CadetEngine_Ext_3DPhysics.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>

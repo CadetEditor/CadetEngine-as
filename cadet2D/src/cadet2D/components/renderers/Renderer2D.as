@@ -81,8 +81,10 @@ package cadet2D.components.renderers
 		
 		private var _depthSort				:Boolean = false;
 		
-		public function Renderer2D()
+		public function Renderer2D( depthSort:Boolean = false )
 		{
+			_depthSort = depthSort;
+			
 			name = "Starling Renderer";
 			
 			reset();

@@ -75,13 +75,10 @@ package cadet2D.components.behaviours
 				}
 				//trace("stage X "+_skin.displayObject.stage.x+" Y "+_skin.displayObject.stage.y+" W "+_skin.displayObject.stage.stageWidth+" H "+_skin.displayObject.stage.stageHeight);
 			}
-			
-			//transform.x += Math.round(speed * depth);
 		}
 		
 		private function initialise():void
 		{
-//			_skin.displayObject.parent.removeChild(_skin.displayObject);
 			_skin1 = _skin;
 			_skin2 = AbstractSkin2D(_skin1.clone());
 			parentComponent.children.addItem(_skin2);

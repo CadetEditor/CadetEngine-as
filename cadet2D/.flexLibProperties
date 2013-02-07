@@ -7,6 +7,7 @@
     <classEntry path="cadet2D.components.behaviours.ParallaxBehaviour"/>
     <classEntry path="cadet2D.components.behaviours.SimpleFootprintBehaviour"/>
     <classEntry path="cadet2D.util.SkinsUtil"/>
+    <classEntry path="cadet2D.events.SkinEvent"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
