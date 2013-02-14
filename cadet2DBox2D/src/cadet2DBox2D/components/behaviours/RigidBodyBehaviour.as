@@ -234,7 +234,7 @@ package cadet2DBox2D.components.behaviours
 			var bodyDef:b2BodyDef = new b2BodyDef();
 			bodyDef.position.x = _transform.x * _physicsProcess.scaleFactor;
 			bodyDef.position.y = _transform.y * _physicsProcess.scaleFactor;
-			bodyDef.angle = _transform.rotation * 0.0174;
+			bodyDef.angle = _transform.rotation;// * 0.0174;
 			
 			storedScaleX = _transform.scaleX;
 			storedScaleY = _transform.scaleY;

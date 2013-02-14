@@ -19,11 +19,11 @@ package
 	import flash.events.Event;
 	
 	[SWF( width="700", height="400", backgroundColor="0x002135", frameRate="60" )]
-	public class Main extends Sprite
+	public class Boxes extends Sprite
 	{
 		private var cadetScene	: CadetScene;
 		
-		public function Main()
+		public function Boxes()
 		{
 			cadetScene = new CadetScene();
 			

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="Main.as" projectUUID="202dd0ac-969e-47c4-b403-0f3b2f67743b" version="11">
+<actionScriptProperties analytics="false" mainApplicationPath="Motorbike.as" projectUUID="202dd0ac-969e-47c4-b403-0f3b2f67743b" version="11">
   <compiler additionalCompilerArguments="-locale en_US -include-libraries ../../../../CadetEngine/bin/CadetEngine.swc ../../../../CadetEngine_Ext_2D/bin/CadetEngine_Ext_2D.swc ../../../../CadetEngine_Ext_2DBox2D/bin/CadetEngine_Ext_2DBox2D.swc" advancedTelemetry="false" autoRSLOrdering="true" copyDependentFiles="false" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="false" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" useFlashSDK="true" verifyDigests="true" warn="false">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
@@ -36,7 +36,7 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="Main.as"/>
+    <application path="Motorbike.as"/>
   </applications>
   <modules/>
   <workers/>

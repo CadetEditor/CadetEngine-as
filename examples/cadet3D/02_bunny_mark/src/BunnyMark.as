@@ -11,14 +11,14 @@ package
 	import flash.events.Event;
 	
 	[SWF( width="700", height="400", backgroundColor="0x002135", frameRate="60" )]
-	public class Main extends Sprite
+	public class BunnyMark extends Sprite
 	{
 		[Embed(source = "assets/wabbit_alpha_64x64.png")]
 		private var BunnyAsset:Class;
 		
 		private var _view3D:View3D;
 		
-		public function Main()
+		public function BunnyMark()
 		{
 			_view3D = new View3D();
 			addChild(_view3D);

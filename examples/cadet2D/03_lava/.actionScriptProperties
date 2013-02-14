@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="Main.as" projectUUID="dc1b00a2-2388-4558-afd1-2aad4534fdf7" version="11">
+<actionScriptProperties analytics="false" mainApplicationPath="Lava.as" projectUUID="dc1b00a2-2388-4558-afd1-2aad4534fdf7" version="11">
   <compiler additionalCompilerArguments="-locale en_US" advancedTelemetry="false" autoRSLOrdering="true" copyDependentFiles="false" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" useFlashSDK="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
@@ -33,7 +33,7 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="Main.as"/>
+    <application path="Lava.as"/>
   </applications>
   <modules/>
   <workers/>
