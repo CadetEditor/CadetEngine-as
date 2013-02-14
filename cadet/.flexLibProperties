@@ -7,6 +7,8 @@
     <classEntry path="cadet.validators.IComponentValidator"/>
     <classEntry path="cadet.validators.ComponentParentValidator"/>
     <classEntry path="cadet.components.sounds.Sound"/>
+    <classEntry path="cadet.components.processes.TouchInputMapping"/>
+    <classEntry path="cadet.components.processes.IInputMapping"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

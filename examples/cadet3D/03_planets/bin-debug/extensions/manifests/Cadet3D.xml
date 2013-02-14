@@ -1,20 +1,23 @@
 <manifest prefix="cadet3D" url="www.unwrong.com/cadet3D/1.0.0">
 
-  <!-- CORE -->
+  <!-- Processes -->
+  <classMap name="InputProcess3D" class="cadet3D.components.processes.InputProcess3D" />
+  <!-- Core -->
+  <classMap name="Entity" class="cadet3D.components.core.Entity"/>
   <classMap name="Renderer3D" class="cadet3D.components.core.Renderer3D"/>
   <classMap name="MeshComponent" class="cadet3D.components.core.MeshComponent"/> 
-  <!-- CAMERAS -->
+  <!-- Cameras -->
   <classMap name="CameraComponent" class="cadet3D.components.cameras.CameraComponent"/>
-  <!-- DEBUG -->
+  <!-- Debug -->
   <classMap name="TridentComponent" class="cadet3D.components.debug.TridentComponent"/>
-  <!-- GEOM -->
+  <!-- Geom -->
   <classMap name="GeometryComponent" class="cadet3D.components.geom.GeometryComponent"/>
   <classMap name="SphereGeometryComponent" class="cadet3D.components.geom.SphereGeometryComponent"/>
-  <!-- LIGHTS -->
+  <!-- Lights -->
   <classMap name="DirectionalLightComponent" class="cadet3D.components.lights.DirectionalLightComponent"/>
-  <!-- TEXTURES -->
+  <!-- Textures -->
   <classMap name="BitmapTextureComponent" class="cadet3D.components.textures.BitmapTextureComponent"/>
-  <!-- MATERIALS -->
+  <!-- Materials -->
   <classMap name="ColorMaterialComponent" class="cadet3D.components.materials.ColorMaterialComponent"/>
   <classMap name="TextureMaterialComponent" class="cadet3D.components.materials.TextureMaterialComponent"/>
   

@@ -142,7 +142,7 @@ package cadet.core
 			return _index;
 		}
 		
-		[Serializable][Inspectable( label="Name", priority="0" )]
+		[Serializable][Inspectable( priority="0" )]
 		public function set name( value:String ):void
 		{
 			_name = value;

@@ -10,7 +10,7 @@
 
 package cadet.components.behaviours
 {
-	import cadet.components.processes.KeyboardInputProcess;
+	import cadet.components.processes.InputProcess;
 	import cadet.core.Component;
 	import cadet.core.ISteppableComponent;
 
@@ -25,7 +25,7 @@ package cadet.components.behaviours
 		[Serializable][Inspectable]
 		public var steerRightMapping		:String = "STEER RIGHT";
 		
-		public var inputProcess		:KeyboardInputProcess;
+		public var inputProcess		:InputProcess;
 		public var vehicleBehaviour	:IVehicleBehaviour;
 		
 		[Serializable][Inspectable]
@@ -49,7 +49,7 @@ package cadet.components.behaviours
 		override protected function addedToScene():void
 		{
 			addSiblingReference(IVehicleBehaviour, "vehicleBehaviour");
-			addSceneReference( KeyboardInputProcess, "inputProcess" );
+			addSceneReference( InputProcess, "inputProcess" );
 		}
 		
 		public function step(dt:Number):void

@@ -308,10 +308,12 @@ package cadet2DBox2D.components.behaviours
 			{
 				var polygon:PolygonGeometry = PolygonGeometry( geometry );
 				
-				m = _transform.matrix;
+				// Cancel out translation and rotation, but retain scale.
+				//m = _transform.matrix;
+				m = _transform.matrix.clone();
 				m.translate(-_transform.x, -_transform.y);
-				m.rotate(-_transform.rotation* 0.0174);
-				
+				m.rotate(-_transform.rotation);//* 0.0174);
+				//Note: Starling rotation already in radians.
 				
 				// Transform the vertices to world space
 				var vertices:Array = VertexUtil.copy(polygon.vertices);
@@ -342,6 +344,7 @@ package cadet2DBox2D.components.behaviours
 					polygonShapeDef.density = fixed ? 0 : density;
 					polygonShapeDef.friction = friction;
 					polygonShapeDef.restitution = restitution;
+					
 					for ( var i:int = 0; i < vertices.length; i++ )
 					{
 						var vertex:Vertex = vertices[i];

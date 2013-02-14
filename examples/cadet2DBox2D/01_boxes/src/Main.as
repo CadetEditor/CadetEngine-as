@@ -1,7 +1,6 @@
 package
 {
 	import cadet.core.CadetScene;
-	import cadet.core.ComponentContainer;
 	import cadet.events.RendererEvent;
 	
 	import cadet2D.components.core.Entity;

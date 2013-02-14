@@ -9,7 +9,8 @@
 	<classMap name="VehicleUserControlBehaviour" class="cadet.components.behaviours.VehicleUserControlBehaviour" />
 	
 	<!-- Processes -->
-	<classMap name="InputMapping" class="cadet.components.processes.InputMapping" />
-	<classMap name="InputProcess" class="cadet.components.processes.InputProcess" />
+	<classMap name="KeyboardInputMapping" class="cadet.components.processes.KeyboardInputMapping" />
+	<classMap name="TouchInputMapping" class="cadet.components.processes.TouchInputMapping" />
+	<!--<classMap name="KeyboardInputProcess" class="cadet.components.processes.KeyboardInputProcess" />-->
 	
 </manifest>

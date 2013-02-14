@@ -7,4 +7,5 @@
 	<!-- Entities -->
 	<classMap name="ArrayCollection" class="flox.core.data.ArrayCollection" />
 	
+	
 </manifest>

@@ -11,7 +11,6 @@
 package cadet.core
 {
 	import flash.display.DisplayObjectContainer;
-	import flash.display.Sprite;
 
 	public interface IRenderer extends IComponent
 	{

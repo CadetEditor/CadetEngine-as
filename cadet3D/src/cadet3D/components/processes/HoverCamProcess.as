@@ -3,12 +3,11 @@ package cadet3D.components.processes
 	import away3d.containers.ObjectContainer3D;
 	import away3d.entities.Entity;
 	
-	import cadet.components.processes.KeyboardInputProcess;
+	import cadet.components.processes.InputProcess;
 	import cadet.core.Component;
 	import cadet.core.ISteppableComponent;
 	import cadet.util.ComponentUtil;
 	
-	import cadet3D.components.cameras.CameraComponent;
 	import cadet3D.components.core.ObjectContainer3DComponent;
 	import cadet3D.components.core.Renderer3D;
 	import cadet3D.controllers.HoverController;
@@ -16,7 +15,7 @@ package cadet3D.components.processes
 	public class HoverCamProcess extends Component implements ISteppableComponent
 	{
 		[Serializable][Inspectable]
-		public var mouseMapping		:String = "LMB";
+		public var inputMapping			:String = "MOVED";
 		
 		private var _controller			:HoverController;
 		
@@ -28,7 +27,7 @@ package cadet3D.components.processes
 		private var lastMouseX:Number;
 		private var lastMouseY:Number;
 		
-		public var inputProcess			:KeyboardInputProcess;
+		public var inputProcess			:InputProcess;
 		private var _active				:Boolean;
 		
 		public function HoverCamProcess()
@@ -38,7 +37,7 @@ package cadet3D.components.processes
 		
 		override protected function addedToScene():void
 		{
-			addSceneReference( KeyboardInputProcess, "inputProcess" );
+			addSceneReference( InputProcess, "inputProcess" );
 		}
 		
 		
@@ -109,7 +108,7 @@ package cadet3D.components.processes
 			var renderer:Renderer3D = ComponentUtil.getChildOfType(scene, Renderer3D);
 			if (!renderer) return;
 			
-			if ( inputProcess.isInputDown( mouseMapping ) )
+			if ( inputProcess.isInputDown( inputMapping ) )
 			{				
 				if (!_active) {
 					lastPanAngle = _controller.panAngle;

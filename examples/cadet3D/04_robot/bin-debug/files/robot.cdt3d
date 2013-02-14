@@ -1,20 +1,20 @@
-<cadet:CadetScene x:id="0" timeScale="1" framerate="30" name="Component" xmlns:cadet="www.unwrong.com/cadet/1.0.0" xmlns:x="flox.app.core.serialization.Serializer" xmlns:flox="www.unwrong.com/flox/1.0.0" xmlns:ns0="cadet3D.components.processes" xmlns:cadet3D="www.unwrong.com/cadet3D/1.0.0">
+<cadet:CadetScene x:id="0" name="Component" timeScale="1" framerate="30" xmlns:cadet="www.unwrong.com/cadet/1.0.0" xmlns:x="flox.app.core.serialization.Serializer" xmlns:flox="www.unwrong.com/flox/1.0.0" xmlns:cadet3D="www.unwrong.com/cadet3D/1.0.0" xmlns:ns0="cadet3D.components.processes">
   <Object x:name="userData" x:id="1"/>
   <flox:ArrayCollection x:name="children" x:id="2">
-    <cadet:InputProcess x:name="0" x:id="3" name="Input Process">
+    <cadet3D:InputProcess3D x:name="0" x:id="3" name="Input Process">
       <flox:ArrayCollection x:name="children" x:id="4">
-        <cadet:InputMapping x:name="0" x:id="5" name="LMB" symbol="LMB"/>
+        <cadet:TouchInputMapping x:name="0" x:id="5" input="MOVED" name="MOVED"/>
       </flox:ArrayCollection>
-    </cadet:InputProcess>
-    <ns0:HoverCamProcess x:name="1" x:id="6" mouseMapping="LMB" currentTiltAngle="10" currentPanAngle="180" name="HoverCamProcess" distance="200">
-      <cadet3D:MeshComponent x:name="lookAtComponent" x:id="7" transform="1,0,0,0,0,1,0,0,0,0,1,0,0,100,0,1" name="CameraTarget">
-        <cadet3D:ColorMaterialComponent x:name="materialComponent" x:id="8" name="Default Primitive Material" specular="1" gloss="50" depthCompareMode="less" color="13421772"/>
-        <cadet3D:SphereGeometryComponent x:name="geometryComponent" x:id="9" radius="1" name="Sphere Geometry" segmentsW="16" segmentsH="12"/>
+    </cadet3D:InputProcess3D>
+    <ns0:HoverCamProcess x:name="1" x:id="6" inputMapping="MOVED" distance="200" currentPanAngle="180" currentTiltAngle="10" name="HoverCamProcess">
+      <cadet3D:MeshComponent x:name="lookAtComponent" x:id="7" name="CameraTarget" transform="1,0,0,0,0,1,0,0,0,0,1,0,0,100,0,1">
+        <cadet3D:ColorMaterialComponent x:name="materialComponent" x:id="8" ambient="1" alphaBlending="0" blendMode="normal" gloss="50" depthCompareMode="less" ambientColor="16777215" name="Default Primitive Material" specular="1" color="13421772" specularColor="16777215"/>
+        <cadet3D:SphereGeometryComponent x:name="geometryComponent" x:id="9" radius="1" segmentsW="16" name="Sphere Geometry" segmentsH="12"/>
         <flox:ArrayCollection x:name="children" x:id="10">
           <x:Ref x:name="0" x:id="9"/>
         </flox:ArrayCollection>
       </cadet3D:MeshComponent>
-      <cadet3D:CameraComponent x:name="targetComponent" x:id="11" transform="0.937706470489502,1.4901161193847656e-7,-0.34742850065231323,0,0.12348747253417969,0.934701681137085,0.33329200744628906,0,0.32474204897880554,-0.3554331362247467,0.8764758110046387,0,-82.89120483398438,171.59405517578125,-204.82273864746094,1" name="Camera">
+      <cadet3D:CameraComponent x:name="targetComponent" x:id="11" name="Camera" transform="0.937706470489502,1.4901161193847656e-7,-0.34742850065231323,0,0.12348747253417969,0.934701681137085,0.33329200744628906,0,0.32474204897880554,-0.3554331362247467,0.8764758110046387,0,-82.89120483398438,171.59405517578125,-204.82273864746094,1" lensFar="3000">
         <flox:ArrayCollection x:name="children" x:id="12"/>
       </cadet3D:CameraComponent>
     </ns0:HoverCamProcess>
@@ -22,17 +22,17 @@
     <cadet3D:Renderer3D x:name="3" x:id="13" name="Away3D Renderer">
       <x:Ref x:name="cameraComponent" x:id="11"/>
     </cadet3D:Renderer3D>
-    <cadet3D:DirectionalLightComponent x:name="4" x:id="14" ambient="1" ambientColor="16777215" specular="1" transform="0.9530273079872131,-0.13210584223270416,-0.2725565731525421,0,0.30282384157180786,0.39757466316223145,0.8661594390869141,0,-0.006063111126422882,-0.9080101251602173,0.41890430450439453,0,-4.31298828125,170.5011749267578,-5.684341886080802e-14,1" name="Directional Light" color="16777215" diffuse="0">
+    <cadet3D:DirectionalLightComponent x:name="4" x:id="14" name="Directional Light" transform="0.9530273079872131,-0.13210584223270416,-0.2725565731525421,0,0.30282384157180786,0.39757466316223145,0.8661594390869141,0,-0.006063111126422882,-0.9080101251602173,0.41890430450439453,0,-4.31298828125,170.5011749267578,-5.684341886080802e-14,1" color="16777215" diffuse="0" specular="1" ambientColor="16777215" ambient="1" castsShadows="1">
       <flox:ArrayCollection x:name="children" x:id="15"/>
     </cadet3D:DirectionalLightComponent>
     <x:Ref x:name="5" x:id="11"/>
-    <cadet3D:MeshComponent x:name="6" x:id="16" transform="10.143118858337402,0,0,0,0,10.143118858337402,0,0,0,0,10.143118858337402,0,0,0,0,1" name="RobotMesh">
-      <cadet3D:TextureMaterialComponent x:name="materialComponent" x:id="17" alphaThreshold="0" envMapAlpha="1" name="RobotMaterial" specular="0" gloss="36" depthCompareMode="less">
-        <cadet3D:BitmapTextureComponent x:name="diffuseTexture" x:id="18" bitmapData="RobotDiffuse.png" name="RobotoDiffuse"/>
+    <cadet3D:MeshComponent x:name="6" x:id="16" name="RobotMesh" transform="10.143118858337402,0,0,0,0,10.143118858337402,0,0,0,0,10.143118858337402,0,0,0,0,1">
+      <cadet3D:TextureMaterialComponent x:name="materialComponent" x:id="17" name="RobotMaterial" alphaThreshold="0" alphaBlending="0" depthCompareMode="less" blendMode="normal" gloss="36" specular="0" envMapAlpha="1" ambientColor="16777215" specularColor="16777215" ambient="1">
+        <cadet3D:BitmapTextureComponent x:name="diffuseTexture" x:id="18" alphaChannel="alpha" bitmapData="RobotDiffuse.png" name="RobotoDiffuse"/>
       </cadet3D:TextureMaterialComponent>
-      <cadet3D:GeometryComponent x:name="geometryComponent" x:id="19" name="Robot_geom" geometry="Robot.Robot_geom"/>
+      <cadet3D:GeometryComponent x:name="geometryComponent" x:id="19" geometry="Robot.Robot_geom" name="Robot_geom"/>
       <flox:ArrayCollection x:name="children" x:id="20">
-        <cadet3D:GeometryComponent x:name="0" x:id="21" name="RobotGeom" geometry="Robot.Robot_geom"/>
+        <cadet3D:GeometryComponent x:name="0" x:id="21" geometry="Robot.Robot_geom" name="RobotGeom"/>
         <x:Ref x:name="1" x:id="18"/>
         <x:Ref x:name="2" x:id="17"/>
       </flox:ArrayCollection>

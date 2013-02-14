@@ -5,6 +5,7 @@
 	<classMap name="Entity" class="cadet2D.components.core.Entity"/>
 
 	<!-- Processes -->
+	<classMap name="InputProcess2D" class="cadet2D.components.processes.InputProcess2D" />
 	<classMap name="CollisionDetectionProcess" class="cadet2D.components.processes.CollisionDetectionProcess" />
 	<classMap name="FootprintManagerProcess" class="cadet2D.components.processes.FootprintManagerProcess" />
 	<classMap name="TrackCamera2DProcess" class="cadet2D.components.processes.TrackCamera2DProcess" />
