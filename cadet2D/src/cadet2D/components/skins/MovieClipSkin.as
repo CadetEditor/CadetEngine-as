@@ -12,22 +12,18 @@
 
 package cadet2D.components.skins
 {
-	import cadet.events.InvalidationEvent;
 	import cadet.util.ComponentUtil;
 	
 	import cadet2D.components.renderers.Renderer2D;
 	import cadet2D.components.textures.TextureAtlasComponent;
 	
-	import starling.display.DisplayObjectContainer;
 	import starling.display.MovieClip;
+	import starling.display.Quad;
 	import starling.textures.Texture;
 
-	public class MovieClipSkin extends AbstractSkin2D
+	public class MovieClipSkin extends ImageSkin
 	{
-		private static const TEXTURES		:String = "textures";
 		private static const LOOP			:String = "loop";
-		
-		private var _movieclip				:MovieClip;
 		
 		private var _textureAtlas			:TextureAtlasComponent;
 		private var _texturesPrefix			:String;
@@ -36,41 +32,10 @@ package cadet2D.components.skins
 		// "dirty" vars are for when display list changes are made but Starling isn't ready yet.
 		// These vars make sure it keeps on trying.
 		private var _loopDirty				:Boolean;
-		private var _texturesDirty			:Boolean;
 		
 		public function MovieClipSkin()
 		{
-//			movieclip = new MovieClip(textures);
-//			_displayObject = movieclip;
-		}
-		
-		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="100" )]
-		public function set textureAtlas( value:TextureAtlasComponent ):void
-		{
-			if ( _textureAtlas ) {
-				_textureAtlas.removeEventListener(InvalidationEvent.INVALIDATE, invalidateAtlasHandler);
-			}
-			_textureAtlas = value;
-			if ( _textureAtlas ) {
-				_textureAtlas.addEventListener(InvalidationEvent.INVALIDATE, invalidateAtlasHandler);
-			}
 			
-			invalidate( TEXTURES );
-		}
-		public function get textureAtlas():TextureAtlasComponent
-		{
-			return _textureAtlas;
-		}
-		
-		[Serializable][Inspectable( priority="101" )]
-		public function set texturesPrefix( value:String ):void
-		{
-			_texturesPrefix = value;
-			invalidate( TEXTURES );
-		}
-		public function get texturesPrefix():String
-		{
-			return _texturesPrefix;
 		}
 		
 		[Serializable][Inspectable( priority="102" )]
@@ -87,73 +52,29 @@ package cadet2D.components.skins
 		
 		override public function validateNow():void
 		{
+			var isInvalidLoop:Boolean = isInvalid(LOOP);
+			// clears the invalidationTable
+			super.validateNow();
+			
 			if ( _loopDirty ) {
 				invalidate(LOOP);
-			}
-			if ( _texturesDirty ) {
-				invalidate(TEXTURES);
+				isInvalidLoop = true;
 			}
 			
-			if ( isInvalid(TEXTURES) )
-			{
-				validateTextures();
-			}
-			if ( isInvalid(LOOP) )
-			{
+			if ( isInvalidLoop ) {
 				validateAnimate();
 			}
-			
-			super.validateNow();
 		}
 		
-		override protected function validateDisplay():void
+		override protected function createQuad(textures:Vector.<Texture>):Quad
 		{
-			_displayObject.width = _width;
-			_displayObject.height = _height;
-		}
-		
-		protected function validateTextures():void
-		{
-			// Remove existing asset first
-			if ( displayObject is DisplayObjectContainer ) {
-				var displayObjectContainer:DisplayObjectContainer = DisplayObjectContainer(displayObject);
-			}
-			if ( _movieclip && displayObjectContainer && displayObjectContainer.contains(_movieclip) ) {
-				displayObjectContainer.removeChild(_movieclip);
-			}
-			
-			if ((_textureAtlas && !_textureAtlas.atlas) || !_texturesPrefix ) {
-				_texturesDirty = true;
-				return;
-			}
-			
-			// textureAtlas has been set to null, quit out after removing current textures
-			if (!_textureAtlas) {
-				return;
-			}
-			
-			var textures:Vector.<Texture> = _textureAtlas.atlas.getTextures(_texturesPrefix);
-			
-			if (!textures || textures.length == 0) return;
-			
-			_movieclip = new MovieClip(textures);
-			
-			if (displayObjectContainer) {
-				displayObjectContainer.addChild(_movieclip);
-				// set default width and height
-				//if (!_width) 	
-				_width = _movieclip.width;
-				//if (!_height) 	
-				_height = _movieclip.height;				
-			}
-			
-			_texturesDirty = false;
+			return new MovieClip(textures);
 		}
 		
 		private function validateAnimate():void
 		{
 			var renderer:Renderer2D = ComponentUtil.getChildOfType(scene, Renderer2D, true);
-			if ( !renderer || !_movieclip ) {
+			if ( !renderer || !_quad ) {
 				_loopDirty = true;
 				return;
 			}
@@ -167,14 +88,27 @@ package cadet2D.components.skins
 			_loopDirty = false;
 		}
 		
-		private function invalidateAtlasHandler( event:InvalidationEvent ):void
-		{
-			invalidate( TEXTURES );
-		}
-		
 		public function get movieclip():MovieClip
 		{
-			return _movieclip;
+			return MovieClip(_quad);
+		}
+		
+		override public function clone():IRenderable
+		{
+			var newSkin:MovieClipSkin = new MovieClipSkin();
+			newSkin.rotation = _rotation;
+			newSkin.scaleX = _scaleX;
+			newSkin.scaleY = _scaleY;
+			newSkin.texture = _texture;
+			newSkin.textureAtlas = _textureAtlas;
+			newSkin.texturesPrefix = _texturesPrefix;
+			newSkin.touchable = _displayObject.touchable;
+			newSkin.transform2D = _transform2D;
+			newSkin.x = _x;
+			newSkin.y = _y;
+			newSkin.width = _width;
+			newSkin.height = _height;
+			return newSkin;
 		}
 	}
 }

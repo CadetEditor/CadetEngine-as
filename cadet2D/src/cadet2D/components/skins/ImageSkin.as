@@ -20,58 +20,26 @@ package cadet2D.components.skins
 	
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.textures.Texture;
 	
 	public class ImageSkin extends AbstractSkin2D
 	{
-		private static const TEXTURE	:String = "texture";
+		private static const TEXTURE		:String = "texture";
 		
-		private var _texture			:TextureComponent;
-/*		private var _fillXOffset		:Number = 0;
-		private var _fillYOffset		:Number = 0;*/
+		protected var _texture				:TextureComponent;
 		
-		private var _image					:Image;
+		protected var _quad					:Quad;
 		
-		private var _textureAtlas			:TextureAtlasComponent;
-		private var _texturesPrefix			:String;
+		protected var _textureAtlas			:TextureAtlasComponent;
+		protected var _texturesPrefix		:String;
 		
-		// DEPRECATED
-		//private var _fillBitmap			:BitmapData;
-		private var _textureDirty			:Boolean;
+		protected var _textureDirty			:Boolean;
 		
 		public function ImageSkin()
 		{
 			name = "ImageSkin";
-			
-//			image = new Image(NullBitmapTexture.instance);
-//			_displayObject = image;
-		}		
-/*		
-		[Serializable][Inspectable]
-		public function set fillXOffset( value:Number ):void
-		{
-			_fillXOffset = value;
-			invalidate( ASSET );
 		}
-		public function get fillXOffset():Number { return _fillXOffset; }
-		
-		[Serializable][Inspectable]
-		public function set fillYOffset( value:Number ):void
-		{
-			_fillYOffset = value;
-			invalidate( ASSET );
-		}
-		public function get fillYOffset():Number { return _fillYOffset; }
-		
-		//TODO: This needs to be deprecated in favour of "fillTexture"
-		[Serializable( type="resource" )][Inspectable(editor="ResourceItemEditor")]
-		public function set fillBitmap( value:BitmapData ):void
-		{
-			_fillBitmap = value;
-			invalidate( ASSET );
-		}
-		public function get fillBitmap():BitmapData { return _fillBitmap; }	
-*/		
 		
 		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="100" )]
 		public function set textureAtlas( value:TextureAtlasComponent ):void
@@ -108,7 +76,10 @@ package cadet2D.components.skins
 		{
 			_texture = value;
 			// textureAtlas & texture are mutually exclusive values
-			if (value)	_textureAtlas = null;
+			if (value) {
+				_textureAtlas = null;
+				_texturesPrefix = null;
+			}
 			invalidate( TEXTURE );
 		}
 		public function get texture():TextureComponent { return _texture; }	
@@ -140,8 +111,8 @@ package cadet2D.components.skins
 			if ( displayObject is DisplayObjectContainer ) {
 				var displayObjectContainer:DisplayObjectContainer = DisplayObjectContainer(displayObject);
 			}
-			if ( _image && displayObjectContainer && displayObjectContainer.contains(_image) ) {
-				displayObjectContainer.removeChild(_image);
+			if ( _quad && displayObjectContainer && displayObjectContainer.contains(_quad) ) {
+				displayObjectContainer.removeChild(_quad);
 			}
 			
 			var textures:Vector.<Texture>;
@@ -168,15 +139,16 @@ package cadet2D.components.skins
 			
 			if (!textures || textures.length == 0) return;
 			
-			_image = new Image(textures[0]);
+			_quad = new Image(textures[0]);
+			_quad = createQuad(textures);
 			
 			if (displayObjectContainer) {
-				displayObjectContainer.addChild(_image);
+				displayObjectContainer.addChild(_quad);
 				// set default width and height
 				//if (!_width) 	
-				_width = _image.width;
+				_width = _quad.width;
 				//if (!_height) 	
-				_height = _image.height;				
+				_height = _quad.height;				
 			}
 			
 			_textureDirty = false;
@@ -185,6 +157,11 @@ package cadet2D.components.skins
 			dispatchEvent(new SkinEvent(SkinEvent.TEXTURE_VALIDATED));
 		}
 
+		protected function createQuad(textures:Vector.<Texture>):Quad
+		{
+			return new Image(textures[0]);
+		}
+		
 		private function invalidateAtlasHandler( event:InvalidationEvent ):void
 		{
 			invalidate( TEXTURE );
