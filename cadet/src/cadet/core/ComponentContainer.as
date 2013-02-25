@@ -12,6 +12,7 @@ package cadet.core
 {
 	import cadet.events.ComponentContainerEvent;
 	import cadet.events.ComponentEvent;
+	import cadet.util.ComponentReferenceUtil;
 	
 	import flox.core.data.ArrayCollection;
 	import flox.core.events.ArrayCollectionChangeKind;
@@ -44,6 +45,11 @@ package cadet.core
 			
 			childRemovedEvent = new ComponentContainerEvent( ComponentContainerEvent.CHILD_REMOVED, null );
 			childAddedEvent = new ComponentContainerEvent( ComponentContainerEvent.CHILD_ADDED, null );
+		}
+		
+		protected function addChildReference( type:Class, property:String ):void
+		{
+			ComponentReferenceUtil.addReferenceByType(this, type, this, property);
 		}
 		
 		override public function dispose():void

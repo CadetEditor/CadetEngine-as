@@ -19,12 +19,13 @@ package cadet2D.components.skins
 	import cadet.core.IComponentContainer;
 	import cadet.events.InvalidationEvent;
 	
+	import cadet2D.components.transforms.ITransform2D;
 	import cadet2D.components.transforms.Transform2D;
 	
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 
-	public class AbstractSkin2D extends Component implements IRenderable
+	public class AbstractSkin2D extends Component implements IRenderable, ITransform2D
 	{
 		protected static const DISPLAY			:String = "display";
 		protected static const TRANSFORM		:String = "transform";

@@ -21,7 +21,7 @@ package cadet2D.components.transforms
 	import starling.display.Shape;
 
 	[Cadet( inheritFromTemplate='false' )]
-	public class Transform2D extends Component
+	public class Transform2D extends Component implements ITransform2D
 	{
 		private var shape	:Shape;
 		

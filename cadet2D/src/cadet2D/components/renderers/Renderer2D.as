@@ -364,7 +364,7 @@ package cadet2D.components.renderers
 				
 				var index:int = displayListArray.indexOf(skin);
 				
-				trace("ADD SKIN INDEX "+indexStr+" at index "+index+" dlArray "+displayListArray);
+				//trace("ADD SKIN INDEX "+indexStr+" at index "+index+" dlArray "+displayListArray);
 				
 				// Items in the display order will need to have their indices updated,
 				// so loop through them invalidating their indices and that of their parent's.
@@ -391,7 +391,7 @@ package cadet2D.components.renderers
 			var index:int = displayListArray.indexOf(skin);//indexStr);
 			displayListArray.splice(index, 1);
 			
-			trace("REMOVE SKIN INDEX "+skin.indexStr+" at index "+index+" dlArray "+displayListArray);
+			//trace("REMOVE SKIN INDEX "+skin.indexStr+" at index "+index+" dlArray "+displayListArray);
 			
 			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObject;
 			

@@ -4,10 +4,10 @@
     <classEntry path="cadet2D.components.skins.MovieClipSkin"/>
     <classEntry path="cadet2D.util.NullBitmapTexture"/>
     <classEntry path="cadet2D.components.textures.TextureAtlasComponent"/>
-    <classEntry path="cadet2D.components.behaviours.ParallaxBehaviour"/>
     <classEntry path="cadet2D.components.behaviours.SimpleFootprintBehaviour"/>
     <classEntry path="cadet2D.util.SkinsUtil"/>
     <classEntry path="cadet2D.events.SkinEvent"/>
+    <classEntry path="cadet2D.components.transforms.ITransform2D"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
