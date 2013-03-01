@@ -10,16 +10,17 @@
 
 package cadet3D.components.core
 {
+	import flash.display.DisplayObjectContainer;
+	import flash.display.Sprite;
+	import flash.display.Stage;
+	import flash.utils.Dictionary;
+	
 	import away3d.cameras.Camera3D;
 	import away3d.containers.ObjectContainer3D;
 	import away3d.containers.View3D;
-	import away3d.core.base.Object3D;
-	import away3d.entities.Entity;
 	import away3d.lights.DirectionalLight;
 	import away3d.materials.DefaultMaterialBase;
 	import away3d.materials.lightpickers.StaticLightPicker;
-	import away3d.materials.methods.FilteredShadowMapMethod;
-	import away3d.materials.methods.HardShadowMapMethod;
 	import away3d.materials.methods.ShadowMapMethodBase;
 	import away3d.materials.methods.SoftShadowMapMethod;
 	
@@ -34,12 +35,6 @@ package cadet3D.components.core
 	import cadet3D.components.lights.AbstractLightComponent;
 	import cadet3D.components.materials.AbstractMaterialComponent;
 	import cadet3D.events.Renderer3DEvent;
-	
-	import flash.display.DisplayObjectContainer;
-	import flash.display.Sprite;
-	import flash.geom.Point;
-	import flash.geom.Vector3D;
-	import flash.utils.Dictionary;
 	
 	[Event(name="preRender", type="cadet3D.events.Renderer3DEvent")]
 	[Event(name="postRender", type="cadet3D.events.Renderer3DEvent")]
@@ -344,9 +339,9 @@ package cadet3D.components.core
 			_materials.splice(_materials.indexOf(materialComponent.material), 1);
 		}
 		
-		public function getParent():DisplayObjectContainer
+		public function getNativeStage():flash.display.Stage
 		{
-			return _parent;
+			return _parent.stage;
 		}
 		
 		public function get initialised():Boolean

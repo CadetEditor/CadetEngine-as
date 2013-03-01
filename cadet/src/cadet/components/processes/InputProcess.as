@@ -10,7 +10,7 @@
 
 package cadet.components.processes
 {
-	import flash.display.DisplayObjectContainer;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	
@@ -67,16 +67,16 @@ package cadet.components.processes
 		
 		protected function addedToStageHandler( event:Event = null ):void
 		{
-			var parent:DisplayObjectContainer = _renderer.getParent();
-			parent.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
-			parent.stage.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
+			var stage:Stage = _renderer.getNativeStage();
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
+			stage.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
 		}
 		
 		protected function removedFromStageHandler( event:Event = null ):void
 		{
-			var parent:DisplayObjectContainer = _renderer.getParent();
-			parent.stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
-			parent.stage.removeEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
+			var stage:Stage = _renderer.getNativeStage();
+			stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
+			stage.removeEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
 		}
 		
 		public function isInputDown( name:String ):Boolean

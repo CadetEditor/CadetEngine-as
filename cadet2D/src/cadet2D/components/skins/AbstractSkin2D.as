@@ -246,16 +246,26 @@ package cadet2D.components.skins
 		}
 		public function get height():Number { return _height; }
 		
-		public function clone():IRenderable
+		[Serializable][Inspectable( priority="57" )]
+		public function get visible():Boolean
 		{
-			throw(Error("Abstract method"));
+			return _displayObject.visible;
+		}
+		public function set visible( value:Boolean ):void
+		{
+			_displayObject.visible = value;
 		}
 		
-		[Serializable][Inspectable( priority="57" )]
+		[Serializable][Inspectable( priority="58" )]
 		public function set touchable( value:Boolean ):void
 		{
 			_displayObject.touchable = value;
 		}
 		public function get touchable():Boolean { return _displayObject.touchable;	 }
+		
+		public function clone():IRenderable
+		{
+			throw(Error("Abstract method"));
+		}
 	}
 }

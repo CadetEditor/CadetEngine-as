@@ -10,27 +10,26 @@
 
 package cadet2D.components.processes
 {
+	import flash.geom.Rectangle;
+	
 	import cadet.core.Component;
 	
 	import flox.core.events.PropertyChangeEvent;
 
 	public class WorldBounds2D extends Component
 	{
-		public static const BOUNDS	:String = "bounds";
+		private static const BOUNDS	:String = "bounds";
 		
-		private var _left		:Number;
-		private var _right		:Number;
-		private var _top		:Number;
-		private var _bottom		:Number;
+		private var _left		:Number = 0;
+		private var _right		:Number = 1000;
+		private var _top		:Number = 0;
+		private var _bottom		:Number = 1000;
 		
+		private var rect		:Rectangle;
 		
 		public function WorldBounds2D()
 		{
 			name = "WorldBounds2D";
-			left = 0;
-			right = 1000;
-			top = 0;
-			bottom = 1000;
 		}
 		
 		[Serializable][Inspectable]
@@ -68,5 +67,25 @@ package cadet2D.components.processes
 			dispatchEvent( new PropertyChangeEvent( "propertyChange_bottom", null, _name ) );
 		}
 		public function get bottom():Number { return _bottom; }
+		
+		override public function validateNow():void
+		{
+			if ( isInvalid(BOUNDS) ) {
+				validateBounds();
+			}
+			
+			super.validateNow();
+		}
+		
+		private function validateBounds():void
+		{
+			rect = new Rectangle(left, top, left + right, top + bottom);
+		}
+		
+		public function getRect():Rectangle
+		{
+			if (!rect) validateBounds();
+			return rect;
+		}
 	}
 }

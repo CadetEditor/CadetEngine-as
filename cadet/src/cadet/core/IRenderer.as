@@ -11,6 +11,7 @@
 package cadet.core
 {
 	import flash.display.DisplayObjectContainer;
+	import flash.display.Stage;
 
 	public interface IRenderer extends IComponent
 	{
@@ -27,7 +28,7 @@ package cadet.core
 		function enable(parent:DisplayObjectContainer, depth:int = -1):void
 		function disable(parent:DisplayObjectContainer):void
 			
-		function getParent():DisplayObjectContainer
+		function getNativeStage():Stage
 			
 		function get initialised():Boolean
 	}

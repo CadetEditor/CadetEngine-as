@@ -33,8 +33,6 @@ package cadet.core
 	 */	
 	public class Component extends EventDispatcher implements IComponent
 	{
-		//public static const INDEX:String = "index";
-		
 		protected var _name					:String;
 		protected var _index				:int = -1;
 		
@@ -175,12 +173,7 @@ package cadet.core
 		}
 		
 		public function validateNow():void
-		{
-/*			if ( isInvalid(INDEX) )
-			{
-				validateIndex();
-			}*/
-			
+		{			
 			validate();
 			_invalidationTable = {};
 		}

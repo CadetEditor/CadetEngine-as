@@ -1,6 +1,7 @@
 package cadet3D.components.processes
 {
 	import flash.display.DisplayObjectContainer;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
@@ -25,20 +26,20 @@ package cadet3D.components.processes
 		{
 			super.addedToStageHandler(event);
 			
-			var parent:DisplayObjectContainer = _renderer.getParent();
-			parent.stage.addEventListener( MouseEvent.MOUSE_DOWN, mouseDownHandler );
-			parent.stage.addEventListener( MouseEvent.MOUSE_UP, mouseUpHandler );
-			parent.stage.addEventListener( MouseEvent.MOUSE_MOVE, mouseMoveHandler );
+			var stage:Stage = _renderer.getNativeStage();
+			stage.addEventListener( MouseEvent.MOUSE_DOWN, mouseDownHandler );
+			stage.addEventListener( MouseEvent.MOUSE_UP, mouseUpHandler );
+			stage.addEventListener( MouseEvent.MOUSE_MOVE, mouseMoveHandler );
 		}
 		
 		override protected function removedFromStageHandler( event:Event = null ):void
 		{
 			super.removedFromStageHandler(event);
 			
-			var parent:DisplayObjectContainer = _renderer.getParent();
-			parent.stage.removeEventListener( MouseEvent.MOUSE_DOWN, mouseDownHandler );
-			parent.stage.removeEventListener( MouseEvent.MOUSE_UP, mouseUpHandler );
-			parent.stage.removeEventListener( MouseEvent.MOUSE_MOVE, mouseMoveHandler );
+			var stage:Stage = _renderer.getNativeStage();
+			stage.removeEventListener( MouseEvent.MOUSE_DOWN, mouseDownHandler );
+			stage.removeEventListener( MouseEvent.MOUSE_UP, mouseUpHandler );
+			stage.removeEventListener( MouseEvent.MOUSE_MOVE, mouseMoveHandler );
 		}
 		
 		private function mouseDownHandler( event:MouseEvent ):void
