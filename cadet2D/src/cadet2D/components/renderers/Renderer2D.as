@@ -36,6 +36,7 @@ package cadet2D.components.renderers
 	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -49,7 +50,7 @@ package cadet2D.components.renderers
 		protected var _viewportHeight				:Number;
 		
 		// Display Hierachy
-		protected var _viewport						:Sprite;
+		protected var _viewport						:DisplayObjectContainer;
 //		protected var _mask							:flash.display.Shape;
 		protected var _worldContainer				:Sprite;
 		protected var _viewportOverlayContainer		:Sprite;
@@ -62,7 +63,8 @@ package cadet2D.components.renderers
 		
 		private var star					:Starling;
 		
-		private var _parent					:flash.display.DisplayObject; // Required for validateViewport()
+		private var _parent					:DisplayObjectContainer;
+		private var _nativeParent			:flash.display.DisplayObject; // Required for validateViewport()
 		private var _nativeStage			:Stage;
 		
 		private var _mouseX					:Number;
@@ -93,10 +95,11 @@ package cadet2D.components.renderers
 			reset();
 		}
 		
-		public function enable(parent:flash.display.DisplayObject):void
+		// When adding a Starling renderer to a native scene where a reference to the nativeParent's transform is required.
+		public function enable(nativeParent:flash.display.DisplayObject):void
 		{
-			_parent = parent;
-			_nativeStage = _parent.stage;
+			_nativeParent = nativeParent;
+			_nativeStage = _nativeParent.stage;
 			
 			if (_enabled) return;
 			
@@ -114,6 +117,24 @@ package cadet2D.components.renderers
 				star = Starling.current;
 				AsynchronousUtil.callLater(init);
 			}
+			
+			validateViewport();
+		}
+		
+		// When we know this isn't the only Starling instance and we want to render into a specific starling.display.DisplayObjectContainer
+		public function enableToExisting(parent:DisplayObjectContainer):void
+		{
+			_parent = parent;
+			
+			if (_enabled) return;
+			
+			_enabled = true;
+			
+			_viewportWidth = _parent.stage.stageWidth;
+			_viewportHeight = _parent.stage.stageHeight;
+			
+			star = Starling.current;
+			AsynchronousUtil.callLater(init);
 			
 			validateViewport();
 		}
@@ -164,7 +185,9 @@ package cadet2D.components.renderers
 			
 			_initialised = true;
 			
-			_viewport = Sprite(star.root);
+			if ( _parent ) 	_viewport = _parent;
+			else 			_viewport = DisplayObjectContainer(star.root);
+			
 			_viewport.stage.addEventListener(TouchEvent.TOUCH, onTouchHandler);
 			
 			_worldContainer = new Sprite();
@@ -240,7 +263,9 @@ package cadet2D.components.renderers
 		{
 			if (!_nativeStage) return;
 			
-			var pt:Point = _parent.localToGlobal(new Point(0,0));
+			var pt:Point;
+			if ( _parent )				pt = _parent.localToGlobal(new Point(0,0));
+			else if ( _nativeParent) 	pt = _nativeParent.localToGlobal(new Point(0,0));
 			
 			_viewportX = pt.x;
 			_viewportY = pt.y;
@@ -465,7 +490,7 @@ package cadet2D.components.renderers
 		}
 
 		
-		public function get viewport():Sprite { return _viewport; }
+		public function get viewport():DisplayObjectContainer { return _viewport; }
 		public function get worldContainer():Sprite { return _worldContainer; }
 		
 		public function get mouseX():Number
