@@ -8,7 +8,7 @@
 //
 // =================================================================================================
 
-package cadet3D.components.core
+package cadet3D.components.renderers
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
@@ -26,19 +26,19 @@ package cadet3D.components.core
 	
 	import cadet.core.Component;
 	import cadet.core.IComponent;
-	import cadet.core.IRenderer;
 	import cadet.events.ComponentEvent;
 	import cadet.events.RendererEvent;
 	import cadet.util.ComponentUtil;
 	
 	import cadet3D.components.cameras.CameraComponent;
+	import cadet3D.components.core.ObjectContainer3DComponent;
 	import cadet3D.components.lights.AbstractLightComponent;
 	import cadet3D.components.materials.AbstractMaterialComponent;
 	import cadet3D.events.Renderer3DEvent;
 	
 	[Event(name="preRender", type="cadet3D.events.Renderer3DEvent")]
 	[Event(name="postRender", type="cadet3D.events.Renderer3DEvent")]
-	public class Renderer3D extends Component implements IRenderer
+	public class Renderer3D extends Component implements IRenderer3D
 	{
 		private var _view3D						:View3D;
 		private var lightPicker					:StaticLightPicker;

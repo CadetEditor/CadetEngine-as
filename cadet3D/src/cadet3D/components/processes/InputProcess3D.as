@@ -9,7 +9,7 @@ package cadet3D.components.processes
 	import cadet.components.processes.InputProcess;
 	import cadet.components.processes.TouchInputMapping;
 	
-	import cadet3D.components.core.Renderer3D;
+	import cadet3D.components.renderers.Renderer3D;
 	
 	public class InputProcess3D extends InputProcess
 	{

@@ -1,14 +1,14 @@
 package
 {	
+	import flash.display.Sprite;
+	import flash.events.Event;
+	
 	import cadet.core.CadetScene;
 	import cadet.util.ComponentUtil;
 	
-	import cadet3D.components.core.Renderer3D;
 	import cadet3D.components.primitives.SkyBoxComponent;
+	import cadet3D.components.renderers.Renderer3D;
 	import cadet3D.operations.Cadet3DStartUpOperation;
-	
-	import flash.display.Sprite;
-	import flash.events.Event;
 
 	[SWF( width="700", height="400", backgroundColor="0x002135", frameRate="60" )]
 	public class Planets extends Sprite

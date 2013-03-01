@@ -10,7 +10,6 @@
 
 package cadet.core
 {
-	import flash.display.DisplayObjectContainer;
 	import flash.display.Stage;
 
 	public interface IRenderer extends IComponent
@@ -25,8 +24,8 @@ package cadet.core
 		function get mouseX():Number
 		function get mouseY():Number;
 		
-		function enable(parent:DisplayObjectContainer, depth:int = -1):void
-		function disable(parent:DisplayObjectContainer):void
+//		function enable(parent:DisplayObjectContainer, depth:int = -1):void
+//		function disable(parent:DisplayObjectContainer):void
 			
 		function getNativeStage():Stage
 			

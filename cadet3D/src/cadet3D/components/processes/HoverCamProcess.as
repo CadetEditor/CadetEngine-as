@@ -9,7 +9,7 @@ package cadet3D.components.processes
 	import cadet.util.ComponentUtil;
 	
 	import cadet3D.components.core.ObjectContainer3DComponent;
-	import cadet3D.components.core.Renderer3D;
+	import cadet3D.components.renderers.Renderer3D;
 	import cadet3D.controllers.HoverController;
 	
 	public class HoverCamProcess extends Component implements ISteppableComponent

@@ -1,23 +1,23 @@
 package
 {
+	import flash.display.Sprite;
+	import flash.events.Event;
+	
 	import cadet.core.CadetScene;
 	
 	import cadet3D.components.cameras.CameraComponent;
 	import cadet3D.components.core.MeshComponent;
-	import cadet3D.components.core.Renderer3D;
 	import cadet3D.components.debug.TridentComponent;
 	import cadet3D.components.geom.CubeGeometryComponent;
 	import cadet3D.components.geom.PlaneGeometryComponent;
 	import cadet3D.components.lights.DirectionalLightComponent;
 	import cadet3D.components.materials.ColorMaterialComponent;
+	import cadet3D.components.renderers.Renderer3D;
 	
 	import cadet3DPhysics.components.behaviours.RigidBodyBehaviour;
 	import cadet3DPhysics.components.processes.PhysicsProcess;
 	
 	import components.behaviours.ApplyTorqueBehaviour;
-	
-	import flash.display.Sprite;
-	import flash.events.Event;
 	
 	[SWF( width="700", height="400", backgroundColor="0x002135", frameRate="60" )]
 	public class Boxes extends Sprite

@@ -10,11 +10,11 @@
 
 package cadet2D.components.renderers
 {
-	import cadet.core.IRenderer;
-	
-	import flash.display.Sprite;
+	import flash.display.DisplayObject;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
+	
+	import cadet.core.IRenderer;
 
 	public interface IRenderer2D extends IRenderer
 	{
@@ -22,6 +22,9 @@ package cadet2D.components.renderers
 		//function get worldContainer():Sprite;
 		function worldToViewport( pt:Point ):Point;
 		function viewportToWorld( pt:Point ):Point;
+		
+		function enable(parent:DisplayObject):void
+		function disable():void		
 		
 		function setWorldContainerTransform( m:Matrix ):void
 	}

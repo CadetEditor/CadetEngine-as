@@ -2,6 +2,7 @@
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
   <includeClasses>
     <classEntry path="cadet3D.components.processes.InputProcess3D"/>
+    <classEntry path="cadet3D.components.renderers.IRenderer3D"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

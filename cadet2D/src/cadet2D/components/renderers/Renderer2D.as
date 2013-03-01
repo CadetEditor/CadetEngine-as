@@ -12,7 +12,8 @@
 
 package cadet2D.components.renderers
 {
-	import flash.display.DisplayObjectContainer;
+	import flash.display.DisplayObject;
+	import flash.display.Stage;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -61,10 +62,12 @@ package cadet2D.components.renderers
 		
 		private var star					:Starling;
 		
+		private var _parent					:flash.display.DisplayObject; // Required for validateViewport()
+		private var _nativeStage			:Stage;
+		
 		private var _mouseX					:Number;
 		private var _mouseY					:Number;
-		
-		private var _parent					:flash.display.DisplayObjectContainer;
+
 		private var _viewportX				:Number = 0;
 		private var _viewportY				:Number = 0;
 		
@@ -90,19 +93,20 @@ package cadet2D.components.renderers
 			reset();
 		}
 		
-		public function enable(parent:flash.display.DisplayObjectContainer, depth:int = -1):void
+		public function enable(parent:flash.display.DisplayObject):void
 		{
+			_parent = parent;
+			_nativeStage = _parent.stage;
+			
 			if (_enabled) return;
 			
 			_enabled = true;
 			
-			_parent = parent;
-			
-			_viewportWidth = parent.stage.stageWidth;
-			_viewportHeight = parent.stage.stageHeight;
+			_viewportWidth = _nativeStage.stageWidth;
+			_viewportHeight = _nativeStage.stageHeight;
 			
 			if (!Starling.current) {
-				star = new Starling( Sprite, parent.stage, null, null, "auto", defaultProfile );
+				star = new Starling( Sprite, _nativeStage, null, null, "auto", defaultProfile );
 				star.addEventListener(starling.events.Event.ROOT_CREATED, onRootCreatedHandler);
 				star.antiAliasing = 1;
 				star.start();	// TouchEvents require start() to be called...
@@ -114,7 +118,7 @@ package cadet2D.components.renderers
 			validateViewport();
 		}
 		
-		public function disable(parent:flash.display.DisplayObjectContainer):void
+		public function disable():void
 		{
 			_enabled = false;
 			_initialised = false;
@@ -126,7 +130,7 @@ package cadet2D.components.renderers
 
 		private function onTouchHandler(e:TouchEvent):void
 		{
-			var dispObj:DisplayObject = DisplayObject(_viewport.stage);
+			var dispObj:starling.display.DisplayObject = starling.display.DisplayObject(_viewport.stage);
 			var touches:Vector.<Touch> = e.getTouches(dispObj);
 			
 			for each (var touch:Touch in touches)
@@ -234,7 +238,7 @@ package cadet2D.components.renderers
 		
 		private function validateViewport():void
 		{
-			if (!_parent) return;
+			if (!_nativeStage) return;
 			
 			var pt:Point = _parent.localToGlobal(new Point(0,0));
 			
@@ -260,7 +264,7 @@ package cadet2D.components.renderers
 			}
 		}
 		
-		public function getSkinForDisplayObject( displayObject:DisplayObject ):IRenderable
+		public function getSkinForDisplayObject( displayObject:starling.display.DisplayObject ):IRenderable
 		{
 			return displayObjectTable[displayObject];
 		}
@@ -308,7 +312,7 @@ package cadet2D.components.renderers
 			
 			addSkinToDisplayList(skin);
 			
-			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObject;
+			var displayObject:starling.display.DisplayObject = AbstractSkin2D(skin).displayObject;
 			
 			skin.invalidate("*");
 			skin.validateNow();
@@ -323,7 +327,7 @@ package cadet2D.components.renderers
 			// Could be a Flash Skin of type ISkin2D
 			if (!(skin is AbstractSkin2D)) return;
 			
-			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObject;
+			var displayObject:starling.display.DisplayObject = AbstractSkin2D(skin).displayObject;
 			
 			removeSkinFromDisplayList(skin);
 			skin.removeEventListener(InvalidationEvent.INVALIDATE, invalidateSkinHandler);
@@ -334,7 +338,7 @@ package cadet2D.components.renderers
 		private function invalidateSkinHandler( event:InvalidationEvent ):void
 		{
 			var skin:IRenderable = IRenderable(event.target);
-			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObject;
+			var displayObject:starling.display.DisplayObject = AbstractSkin2D(skin).displayObject;
 			
 /*			if ( displayObject.parent == null )
 			{
@@ -353,7 +357,7 @@ package cadet2D.components.renderers
 		{
 			if (!_worldContainer) return;
 		
-			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObject;
+			var displayObject:starling.display.DisplayObject = AbstractSkin2D(skin).displayObject;
 			
 			if (depthSort) {
 				var indexStr:String = skin.indexStr;
@@ -393,7 +397,7 @@ package cadet2D.components.renderers
 			
 			//trace("REMOVE SKIN INDEX "+skin.indexStr+" at index "+index+" dlArray "+displayListArray);
 			
-			var displayObject:DisplayObject = AbstractSkin2D(skin).displayObject;
+			var displayObject:starling.display.DisplayObject = AbstractSkin2D(skin).displayObject;
 			
 			if ( displayObject.parent ) {
 				displayObject.parent.removeChild(displayObject);
@@ -449,7 +453,7 @@ package cadet2D.components.renderers
 			}
 		}
 		
-		public function getOverlayOfType( type:Class ):DisplayObject
+		public function getOverlayOfType( type:Class ):starling.display.DisplayObject
 		{
 			for each ( var overlay:Overlay in overlaysTable ) {
 				if ( overlay is type ) {
@@ -495,7 +499,7 @@ package cadet2D.components.renderers
 		
 		public function getNativeStage():flash.display.Stage
 		{
-			return _parent.stage;
+			return _nativeStage;
 		}
 		
 		public function get initialised():Boolean
