@@ -18,11 +18,11 @@ package cadet.util
 	
 	public class ComponentReferenceUtil
 	{
-		private static var hostTable	:Dictionary = new Dictionary();;
+		private static var hostTable	:Dictionary = new Dictionary();
 		
-		public static function addReferenceByType( target:IComponentContainer, type:Class, host:IComponent, property:String ):void
+		public static function addReferenceByType( target:IComponentContainer, type:Class, host:IComponent, property:String, excludedTypes:Vector.<Class> = null ):void
 		{
-			var reference:Reference = new Reference( target, type, host, property );
+			var reference:Reference = new Reference( target, type, host, property, excludedTypes );
 			
 			var references:Array = hostTable[host];
 			if ( references == null )
@@ -66,9 +66,9 @@ package cadet.util
 		}
 	}
 }
-import cadet.events.ComponentContainerEvent;
-import cadet.core.IComponentContainer;
 import cadet.core.IComponent;
+import cadet.core.IComponentContainer;
+import cadet.events.ComponentContainerEvent;
 import cadet.util.ComponentUtil;
 
 internal class Reference
@@ -78,13 +78,15 @@ internal class Reference
 	public var property:String;
 	public var target:IComponentContainer;
 	
+	private var _excludedComponents:Vector.<IComponent>;
+	private var _excludedTypes:Vector.<Class>;
 	
-	public function Reference( target:IComponentContainer, type:Class, host:IComponent, property:String )
+	public function Reference( target:IComponentContainer, type:Class, host:IComponent, property:String, excludedTypes:Vector.<Class> = null )
 	{
-		init( target, type, host, property );
+		init( target, type, host, property, excludedTypes );
 	}
 	
-	public function init( target:IComponentContainer, type:Class, host:IComponent, property:String ):void
+	public function init( target:IComponentContainer, type:Class, host:IComponent, property:String, excludedTypes:Vector.<Class> = null ):void
 	{
 		this.target = target;
 		this.type = type;
@@ -94,9 +96,13 @@ internal class Reference
 		target.addEventListener(ComponentContainerEvent.CHILD_ADDED, childAddedHandler);
 		target.addEventListener(ComponentContainerEvent.CHILD_REMOVED, childRemovedHandler);
 		
-		var child:IComponent = ComponentUtil.getChildOfType(target, type);
-		if ( child )
-		{
+		_excludedComponents = new Vector.<IComponent>();
+		_excludedComponents.push(host);
+		
+		_excludedTypes = excludedTypes;
+		
+		var child:IComponent = ComponentUtil.getChildOfType(target, type, false, _excludedComponents, _excludedTypes);
+		if ( child ) {
 			host[property] = child;
 		}
 	}
@@ -114,7 +120,7 @@ internal class Reference
 	
 	private function childAddedHandler( event:ComponentContainerEvent ):void
 	{
-		if ( event.child is type )
+		if ( event.child is type && !ComponentUtil.isExcluded(event.child, _excludedComponents, _excludedTypes) )
 		{
 			host[property] = event.child;
 		}
@@ -122,7 +128,8 @@ internal class Reference
 	
 	private function childRemovedHandler( event:ComponentContainerEvent ):void
 	{
-		if ( event.child is type )
+		// Presumes there will only be one sibling of a type
+		if ( event.child is type && !ComponentUtil.isExcluded(event.child, _excludedComponents, _excludedTypes) )
 		{
 			host[property] = null;
 		}

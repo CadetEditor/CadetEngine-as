@@ -80,14 +80,14 @@ package cadet.core
 			_exportTemplateID = null;
 		}
 		
-		protected function addSiblingReference( type:Class, property:String ):void
+		protected function addSiblingReference( type:Class, property:String, excludedTypes:Vector.<Class> = null ):void
 		{
-			ComponentReferenceUtil.addReferenceByType(_parentComponent, type, this, property);
+			ComponentReferenceUtil.addReferenceByType(_parentComponent, type, this, property, excludedTypes);
 		}
 		
-		protected function addSceneReference( type:Class, property:String ):void
+		protected function addSceneReference( type:Class, property:String, excludedTypes:Vector.<Class> = null ):void
 		{
-			ComponentReferenceUtil.addReferenceByType(_scene, type, this, property);
+			ComponentReferenceUtil.addReferenceByType(_scene, type, this, property, excludedTypes);
 		}
 		
 		public function set parentComponent(value:IComponentContainer):void

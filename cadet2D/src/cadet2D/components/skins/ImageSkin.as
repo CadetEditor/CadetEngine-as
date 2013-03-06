@@ -139,7 +139,7 @@ package cadet2D.components.skins
 			
 			if (!textures || textures.length == 0) return;
 			
-			_quad = new Image(textures[0]);
+			//_quad = new Image(textures[0]);
 			_quad = createQuad(textures);
 			
 			if (displayObjectContainer) {
@@ -183,6 +183,11 @@ package cadet2D.components.skins
 			newSkin.width = _width;
 			newSkin.height = _height;
 			return newSkin;
+		}
+		
+		public function get quad():Quad
+		{
+			return _quad;
 		}
 	}
 }

@@ -56,8 +56,8 @@ package cadet2D.components.renderers
 		protected var _viewportOverlayContainer		:Sprite;
 			
 		// Misc
-		protected var skinTable				:Dictionary;
-		protected var displayObjectTable	:Dictionary;
+		protected var skinTable				:Dictionary; //These two...
+		protected var displayObjectTable	:Dictionary; //...perform the same function?
 		protected var displayListArray		:Array;
 		protected var identityMatrix		:Matrix;
 		

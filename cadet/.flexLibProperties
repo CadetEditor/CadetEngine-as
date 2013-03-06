@@ -6,9 +6,10 @@
     <classEntry path="cadet.validators.ComponentSiblingValidator"/>
     <classEntry path="cadet.validators.IComponentValidator"/>
     <classEntry path="cadet.validators.ComponentParentValidator"/>
-    <classEntry path="cadet.components.sounds.Sound"/>
     <classEntry path="cadet.components.processes.TouchInputMapping"/>
     <classEntry path="cadet.components.processes.IInputMapping"/>
+    <classEntry path="cadet.components.processes.SoundProcess"/>
+    <classEntry path="cadet.components.sounds.ISound"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

@@ -62,17 +62,20 @@ package cadet.util
 			return null;
 		}
 		
-		static public function getChildOfType( container:IComponentContainer, type:Class, recursive:Boolean = false ):*
+		static public function getChildOfType( container:IComponentContainer, type:Class, recursive:Boolean = false, excludedComponents:Vector.<IComponent> = null, excludedTypes:Vector.<Class> = null ):*
 		{
 			for each ( var component:IComponent in container.children )
 			{
 				if ( component is type )
 				{
-					return component;
+					var excluded:Boolean = isExcluded(component, excludedComponents, excludedTypes);
+					if (!excluded) {
+						return component;
+					}
 				}
 				if ( recursive && component is IComponentContainer )
 				{
-					var result:IComponent = getChildOfType(IComponentContainer(component), type, true );
+					var result:IComponent = getChildOfType(IComponentContainer(component), type, true, excludedComponents, excludedTypes );
 					if ( result )
 					{
 						return result;
@@ -80,6 +83,29 @@ package cadet.util
 				}
 			}
 			return null;
+		}
+		
+		static public function isExcluded(component:IComponent, excludedComponents:Vector.<IComponent> = null, excludedTypes:Vector.<Class> = null):Boolean
+		{
+			if (excludedComponents) {
+				for ( var i:uint = 0; i < excludedComponents.length; i ++ ) {
+					var child:IComponent = excludedComponents[i];
+					if ( component == child ) {
+						return true;
+					}
+				}
+			}
+			
+			if (excludedTypes) {
+				for ( i = 0; i < excludedTypes.length; i ++ ) {
+					var type:Class = excludedTypes[i];
+					if ( component is type ) {
+						return true;
+					}
+				}
+			}
+			
+			return false;
 		}
 		
 		static public function getChildrenOfType( container:IComponentContainer, type:Class, recursive:Boolean = false ):Vector.<IComponent>
