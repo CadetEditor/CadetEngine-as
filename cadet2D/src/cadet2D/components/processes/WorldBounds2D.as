@@ -79,7 +79,7 @@ package cadet2D.components.processes
 		
 		private function validateBounds():void
 		{
-			rect = new Rectangle(left, top, left + right, top + bottom);
+			rect = new Rectangle(left, top, right, bottom);
 		}
 		
 		public function getRect():Rectangle
