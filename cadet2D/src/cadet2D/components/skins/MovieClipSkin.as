@@ -26,7 +26,7 @@ package cadet2D.components.skins
 		private static const LOOP			:String = "loop";
 		
 		private var _textureAtlas			:TextureAtlasComponent;
-		private var _texturesPrefix			:String;
+		//private var _texturesPrefix			:String;
 		
 		private var _loop					:Boolean;
 		// "dirty" vars are for when display list changes are made but Starling isn't ready yet.
@@ -96,6 +96,7 @@ package cadet2D.components.skins
 		override public function clone():IRenderable
 		{
 			var newSkin:MovieClipSkin = new MovieClipSkin();
+			newSkin.loop = _loop;
 			newSkin.rotation = _rotation;
 			newSkin.scaleX = _scaleX;
 			newSkin.scaleY = _scaleY;
