@@ -10,6 +10,7 @@
     <classEntry path="cadet.components.processes.IInputMapping"/>
     <classEntry path="cadet.components.processes.SoundProcess"/>
     <classEntry path="cadet.components.sounds.ISound"/>
+    <classEntry path="cadet.core.IInitOnRunComponent"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

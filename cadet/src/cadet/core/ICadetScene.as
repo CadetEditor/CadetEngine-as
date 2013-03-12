@@ -25,5 +25,7 @@ package cadet.core
 		function get dependencyManager():DependencyManager;
 		function set userData( value:Object ):void;
 		function get userData():Object;
+		function get runMode():Boolean;
+		function set runMode( value:Boolean ):void
 	}
 }

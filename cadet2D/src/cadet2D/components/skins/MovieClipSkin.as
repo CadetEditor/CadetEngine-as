@@ -26,9 +26,9 @@ package cadet2D.components.skins
 		private static const LOOP			:String = "loop";
 		
 		private var _textureAtlas			:TextureAtlasComponent;
-		//private var _texturesPrefix			:String;
 		
 		private var _loop					:Boolean;
+		private var _fps					:uint;
 		// "dirty" vars are for when display list changes are made but Starling isn't ready yet.
 		// These vars make sure it keeps on trying.
 		private var _loopDirty				:Boolean;
@@ -38,7 +38,7 @@ package cadet2D.components.skins
 			
 		}
 		
-		[Serializable][Inspectable( priority="102" )]
+		[Serializable][Inspectable( priority="100" )]
 		public function set loop( value:Boolean ):void
 		{
 			_loop = value;
@@ -48,6 +48,18 @@ package cadet2D.components.skins
 		public function get loop():Boolean
 		{
 			return _loop;
+		}
+		
+		[Serializable][Inspectable( priority="101" )]
+		public function set fps( value:uint ):void
+		{
+			_fps = value;
+			
+			invalidate( DISPLAY );
+		}
+		public function get fps():uint
+		{
+			return _fps;
 		}
 		
 		override public function validateNow():void
@@ -62,7 +74,7 @@ package cadet2D.components.skins
 			}
 			
 			if ( isInvalidLoop ) {
-				validateAnimate();
+				validateLoop();
 			}
 		}
 		
@@ -71,7 +83,7 @@ package cadet2D.components.skins
 			return new MovieClip(textures);
 		}
 		
-		private function validateAnimate():void
+		private function validateLoop():void
 		{
 			var renderer:Renderer2D = ComponentUtil.getChildOfType(scene, Renderer2D, true);
 			if ( !renderer || !_quad ) {

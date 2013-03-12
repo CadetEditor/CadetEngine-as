@@ -309,14 +309,14 @@ package cadet2D.components.renderers
 			}
 		}
 		
-		private function removeSkins():void
+	/*	private function removeSkins():void
 		{
 			var allSkins:Vector.<IComponent> = ComponentUtil.getChildrenOfType( scene, IRenderable, true );
 			for each ( var skin:IRenderable in allSkins )
 			{
 				removeSkin( skin );
 			}
-		}
+		}*/
 		
 		private function componentAddedToSceneHandler( event:ComponentEvent ):void
 		{

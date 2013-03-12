@@ -18,6 +18,7 @@ package cadet.assets
 		[Embed( source = 'Process.png' )] 			static public var Process:Class;
 		[Embed( source = 'Renderer.png' )] 			static public var Renderer:Class;
 		[Embed( source = 'Skin.png' )] 				static public var Skin:Class;
+		[Embed( source = 'Sound.png' )] 			static public var Sound:Class;
 		[Embed( source = 'Texture.png' )] 			static public var Texture:Class;
 		[Embed( source = 'Transform.png' )] 		static public var Transform:Class;
 	}

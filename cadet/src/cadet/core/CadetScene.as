@@ -10,21 +10,22 @@
 
 package cadet.core
 {
-	import cadet.events.ComponentEvent;
-	
 	import flash.utils.getTimer;
 	
-	import flox.core.events.PropertyChangeEvent;
+	import cadet.events.ComponentEvent;
 	
 	import flox.app.managers.DependencyManager;
+	import flox.core.events.PropertyChangeEvent;
 	
 	public class CadetScene extends ComponentContainer implements ICadetScene
 	{
 		private var _framerate					:int = 60;
 		private var _timeScale					:Number = 1;
+		private var _runMode					:Boolean = false;
 		private var lastFrameTime				:int = getTimer();
 		
-		private var steppableComponents	:Vector.<IComponent>;
+		private var steppableComponents		:Vector.<IComponent>;
+		private var initOnRunComponents		:Vector.<IComponent>;
 		
 		protected var _dependencyManager	:DependencyManager;
 		protected var _userData				:Object;
@@ -37,36 +38,70 @@ package cadet.core
 			_scene = this;
 			
 			steppableComponents = new Vector.<IComponent>();
+			initOnRunComponents = new Vector.<IComponent>();
 			addEventListener(ComponentEvent.ADDED_TO_SCENE, componentAddedToSceneHandler);
 		}
 				
 		private function componentAddedToSceneHandler( event:ComponentEvent ):void
 		{
-			if ( event.component is ISteppableComponent == false ) return;
-			steppableComponents.push(event.component);
-			event.component.addEventListener(ComponentEvent.REMOVED_FROM_SCENE, componentRemovedHandler);
+			var component:IComponent = event.component;
+			var onAList:Boolean = false; 
+			
+			if ( component is ISteppableComponent ) {
+				steppableComponents.push(component);
+				onAList = true;
+			} 
+			if ( component is IInitOnRunComponent ) {
+				initOnRunComponents.push(component);
+				onAList = true;
+				
+				// if scene already running, init the component
+				if ( runMode ) {
+					IInitOnRunComponent(component).init();
+				}
+			}
+			
+			if ( onAList ) {
+				component.addEventListener(ComponentEvent.REMOVED_FROM_SCENE, componentRemovedHandler);
+			}
 		}
 		
 		private function componentRemovedHandler( event:ComponentEvent ):void
 		{
-			steppableComponents.splice(steppableComponents.indexOf(event.component), 1);
-			event.component.removeEventListener(ComponentEvent.REMOVED_FROM_SCENE, componentRemovedHandler);
+			var component:IComponent = event.component;
+			var steppableIndex:int = steppableComponents.indexOf(component);
+			var initOnRunIndex:int = initOnRunComponents.indexOf(component);
+			
+			if ( steppableIndex != -1 ) {
+				steppableComponents.splice(steppableIndex, 1);
+			}
+			
+			if ( initOnRunIndex != -1 ) {
+				initOnRunComponents.splice(initOnRunIndex, 1);
+			}
+			
+			component.removeEventListener(ComponentEvent.REMOVED_FROM_SCENE, componentRemovedHandler);
 		}
 		
 		public function step():void
 		{
+			if (!runMode) {
+				for each ( var iORComponent:IInitOnRunComponent in initOnRunComponents ) {
+					iORComponent.init();
+				}
+				runMode = true;
+			}
+			
 			var timeStep:Number = 1/_framerate;
 			var currentTime:int = getTimer();
 			var elapsed:int = currentTime - lastFrameTime;
-			if ( elapsed < (timeStep*1000) )
-			{
+			if ( elapsed < (timeStep*1000) ) {
 				return;
 			}
 			
 			
 			var dt:Number = timeStep * timeScale;
-			for each ( var steppableComponent:ISteppableComponent in steppableComponents )
-			{
+			for each ( var steppableComponent:ISteppableComponent in steppableComponents ) {
 				steppableComponent.step(dt);
 			}
 			validateNow();
@@ -111,5 +146,23 @@ package cadet.core
 		{
 			return _userData;
 		}
+		
+		// runMode is set to "true" the first time the scene is "stepped" and all IInitOnRunComponents are initialised.
+		// Certain Processes and Behaviours may require the scene to behave differently at edit time and runtime,
+		// for instance, a process might remove it's edit time Skins at runtime and generate them procedurally.
+		// The default value is false.
+		public function get runMode():Boolean
+		{
+			return _runMode;
+		}
+		public function set runMode( value:Boolean ):void
+		{
+			_runMode = value;
+		}
 	}
 }
+
+
+
+
+
