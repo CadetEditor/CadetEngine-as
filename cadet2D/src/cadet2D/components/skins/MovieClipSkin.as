@@ -50,7 +50,7 @@ package cadet2D.components.skins
 			return _loop;
 		}
 		
-		[Serializable][Inspectable( priority="101" )]
+/*		[Serializable][Inspectable( priority="101" )]
 		public function set fps( value:uint ):void
 		{
 			_fps = value;
@@ -60,7 +60,7 @@ package cadet2D.components.skins
 		public function get fps():uint
 		{
 			return _fps;
-		}
+		}*/
 		
 		override public function validateNow():void
 		{

@@ -8,6 +8,7 @@
     <classEntry path="cadet2D.util.SkinsUtil"/>
     <classEntry path="cadet2D.events.SkinEvent"/>
     <classEntry path="cadet2D.components.transforms.ITransform2D"/>
+    <classEntry path="cadet2D.components.particles.PDParticleSystemComponent"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
