@@ -9,6 +9,7 @@
     <classEntry path="cadet2D.events.SkinEvent"/>
     <classEntry path="cadet2D.components.transforms.ITransform2D"/>
     <classEntry path="cadet2D.components.particles.PDParticleSystemComponent"/>
+    <classEntry path="cadet2D.resources.ExternalXMLResourceParser"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

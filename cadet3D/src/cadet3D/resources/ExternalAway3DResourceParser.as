@@ -10,12 +10,9 @@ package cadet3D.resources
 	import away3d.library.assets.AssetType;
 	import away3d.loaders.Loader3D;
 	import away3d.loaders.misc.AssetLoaderContext;
-	import away3d.loaders.parsers.OBJParser;
 	import away3d.loaders.parsers.Parsers;
 	import away3d.materials.MaterialBase;
-	
-	
-	import flash.display.Loader;
+
 	import flash.events.Event;
 	import flash.utils.ByteArray;
 	
