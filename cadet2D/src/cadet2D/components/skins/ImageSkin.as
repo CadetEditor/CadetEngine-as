@@ -105,6 +105,18 @@ package cadet2D.components.skins
 			_displayObject.height = _height;
 		}
 		
+		protected function getTextures():Vector.<Texture>
+		{
+			var textures:Vector.<Texture> = new Vector.<Texture>();
+			if ( _texture && _texture.texture ) {
+				textures.push(_texture.texture);
+			} else if ( _textureAtlas && _textureAtlas.atlas && _texturesPrefix ) {
+				textures = _textureAtlas.atlas.getTextures(_texturesPrefix);
+			}
+			
+			return textures;
+		}
+		
 		protected function validateTexture():void
 		{
 			// Remove existing asset first
@@ -115,8 +127,15 @@ package cadet2D.components.skins
 				displayObjectContainer.removeChild(_quad);
 			}
 			
+			// If textureAtlas and texture are null, quit out having removed the quad.
+			if (!_textureAtlas && !_texture) {
+				return;
+			}
+			
 			var textures:Vector.<Texture>;
 			
+			// If a texture has been set, check whether it's been validated,
+			// if so, set textures Vector, if not, try again next time
 			if (_texture) {
 				if (_texture.texture) {
 					textures = new Vector.<Texture>();
@@ -125,18 +144,19 @@ package cadet2D.components.skins
 					_textureDirty = true;
 					return;
 				}
-			} else if ((_textureAtlas && !_textureAtlas.atlas) || !_texturesPrefix ) {
+			}
+			// Else if there isn't a texture set and their is a textureAtlas set, but it's not been validated,
+			// or if there's no texturesPrefix, try again next time
+			else if ((_textureAtlas && !_textureAtlas.atlas) || !_texturesPrefix ) {
 				_textureDirty = true;
 				return;
-			} else if (textureAtlas) {
+			} 
+			// Else if there's both a textureAtlas and a texturesPrefix, set the textures Vector.
+			else if (_textureAtlas) {
 				textures = _textureAtlas.atlas.getTextures(_texturesPrefix);
 			}
 			
-			// textureAtlas has been set to null, quit out after removing current textures
-			if (!_textureAtlas && !_texture) {
-				return;
-			}
-			
+			// If the result of the above is no textures, quit out.
 			if (!textures || textures.length == 0) return;
 			
 			//_quad = new Image(textures[0]);

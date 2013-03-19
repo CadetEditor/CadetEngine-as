@@ -21,9 +21,11 @@ package cadet2D.components.skins
 	import starling.display.Quad;
 	import starling.textures.Texture;
 
-	public class MovieClipSkin extends ImageSkin
+	public class MovieClipSkin extends ImageSkin implements IAnimatable
 	{
 		private static const LOOP			:String = "loop";
+		
+		public var renderer					:Renderer2D;
 		
 		private var _textureAtlas			:TextureAtlasComponent;
 		
@@ -32,10 +34,17 @@ package cadet2D.components.skins
 		// "dirty" vars are for when display list changes are made but Starling isn't ready yet.
 		// These vars make sure it keeps on trying.
 		private var _loopDirty				:Boolean;
+		private var _addedToJuggler			:Boolean;
 		
 		public function MovieClipSkin()
 		{
 			
+		}
+		
+		override protected function addedToScene():void
+		{
+			addSceneReference(Renderer2D, "renderer");
+			super.addedToScene();
 		}
 		
 		[Serializable][Inspectable( priority="100" )]
@@ -85,19 +94,23 @@ package cadet2D.components.skins
 		
 		private function validateLoop():void
 		{
-			var renderer:Renderer2D = ComponentUtil.getChildOfType(scene, Renderer2D, true);
+			//var renderer:Renderer2D = ComponentUtil.getChildOfType(scene, Renderer2D, true);
+			
 			if ( !renderer || !_quad ) {
 				_loopDirty = true;
 				return;
 			}
 			
+			var success:Boolean;
 			if ( _loop ) {
-				renderer.addToJuggler( this );
+				success = addToJuggler();
 			} else {
-				renderer.removeFromJuggler( this );
+				success = removeFromJuggler();
 			}
 			
-			_loopDirty = false;
+			if ( success ) {
+				_loopDirty = false;
+			}
 		}
 		
 		public function get movieclip():MovieClip
@@ -122,6 +135,28 @@ package cadet2D.components.skins
 			newSkin.width = _width;
 			newSkin.height = _height;
 			return newSkin;
+		}
+		
+		public function addToJuggler():Boolean
+		{
+			if (!scene.runMode) return false;	// only add if in run mode
+			if (!renderer || !renderer.initialised) return false;
+//			if (_addedToJuggler) return true;
+			
+			renderer.addToJuggler( movieclip );
+			_addedToJuggler = true;
+			
+			return true;
+		}
+		public function removeFromJuggler():Boolean
+		{
+			if (!renderer || !renderer.initialised) return false;
+//			if (!_addedToJuggler) return true;
+//			
+			renderer.removeFromJuggler( movieclip );
+			_addedToJuggler = false;
+			
+			return true;
 		}
 	}
 }

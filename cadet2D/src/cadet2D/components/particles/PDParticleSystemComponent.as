@@ -1,3 +1,14 @@
+//
+//	CadetEngine Framework
+//	Copyright 2012 Unwrong Ltd. All Rights Reserved.
+//
+//	This program is free software. You can redistribute and/or modify it
+//	in accordance with the terms of the accompanying license agreement.
+//
+// =================================================================================================
+
+// Inspectable Priority range 50-99
+
 package cadet2D.components.particles
 {
 	import flash.display.Bitmap;
@@ -5,22 +16,22 @@ package cadet2D.components.particles
 	import flash.display3D.Context3DBlendFactor;
 	
 	import cadet.core.Component;
-	import cadet.core.IInitOnRunComponent;
+	import cadet.core.IInitialisableComponent;
 	import cadet.events.RendererEvent;
 	import cadet.util.deg2rad;
 	import cadet.util.rad2deg;
 	
 	import cadet2D.components.renderers.Renderer2D;
 	import cadet2D.components.skins.AbstractSkin2D;
+	import cadet2D.components.skins.IAnimatable;
 	import cadet2D.components.textures.TextureComponent;
 	
-	import starling.core.Starling;
 	import starling.display.DisplayObjectContainer;
 	import starling.extensions.ColorArgb;
 	import starling.extensions.PDParticleSystem;
 	import starling.textures.Texture;
 	
-	public class PDParticleSystemComponent extends Component implements IInitOnRunComponent
+	public class PDParticleSystemComponent extends Component implements IInitialisableComponent, IAnimatable
 	{
 		private const RESOURCES						:String = "resources";
 		private const DISPLAY						:String = "display";
@@ -43,6 +54,7 @@ package cadet2D.components.particles
 		private var _addedToJuggler					:Boolean;
 		private var _started						:Boolean;
 		private var _initialised					:Boolean;
+		private var _autoplay						:Boolean;
 		
 		private var _startColor						:uint;
 		private var _startColorVariance				:uint;
@@ -67,30 +79,35 @@ package cadet2D.components.particles
 		private var _defaultBlendFactorSource		:String = Context3DBlendFactor.SOURCE_ALPHA;
 		private var _defaultBlendFactorDest			:String = Context3DBlendFactor.ONE;
 		
-		//private var _blendFactors					:Dictionary;
-
 		public function PDParticleSystemComponent( config:XML = null, textureComponent:TextureComponent = null )
 		{
-			var instance:BitmapData = new NullParticle().bitmapData;
-			_defaultTexture = Texture.fromBitmap( new Bitmap(instance), false );
-
 			_xml = config;
 			_texture = texture;
-
-			invalidate( RESOURCES );
 		}
 		
 		override protected function addedToScene():void
 		{
 			addSceneReference(Renderer2D, "renderer");
+			
+			if ( renderer && renderer.initialised ) {
+				createDefaultTexture();
+				invalidate( RESOURCES );
+			}
 		}
 		
-		// IInitOnRunComponent
+		// IInitialisableComponent
 		public function init():void
 		{
 			_initialised = true;
 			
 			invalidate( DISPLAY );
+		}
+		
+		private function createDefaultTexture():void
+		{
+			if ( _defaultTexture ) return;
+			var instance:BitmapData = new NullParticle().bitmapData;
+			_defaultTexture = Texture.fromBitmap( new Bitmap(instance), false );
 		}
 		
 		override public function validateNow():void
@@ -107,7 +124,7 @@ package cadet2D.components.particles
 		}
 		
 		private function validateResources():void
-		{
+		{			
 			var config:XML;
 			var texture:Texture;
 			
@@ -117,6 +134,10 @@ package cadet2D.components.particles
 			if ( _texture && _texture.texture) 	texture = _texture.texture;
 			else								texture = _defaultTexture;
 			
+			// When deserializing from XML, the texture doesn't have a chance to load immediately
+			// because it requires the Starling.context
+			if (!texture) return;
+			
 			stop(true);
 			removeFromDisplayList(true);
 			removeFromJuggler();
@@ -125,11 +146,11 @@ package cadet2D.components.particles
 			
 			addToJuggler();
 			addToDisplayList();
-			start();
+			if (_autoplay) start();
 		}
 		
 		private function validateDisplay():void
-		{
+		{			
 			if ( _targetSkin ) {
 				if ( _targetSkin.displayObject is DisplayObjectContainer ) {
 					_displayObjectContainer = DisplayObjectContainer(_targetSkin.displayObject);
@@ -145,12 +166,22 @@ package cadet2D.components.particles
 			
 			addToJuggler();
 			addToDisplayList();
-			start();
+			if (_autoplay) start();
 		}
 		
 		// -------------------------------------------------------------------------------------
 		// INSPECTABLE API
 		// -------------------------------------------------------------------------------------
+		
+		[Serializable][Inspectable]
+		public function set autoplay( value:Boolean ):void
+		{
+			_autoplay = value;
+		}
+		public function get autoplay():Boolean
+		{
+			return _autoplay;
+		}
 		
 		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="50" )]
 		public function set targetSkin( value:AbstractSkin2D ):void
@@ -201,28 +232,35 @@ package cadet2D.components.particles
 		{
 			_renderer.removeEventListener(RendererEvent.INITIALISED, rendererInitialisedHandler);
 			
+			createDefaultTexture();
+			invalidate( RESOURCES );
 			invalidate( DISPLAY );
 		}
 		
-		private function addToJuggler():void
+		public function addToJuggler():Boolean
 		{
-			if (!_initialised) return;	// only add if in run mode
-			if (!renderer || !renderer.initialised) return;
-			if (!_particleSystem) return;
-			if (_addedToJuggler) return;
+			if (!_initialised) return false;	// only add if in run mode
+			if (!renderer || !renderer.initialised) return false;
+			if (!_particleSystem) return false;
+			if (_addedToJuggler) return false;
 			
-			Starling.juggler.add(_particleSystem);
+			renderer.addToJuggler(_particleSystem);
 			_addedToJuggler = true;
-		}
-		private function removeFromJuggler():void
-		{
-			if (!renderer || !renderer.initialised) return;
-			if (!_particleSystem) return;
-			if (!_addedToJuggler) return;
 			
-			Starling.juggler.remove(_particleSystem);
-			_addedToJuggler = false;
+			return true;
 		}
+		public function removeFromJuggler():Boolean
+		{
+			if (!renderer || !renderer.initialised) return false;
+			if (!_particleSystem) return false;
+			if (!_addedToJuggler) return false;
+			
+			renderer.removeFromJuggler(_particleSystem);
+			_addedToJuggler = false;
+			
+			return true;
+		}
+		
 		private function addToDisplayList():void
 		{
 			if (!_initialised) return;	// only add if in run mode
@@ -241,19 +279,19 @@ package cadet2D.components.particles
 			_particleSystem.removeFromParent(dispose);
 			_addedToDisplayList = false;
 		}
-		public function start():void
+		public function start(duration:Number = Number.MAX_VALUE):void
 		{
 			if (!_initialised) return;
 			if (!_particleSystem) return;
-			if (_started) return;
+			//if (_started) return;
 			
-			_particleSystem.start();
+			_particleSystem.start(duration);
 			_started = true;
 		}
 		public function stop(clearParticles:Boolean = false):void
 		{
 			if (!_particleSystem) return;
-			if (!_started) return;
+			//if (!_started) return;
 			
 			_particleSystem.stop(clearParticles);
 			_started = false;

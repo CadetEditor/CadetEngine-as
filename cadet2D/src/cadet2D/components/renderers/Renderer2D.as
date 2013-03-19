@@ -28,12 +28,12 @@ package cadet2D.components.renderers
 	
 	import cadet2D.components.skins.AbstractSkin2D;
 	import cadet2D.components.skins.IRenderable;
-	import cadet2D.components.skins.MovieClipSkin;
 	import cadet2D.overlays.Overlay;
 	import cadet2D.util.SkinsUtil;
 	
 	import flox.app.util.AsynchronousUtil;
 	
+	import starling.animation.IAnimatable;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
@@ -232,14 +232,14 @@ package cadet2D.components.renderers
 		}
 		public function get viewportHeight():Number { return _viewportHeight; }
 		
-		public function addToJuggler( movieClipSkin:MovieClipSkin ):void
+		public function addToJuggler( object:IAnimatable ):void
 		{
-			Starling.juggler.add(movieClipSkin.movieclip);
+			Starling.juggler.add( object );
 		}
 		
-		public function removeFromJuggler( movieClipSkin:MovieClipSkin ):void
+		public function removeFromJuggler( object:IAnimatable ):void
 		{
-			Starling.juggler.remove( movieClipSkin.movieclip);
+			Starling.juggler.remove( object );
 		}
 		
 		override public function validateNow():void

@@ -51,13 +51,13 @@ package cadet.core
 				steppableComponents.push(component);
 				onAList = true;
 			} 
-			if ( component is IInitOnRunComponent ) {
+			if ( component is IInitialisableComponent ) {
 				initOnRunComponents.push(component);
 				onAList = true;
 				
 				// if scene already running, init the component
 				if ( runMode ) {
-					IInitOnRunComponent(component).init();
+					IInitialisableComponent(component).init();
 				}
 			}
 			
@@ -86,7 +86,7 @@ package cadet.core
 		public function step():void
 		{
 			if (!runMode) {
-				for each ( var iORComponent:IInitOnRunComponent in initOnRunComponents ) {
+				for each ( var iORComponent:IInitialisableComponent in initOnRunComponents ) {
 					iORComponent.init();
 				}
 				runMode = true;
@@ -147,7 +147,7 @@ package cadet.core
 			return _userData;
 		}
 		
-		// runMode is set to "true" the first time the scene is "stepped" and all IInitOnRunComponents are initialised.
+		// runMode is set to "true" the first time the scene is "stepped" and all IInitialisableComponents are initialised.
 		// Certain Processes and Behaviours may require the scene to behave differently at edit time and runtime,
 		// for instance, a process might remove it's edit time Skins at runtime and generate them procedurally.
 		// The default value is false.
