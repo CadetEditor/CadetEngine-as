@@ -532,6 +532,9 @@ package cadet2D.components.renderers
 			return _initialised;
 		}
 		
+		public function get viewportX():Number { return _viewportX; }
+		public function get viewportY():Number { return _viewportY; }
+		
 		//public function getWorldToViewportMatrix():Matrix { return identityMatrix.clone(); }
 		//public function getViewportToWorldMatrix():Matrix { return identityMatrix.clone(); }
 	}

@@ -1,5 +1,7 @@
 package cadet.components.processes
 {
+	import flash.media.SoundMixer;
+	
 	import cadet.components.sounds.ISound;
 	import cadet.components.sounds.SoundComponent;
 	import cadet.core.Component;
@@ -53,10 +55,21 @@ package cadet.components.processes
 		private function addSounds():void
 		{
 			var allSounds:Vector.<IComponent> = ComponentUtil.getChildrenOfType( scene, ISound, true );
-			for each ( var skin:ISound in allSounds )
+			for each ( var sound:ISound in allSounds )
 			{
-				addSound( skin );
+				addSound( sound );
 			}
+		}
+		
+		override public function dispose():void
+		{
+			SoundMixer.stopAll();
+			
+			for each ( var sound:ISound in soundArray ) {
+				sound.stop();
+			}
+			
+			super.dispose();
 		}
 		
 		private function componentAddedToSceneHandler( event:ComponentEvent ):void

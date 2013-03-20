@@ -1,13 +1,15 @@
 package cadet.components.sounds
 {
 	import flash.media.Sound;
+	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
 	
 	import cadet.core.Component;
 	
 	public class SoundComponent extends Component implements ISound
 	{
-		private var _asset	:Sound;
+		private var _asset		:Sound;
+		private var _channel	:SoundChannel;
 		
 		private var _startTime:Number = 0;
 		private var _loops:uint = 0;
@@ -15,7 +17,7 @@ package cadet.components.sounds
 		
 		public function SoundComponent()
 		{
-			super();
+			
 		}
 		
 		// -------------------------------------------------------------------------------------
@@ -33,7 +35,14 @@ package cadet.components.sounds
 		{
 			if (!_asset) return;
 			
-			_asset.play(_startTime, _loops, _soundTransform);
+			_channel = _asset.play(_startTime, _loops, _soundTransform);
+		}
+		
+		public function stop():void
+		{
+			if ( _channel ) {
+				_channel.stop();
+			}
 		}
 		
 		[Serializable][Inspectable]
