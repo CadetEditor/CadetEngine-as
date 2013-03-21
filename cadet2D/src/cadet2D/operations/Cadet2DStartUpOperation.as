@@ -26,7 +26,7 @@ package cadet2D.operations
 		{
 			super(cadetFileURL);
 			
-			addManifest( baseManifestURL + "Flox.xml");
+			addManifest( baseManifestURL + "Core.xml");
 			addManifest( baseManifestURL + "Cadet.xml");
 			addManifest( baseManifestURL + "Cadet2D.xml");
 		}

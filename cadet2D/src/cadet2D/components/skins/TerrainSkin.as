@@ -10,17 +10,18 @@
 
 package cadet2D.components.skins
 {
+	import flash.display.BitmapData;
+	import flash.geom.Matrix;
+	
 	import cadet.events.InvalidationEvent;
 	
 	import cadet2D.components.geom.TerrainGeometry;
 	import cadet2D.geom.Vertex;
 	import cadet2D.util.VertexUtil;
 	
-	import flash.display.BitmapData;
-	import flash.geom.Matrix;
-	
 	import core.app.dataStructures.ObjectPool;
 	
+	import starling.core.Starling;
 	import starling.display.Graphics;
 	import starling.display.Shape;
 	
@@ -137,15 +138,21 @@ package cadet2D.components.skins
 		
 		override public function validateNow():void
 		{
-			if ( isInvalid(ALL_BUCKETS) )
-			{
-				validateAllBuckets();
+			if (Starling.current) {
+				if ( isInvalid(ALL_BUCKETS) ) {
+					validateAllBuckets();
+				}
+				if ( isInvalid(SOME_BUCKETS) ) {
+					validateSomeBuckets();
+				}
 			}
-			if ( isInvalid(SOME_BUCKETS) )
-			{
-				validateSomeBuckets();
-			}
+			
 			super.validateNow();
+			
+			// validateDisplay will have failed in this instance
+			if (!Starling.current) {
+				invalidate( ALL_BUCKETS );
+			}
 		}
 		
 		private function validateAllBuckets():void

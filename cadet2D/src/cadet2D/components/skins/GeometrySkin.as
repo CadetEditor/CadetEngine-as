@@ -26,6 +26,7 @@ package cadet2D.components.skins
 	import cadet2D.geom.QuadraticBezier;
 	import cadet2D.geom.Vertex;
 	
+	import starling.core.Starling;
 	import starling.display.Graphics;
 	import starling.display.Shape;
 
@@ -94,10 +95,19 @@ package cadet2D.components.skins
 			}
 			
 			super.validateNow();
+			
+			// validateDisplay will have failed in this instance
+			if (!Starling.current) {
+				invalidate( DISPLAY );
+			}
 		}
 		
 		override protected function validateDisplay():void
 		{
+			//starling.display.graphics.Graphic has a dependency on Starling.current,
+			//so don't attempt to render if not found
+			if (!Starling.current) return;
+			
 			var graphics:Graphics = _shape.graphics;
 			graphics.clear();
 			render( _geometry, graphics );
