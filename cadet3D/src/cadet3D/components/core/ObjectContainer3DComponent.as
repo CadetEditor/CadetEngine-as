@@ -11,12 +11,12 @@
 // Abstract
 package cadet3D.components.core
 {
+	import flash.geom.Matrix3D;
+	
 	import away3d.containers.ObjectContainer3D;
-
+	
 	import cadet.core.ComponentContainer;
 	import cadet.core.IComponent;
-	
-	import flash.geom.Matrix3D;
 
 	[Event(name="object3DAdded", type="cadetAway3D4.events.Object3DComponentEvent")]
 	[Event(name="object3DRemoved", type="cadetAway3D4.events.Object3DComponentEvent")]
@@ -34,7 +34,7 @@ package cadet3D.components.core
 			super.dispose();
 			if ( _object3D )
 			{
-				_object3D.dispose()
+				_object3D.dispose();
 			}
 		}
 		
