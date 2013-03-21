@@ -31,7 +31,7 @@ package cadet2D.components.renderers
 	import cadet2D.overlays.Overlay;
 	import cadet2D.util.SkinsUtil;
 	
-	import flox.app.util.AsynchronousUtil;
+	import core.app.util.AsynchronousUtil;
 	
 	import starling.animation.IAnimatable;
 	import starling.core.Starling;

@@ -13,17 +13,17 @@ package cadet.operations
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flox.app.core.managers.fileSystemProviders.operations.IReadFileOperation;
-	import flox.app.core.serialization.Serializer;
-	import flox.app.entities.URI;
-	import flox.app.util.AsynchronousUtil;
+	import core.app.core.managers.fileSystemProviders.operations.IReadFileOperation;
+	import core.app.core.serialization.Serializer;
+	import core.app.entities.URI;
+	import core.app.util.AsynchronousUtil;
 	
 	import cadet.core.IComponent;
 	
-	import flox.app.core.managers.fileSystemProviders.IFileSystemProvider;
-	import flox.app.core.operations.IAsynchronousOperation;
-	import flox.app.core.operations.IUndoableOperation;
-	import flox.app.events.OperationProgressEvent;
+	import core.app.core.managers.fileSystemProviders.IFileSystemProvider;
+	import core.app.core.operations.IAsynchronousOperation;
+	import core.app.core.operations.IUndoableOperation;
+	import core.app.events.OperationProgressEvent;
 
 	public class GetTemplateAndMergeXMLOperation extends EventDispatcher implements IAsynchronousOperation
 	{

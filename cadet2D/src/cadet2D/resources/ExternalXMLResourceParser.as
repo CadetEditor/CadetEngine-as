@@ -1,6 +1,6 @@
 // =================================================================================================
 //
-//	FloxApp Framework
+//	CoreApp Framework
 //	Copyright 2012 Unwrong Ltd. All Rights Reserved.
 //
 //	This program is free software. You can redistribute and/or modify it
@@ -10,12 +10,12 @@
 
 package cadet2D.resources
 {
-	import flox.app.controllers.IExternalResourceParser;
-	import flox.app.core.managers.fileSystemProviders.IFileSystemProvider;
-	import flox.app.entities.URI;
-	import flox.app.managers.ResourceManager;
-	import flox.app.resources.ExternalXMLResource;
-	import flox.app.resources.IExternalResource;
+	import core.app.controllers.IExternalResourceParser;
+	import core.app.core.managers.fileSystemProviders.IFileSystemProvider;
+	import core.app.entities.URI;
+	import core.app.managers.ResourceManager;
+	import core.app.resources.ExternalXMLResource;
+	import core.app.resources.IExternalResource;
 
 	public class ExternalXMLResourceParser implements IExternalResourceParser
 	{

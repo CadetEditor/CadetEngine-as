@@ -13,7 +13,7 @@ package cadet.operations
 {
 	import cadet.core.ICadetScene;
 	
-	import flox.app.operations.CompoundOperation;
+	import core.app.operations.CompoundOperation;
 	
 	public class CadetStartUpOperationBase extends CompoundOperation
 	{

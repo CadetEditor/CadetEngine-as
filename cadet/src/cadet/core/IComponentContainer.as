@@ -10,7 +10,7 @@
 
 package cadet.core
 {
-	import flox.core.data.ArrayCollection;
+	import core.data.ArrayCollection;
 	
 	[Event( type="cadet.events.ComponentContainerEvent", name="childAdded" )]
 	[Event( type="cadet.events.ComponentContainerEvent", name="childRemoved" )]

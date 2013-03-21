@@ -14,7 +14,7 @@ package cadet2D.components.processes
 	
 	import cadet.core.Component;
 	
-	import flox.core.events.PropertyChangeEvent;
+	import core.events.PropertyChangeEvent;
 
 	public class WorldBounds2D extends Component
 	{

@@ -12,7 +12,7 @@ package cadet.components.processes
 {
 	import cadet.core.Component;
 	
-	import flox.core.events.PropertyChangeEvent;
+	import core.events.PropertyChangeEvent;
 	
 	public class TouchInputMapping extends Component implements IInputMapping
 	{

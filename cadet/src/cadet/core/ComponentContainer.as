@@ -14,9 +14,9 @@ package cadet.core
 	import cadet.events.ComponentEvent;
 	import cadet.util.ComponentReferenceUtil;
 	
-	import flox.core.data.ArrayCollection;
-	import flox.core.events.ArrayCollectionChangeKind;
-	import flox.core.events.ArrayCollectionEvent;
+	import core.data.ArrayCollection;
+	import core.events.ArrayCollectionChangeKind;
+	import core.events.ArrayCollectionEvent;
 	
 	[Event( type="cadet.events.ComponentContainerEvent", name="childAdded" )]
 	[Event( type="cadet.events.ComponentContainerEvent", name="childRemoved" )]

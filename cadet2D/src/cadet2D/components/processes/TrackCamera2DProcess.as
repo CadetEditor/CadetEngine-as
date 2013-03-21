@@ -24,7 +24,7 @@ package cadet2D.components.processes
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
 	
-	import flox.app.util.Easing;
+	import core.app.util.Easing;
 	
 	import starling.display.DisplayObject;
 

@@ -18,7 +18,7 @@ package cadet.entities
 	import cadet.validators.ComponentSiblingValidator;
 	import cadet.validators.IComponentValidator;
 	
-	import flox.app.resources.FactoryResource;
+	import core.app.resources.FactoryResource;
 	
 	public class ComponentFactory extends FactoryResource
 	{

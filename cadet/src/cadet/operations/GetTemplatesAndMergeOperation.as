@@ -13,10 +13,10 @@ package cadet.operations
 	import cadet.core.IComponent;
 	import cadet.operations.GetTemplateAndMergeOperation;
 	
-	import flox.app.core.managers.fileSystemProviders.IFileSystemProvider;
-	import flox.app.core.operations.IAsynchronousOperation;
-	import flox.app.core.operations.IUndoableOperation;
-	import flox.app.operations.UndoableCompoundOperation;
+	import core.app.core.managers.fileSystemProviders.IFileSystemProvider;
+	import core.app.core.operations.IAsynchronousOperation;
+	import core.app.core.operations.IUndoableOperation;
+	import core.app.operations.UndoableCompoundOperation;
 
 	public class GetTemplatesAndMergeOperation extends UndoableCompoundOperation implements IAsynchronousOperation, IUndoableOperation
 	{

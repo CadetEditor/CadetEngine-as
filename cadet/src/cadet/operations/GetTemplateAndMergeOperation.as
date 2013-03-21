@@ -13,16 +13,16 @@ package cadet.operations
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flox.app.util.AsynchronousUtil;
+	import core.app.util.AsynchronousUtil;
 	
 	import cadet.core.IComponent;
 	import cadet.operations.GetTemplateOperation;
 	import cadet.operations.MergeWithTemplateOperation;
 	
-	import flox.app.core.managers.fileSystemProviders.IFileSystemProvider;
-	import flox.app.core.operations.IAsynchronousOperation;
-	import flox.app.core.operations.IUndoableOperation;
-	import flox.app.events.OperationProgressEvent;
+	import core.app.core.managers.fileSystemProviders.IFileSystemProvider;
+	import core.app.core.operations.IAsynchronousOperation;
+	import core.app.core.operations.IUndoableOperation;
+	import core.app.events.OperationProgressEvent;
 
 	public class GetTemplateAndMergeOperation extends EventDispatcher implements IAsynchronousOperation, IUndoableOperation
 	{

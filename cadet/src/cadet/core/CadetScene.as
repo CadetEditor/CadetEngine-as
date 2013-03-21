@@ -14,8 +14,8 @@ package cadet.core
 	
 	import cadet.events.ComponentEvent;
 	
-	import flox.app.managers.DependencyManager;
-	import flox.core.events.PropertyChangeEvent;
+	import core.app.managers.DependencyManager;
+	import core.events.PropertyChangeEvent;
 	
 	public class CadetScene extends ComponentContainer implements ICadetScene
 	{

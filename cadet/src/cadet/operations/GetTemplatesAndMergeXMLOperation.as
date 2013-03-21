@@ -15,12 +15,12 @@ package cadet.operations
 	import cadet.core.IComponent;
 	import cadet.operations.GetTemplateAndMergeXMLOperation;
 	
-	import flox.app.core.serialization.Serializer;
-	import flox.app.operations.CompoundOperation;
+	import core.app.core.serialization.Serializer;
+	import core.app.operations.CompoundOperation;
 	
-	import flox.app.core.managers.fileSystemProviders.IFileSystemProvider;
-	import flox.app.core.operations.IAsynchronousOperation;
-	import flox.app.operations.UndoableCompoundOperation;
+	import core.app.core.managers.fileSystemProviders.IFileSystemProvider;
+	import core.app.core.operations.IAsynchronousOperation;
+	import core.app.operations.UndoableCompoundOperation;
 	
 
 	public class GetTemplatesAndMergeXMLOperation extends CompoundOperation implements IAsynchronousOperation

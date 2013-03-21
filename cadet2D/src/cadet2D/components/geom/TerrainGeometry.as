@@ -14,9 +14,9 @@ package cadet2D.components.geom
 	import cadet2D.geom.Vertex;
 	import cadet2D.util.VertexUtil;
 	
-	import flox.core.data.ArrayCollection;
+	import core.data.ArrayCollection;
 	
-	import flox.app.dataStructures.ObjectPool;
+	import core.app.dataStructures.ObjectPool;
 	
 	public class TerrainGeometry extends CompoundGeometry
 	{

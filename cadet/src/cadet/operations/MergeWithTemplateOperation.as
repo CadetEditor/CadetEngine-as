@@ -18,16 +18,16 @@ package cadet.operations
 	import cadet.core.IComponentContainer;
 	import cadet.util.ComponentUtil;
 	
-	import flox.app.core.operations.IAsynchronousOperation;
-	import flox.app.core.operations.IUndoableOperation;
-	import flox.app.events.OperationProgressEvent;
-	import flox.app.operations.AddItemOperation;
-	import flox.app.operations.ChangePropertyOperation;
-	import flox.app.operations.CloneOperation;
-	import flox.app.operations.RemoveItemOperation;
-	import flox.app.operations.UndoableCompoundOperation;
-	import flox.app.util.AsynchronousUtil;
-	import flox.app.util.IntrospectionUtil;
+	import core.app.core.operations.IAsynchronousOperation;
+	import core.app.core.operations.IUndoableOperation;
+	import core.app.events.OperationProgressEvent;
+	import core.app.operations.AddItemOperation;
+	import core.app.operations.ChangePropertyOperation;
+	import core.app.operations.CloneOperation;
+	import core.app.operations.RemoveItemOperation;
+	import core.app.operations.UndoableCompoundOperation;
+	import core.app.util.AsynchronousUtil;
+	import core.app.util.IntrospectionUtil;
 
 	public class MergeWithTemplateOperation extends EventDispatcher implements IUndoableOperation, IAsynchronousOperation
 	{

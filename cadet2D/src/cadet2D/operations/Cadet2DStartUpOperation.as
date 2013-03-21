@@ -14,11 +14,11 @@ package cadet2D.operations
 	import cadet.operations.CadetStartUpOperationBase;
 	import cadet.operations.ReadCadetFileAndDeserializeOperation;
 	
-	import flox.app.FloxApp;
-	import flox.app.controllers.ExternalResourceController;
-	import flox.app.entities.URI;
-	import flox.app.managers.fileSystemProviders.url.URLFileSystemProvider;
-	import flox.app.operations.LoadManifestsOperation;
+	import core.app.CoreApp;
+	import core.app.controllers.ExternalResourceController;
+	import core.app.entities.URI;
+	import core.app.managers.fileSystemProviders.url.URLFileSystemProvider;
+	import core.app.operations.LoadManifestsOperation;
 	
 	public class Cadet2DStartUpOperation extends CadetStartUpOperationBase
 	{		
@@ -33,14 +33,14 @@ package cadet2D.operations
 		
 		override public function execute():void
 		{
-			// Initialise the FloxApp (resourceManager, fileSystemProvider)
-			FloxApp.init();
+			// Initialise the CoreApp (resourceManager, fileSystemProvider)
+			CoreApp.init();
 			
-			// Register a URLFileSystemProvider with the FloxApp
-			FloxApp.fileSystemProvider.registerFileSystemProvider( new URLFileSystemProvider( fspID, fspID, baseURL ) );
+			// Register a URLFileSystemProvider with the CoreApp
+			CoreApp.fileSystemProvider.registerFileSystemProvider( new URLFileSystemProvider( fspID, fspID, baseURL ) );
 			
 			// Create an ExternalResourceController to monitor external resources
-			new ExternalResourceController( FloxApp.resourceManager, new URI(fspID+"/"+assetsURL), FloxApp.fileSystemProvider );
+			new ExternalResourceController( CoreApp.resourceManager, new URI(fspID+"/"+assetsURL), CoreApp.fileSystemProvider );
 			
 			// Specify which manifests to load
 			var config:XML = createConfigXML();
@@ -51,7 +51,7 @@ package cadet2D.operations
 			
 			// Read and deserialize the Cadet XML into a CadetScene
 			var uri:URI = new URI(fspID+cadetFileURL);
-			readAndDeserializeOperation = new ReadCadetFileAndDeserializeOperation( uri, FloxApp.fileSystemProvider, FloxApp.resourceManager );
+			readAndDeserializeOperation = new ReadCadetFileAndDeserializeOperation( uri, CoreApp.fileSystemProvider, CoreApp.resourceManager );
 			addOperation(readAndDeserializeOperation);
 			
 			super.execute();

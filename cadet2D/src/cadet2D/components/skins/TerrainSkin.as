@@ -19,7 +19,7 @@ package cadet2D.components.skins
 	import flash.display.BitmapData;
 	import flash.geom.Matrix;
 	
-	import flox.app.dataStructures.ObjectPool;
+	import core.app.dataStructures.ObjectPool;
 	
 	import starling.display.Graphics;
 	import starling.display.Shape;

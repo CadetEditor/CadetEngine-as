@@ -16,12 +16,12 @@ package cadet3D.resources
 	import flash.events.Event;
 	import flash.utils.ByteArray;
 	
-	import flox.app.controllers.IExternalResourceParser;
-	import flox.app.core.managers.fileSystemProviders.IFileSystemProvider;
-	import flox.app.core.managers.fileSystemProviders.operations.IReadFileOperation;
-	import flox.app.entities.URI;
-	import flox.app.managers.ResourceManager;
-	import flox.app.resources.IFactoryResource;
+	import core.app.controllers.IExternalResourceParser;
+	import core.app.core.managers.fileSystemProviders.IFileSystemProvider;
+	import core.app.core.managers.fileSystemProviders.operations.IReadFileOperation;
+	import core.app.entities.URI;
+	import core.app.managers.ResourceManager;
+	import core.app.resources.IFactoryResource;
 	
 	public class ExternalAway3DResourceParser implements IExternalResourceParser
 	{

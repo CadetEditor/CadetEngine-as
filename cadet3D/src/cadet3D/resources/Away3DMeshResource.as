@@ -12,8 +12,7 @@ package cadet3D.resources
 {
 	import away3d.entities.Mesh;
 	
-	import flox.app.resources.FactoryResource;
-	import flox.app.resources.IFactoryResource;
+	import core.app.resources.IFactoryResource;
 	
 	public class Away3DMeshResource implements IFactoryResource
 	{

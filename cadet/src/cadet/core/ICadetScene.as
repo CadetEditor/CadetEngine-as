@@ -10,7 +10,7 @@
 
 package cadet.core
 {
-	import flox.app.managers.DependencyManager;
+	import core.app.managers.DependencyManager;
 
 	/**
 	 * An ICadetScene acts as a top-level component in much the same way the Stage class acts as a top-level DisplayObject

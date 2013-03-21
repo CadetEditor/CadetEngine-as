@@ -18,7 +18,7 @@ package cadet.core
 	import cadet.events.InvalidationEvent;
 	import cadet.util.ComponentReferenceUtil;
 	
-	import flox.core.events.PropertyChangeEvent;
+	import core.events.PropertyChangeEvent;
 	
 	[Event( type="cadet.events.ComponentEvent", name="addedToParent" )]
 	[Event( type="cadet.events.ComponentEvent", name="removedFromParent" )]

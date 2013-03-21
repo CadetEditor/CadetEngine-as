@@ -18,9 +18,9 @@ package cadet.operations
 	import cadet.core.IComponentContainer;
 	import cadet.util.ComponentUtil;
 	
-	import flox.app.core.operations.IAsynchronousOperation;
-	import flox.app.events.OperationProgressEvent;
-	import flox.app.util.AsynchronousUtil;
+	import core.app.core.operations.IAsynchronousOperation;
+	import core.app.events.OperationProgressEvent;
+	import core.app.util.AsynchronousUtil;
 
 	public class ValidateAsyncOperation extends EventDispatcher implements IAsynchronousOperation
 	{

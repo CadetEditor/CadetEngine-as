@@ -12,8 +12,8 @@ package cadet3D.resources
 {
 	import away3d.core.base.Geometry;
 	
-	import flox.app.resources.FactoryResource;
-	import flox.app.resources.IFactoryResource;
+	import core.app.resources.FactoryResource;
+	import core.app.resources.IFactoryResource;
 	
 	public class Away3DGeometryResource implements IFactoryResource
 	{

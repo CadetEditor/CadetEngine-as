@@ -19,16 +19,16 @@ package cadet.operations
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
-	import flox.app.core.managers.fileSystemProviders.IFileSystemProvider;
-	import flox.app.core.managers.fileSystemProviders.operations.IReadFileOperation;
-	import flox.app.core.operations.IAsynchronousOperation;
-	import flox.app.core.serialization.ISerializationPlugin;
-	import flox.app.core.serialization.ResourceSerializerPlugin;
-	import flox.app.entities.URI;
-	import flox.app.events.OperationProgressEvent;
-	import flox.app.managers.ResourceManager;
-	import flox.app.operations.DeserializeOperation;
-	import flox.app.operations.ReadFileAndDeserializeOperation;
+	import core.app.core.managers.fileSystemProviders.IFileSystemProvider;
+	import core.app.core.managers.fileSystemProviders.operations.IReadFileOperation;
+	import core.app.core.operations.IAsynchronousOperation;
+	import core.app.core.serialization.ISerializationPlugin;
+	import core.app.core.serialization.ResourceSerializerPlugin;
+	import core.app.entities.URI;
+	import core.app.events.OperationProgressEvent;
+	import core.app.managers.ResourceManager;
+	import core.app.operations.DeserializeOperation;
+	import core.app.operations.ReadFileAndDeserializeOperation;
 
 	public class ReadCadetFileAndDeserializeOperation extends EventDispatcher implements IAsynchronousOperation
 	{

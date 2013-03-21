@@ -18,14 +18,14 @@ package cadet.operations
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
-	import flox.app.core.managers.fileSystemProviders.IFileSystemProvider;
-	import flox.app.core.operations.IAsynchronousOperation;
-	import flox.app.entities.URI;
-	import flox.app.events.OperationProgressEvent;
-	import flox.app.operations.ReadFileAndDeserializeOperation;
-	import flox.app.util.AsynchronousUtil;
+	import core.app.core.managers.fileSystemProviders.IFileSystemProvider;
+	import core.app.core.operations.IAsynchronousOperation;
+	import core.app.entities.URI;
+	import core.app.events.OperationProgressEvent;
+	import core.app.operations.ReadFileAndDeserializeOperation;
+	import core.app.util.AsynchronousUtil;
 
-	[Event(type="flox.app.events.OperationProgressEvent", name="progress")]
+	[Event(type="core.app.events.OperationProgressEvent", name="progress")]
 	[Event(type="flash.events.Event", name="complete")]
 	[Event(type="flash.events.ErrorEvent", name="error")]
 

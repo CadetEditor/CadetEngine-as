@@ -16,7 +16,7 @@ package cadet2D.components.transforms
 	
 	import cadet.core.Component;
 	
-	import flox.core.events.PropertyChangeEvent;
+	import core.events.PropertyChangeEvent;
 	
 	import starling.display.DisplayObject;
 	import starling.display.Shape;

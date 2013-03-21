@@ -12,7 +12,7 @@ package cadet2D.geom
 {
 	import flash.geom.Point;
 	
-	import flox.app.dataStructures.ObjectPool;
+	import core.app.dataStructures.ObjectPool;
 	
 
 	public class Vertex
