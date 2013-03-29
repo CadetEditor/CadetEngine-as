@@ -14,25 +14,37 @@ package cadet2D.components.particles
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display3D.Context3DBlendFactor;
+	import flash.geom.Matrix;
 	
 	import cadet.core.Component;
+	import cadet.core.IComponent;
+	import cadet.core.IComponentContainer;
 	import cadet.core.IInitialisableComponent;
 	import cadet.events.RendererEvent;
 	import cadet.util.deg2rad;
 	import cadet.util.rad2deg;
 	
 	import cadet2D.components.renderers.Renderer2D;
-	import cadet2D.components.skins.AbstractSkin2D;
 	import cadet2D.components.skins.IAnimatable;
 	import cadet2D.components.textures.TextureComponent;
 	
-	import starling.display.DisplayObjectContainer;
+	import starling.display.DisplayObject;
+	import starling.display.Sprite;
 	import starling.extensions.ColorArgb;
 	import starling.extensions.PDParticleSystem;
 	import starling.textures.Texture;
 	
 	public class PDParticleSystemComponent extends Component implements IInitialisableComponent, IAnimatable
 	{
+		// ITransform2D values
+		protected var _x						:Number = 0;
+		protected var _y						:Number = 0;
+		protected var _scaleX					:Number = 1;
+		protected var _scaleY					:Number = 1;
+		protected var _rotation					:Number = 0;
+		
+		// Constants
+		private const TRANSFORM						:String = "transform";
 		private const RESOURCES						:String = "resources";
 		private const DISPLAY						:String = "display";
 		
@@ -47,42 +59,85 @@ package cadet2D.components.particles
 		private var _particleSystem					:PDParticleSystem;
 		
 		private var _renderer						:Renderer2D;
-		private var _targetSkin						:AbstractSkin2D;
-		private var _displayObjectContainer			:DisplayObjectContainer;
 		
-		private var _addedToDisplayList				:Boolean;
 		private var _addedToJuggler					:Boolean;
 		private var _started						:Boolean;
 		private var _initialised					:Boolean;
-		private var _autoplay						:Boolean;
-		
-		private var _startColor						:uint;
-		private var _startColorVariance				:uint;
-		private var _endColor						:uint;
-		private var _endColorVariance				:uint;
+		private var _autoplay						:Boolean = true;
 		
 		private var _xml							:XML;
 		
 		private var _defaultTexture					:Texture;
 		private var _texture						:TextureComponent;
 		
-		// Default values
-		private var _defaultStartColor				:ColorArgb = new ColorArgb(1,0,0,1);
-		private var _defaultEndColor				:ColorArgb = new ColorArgb(0,0,1,1);
-		private var _defaultMaxNumParticles			:uint = 128;
-		private var _defaultLifeSpan				:Number = 0.4;
-		private var _defaultStartSize				:Number = 50;
-		private var _defaultEndSize					:Number = 10;
-		private var _defaultSpeed					:Number = 800;
-		private var _defaultMaxCapacity				:int = 8192;
-		private var _defaultEmissionRate			:Number = _defaultMaxNumParticles / _defaultLifeSpan;
-		private var _defaultBlendFactorSource		:String = Context3DBlendFactor.SOURCE_ALPHA;
-		private var _defaultBlendFactorDest			:String = Context3DBlendFactor.ONE;
+		// GETTER/SETTER VALUES
+		private var _emitterTypeInt					:uint = 0;
+		// Start Color
+		private var _startColor						:uint = 0x0000FF;
+		private var _startColorAlpha				:Number = 1;
+		private var _startColorVariance				:uint = 0;
+		private var _startColorVarAlpha				:Number = 1;
+		private var _startColorARGB					:ColorArgb = new ColorArgb(1,0,0,1);
+		private var _startColorVarARGB				:ColorArgb = new ColorArgb(0,0,0,0);
+		// End Color
+		private var _endColor						:uint = 0x00FFFF;
+		private var _endColorAlpha					:Number = 0;
+		private var _endColorVariance				:uint = 0;
+		private var _endColorVarAlpha				:uint = 0;
+		private var _endColorARGB					:ColorArgb = new ColorArgb(0,0,1,1);
+		private var _endColorVarARGB				:ColorArgb = new ColorArgb(0,0,0,0);
+		
+		private var _maxCapacity					:int = 8192;
+		private var _emitterX						:Number = 0;
+		private var _emitterY						:Number = 0;
+		private var _emitterXVariance				:Number = 0;
+		private var _emitterYVariance				:Number = 0;
+		private var _blendFactorSource				:String = Context3DBlendFactor.SOURCE_ALPHA;
+		private var _blendFactorDest				:String = Context3DBlendFactor.ONE;
+		private var _maxNumParticles				:uint = 128;
+		private var _lifespan						:Number = 0.4;
+		private var _lifespanVariance				:Number = 0;
+		private var _emissionRate					:Number = _maxNumParticles / _lifespan;
+		private var _startSize						:Number = 50;
+		private var _startSizeVariance				:Number = 0;
+		private var _endSize						:Number = 10;
+		private var _endSizeVariance				:Number = 0;
+				
+		private var _speed							:Number = 800;
+		private var _speedVariance					:Number = 0;
+		private var _gravityX						:Number = 0;
+		private var _gravityY						:Number = 0;
+		private var _radialAcceleration				:Number = 0;
+		private var _radialAccelVar					:Number = 0;
+		private var _tangentialAccel				:Number = 0;
+		private var _tangentialAccelVar				:Number = 0; 
+		private var _maxRadius						:Number = 100;
+		private var _maxRadiusVariance				:Number = 0;
+		private var _minRadius						:Number = 20;
+		
+		// Angles
+		// All angles are stored in degrees and need to be converted to radians when passed back and forth
+		// from the ParticleSystem. (Degrees make for clearer gradiation with UI)
+		private var _emitAngle						:Number = 0; 
+		private var _emitAngleVariance				:Number = 0; 
+		private var _startRotation					:Number = 0;
+		private var _startRotationVar				:Number = 0;
+		private var _endRotation					:Number = 0;
+		private var _endRotationVar					:Number = 0;
+		private var _rotatePerSecond				:Number = 720;
+		private var _rotatePerSecondVar				:Number = 0; 
+		
+		private var _previewAnimation				:Boolean;
+		
+		// IRenderable values
+		private var _displayObject					:Sprite;
+		protected var _indexStr						:String;	
 		
 		public function PDParticleSystemComponent( config:XML = null, textureComponent:TextureComponent = null )
 		{
 			_xml = config;
 			_texture = texture;
+			_displayObject = new Sprite();
 		}
 		
 		override protected function addedToScene():void
@@ -112,6 +167,10 @@ package cadet2D.components.particles
 		
 		override public function validateNow():void
 		{
+			if (isInvalid(TRANSFORM)) {
+				validateTransform();
+			}
+			
 			if ( isInvalid( RESOURCES ) ) {
 				validateResources();
 			}
@@ -121,6 +180,15 @@ package cadet2D.components.particles
 			}
 				
 			super.validateNow();
+		}
+		
+		protected function validateTransform():void
+		{
+			_displayObject.x = _x;
+			_displayObject.y = _y;
+			_displayObject.scaleX = _scaleX;
+			_displayObject.scaleY = _scaleY;
+			_displayObject.rotation = _rotation;
 		}
 		
 		private function validateResources():void
@@ -139,35 +207,247 @@ package cadet2D.components.particles
 			if (!texture) return;
 			
 			stop(true);
-			removeFromDisplayList(true);
+			//removeFromDisplayList(true);
 			removeFromJuggler();
+			
+			
+			if ( _particleSystem ) {
+				_displayObject.removeChild(_particleSystem);
+			}
 			
 			_particleSystem = new PDParticleSystem(config, texture);
 			
+			_displayObject.addChild(_particleSystem);
+			
+			// UPDATE VALUES
+			_emitterType = emitterTypeIntToString(_particleSystem.emitterType); 
+			// Start Color
+			_startColor = _particleSystem.startColor.toRgb();
+			_startColorAlpha = _particleSystem.startColor.alpha;
+			_startColorVariance = _particleSystem.startColorVariance.toRgb();
+			_startColorVarAlpha = _particleSystem.startColorVariance.alpha; 
+			// End Color
+			_endColor = _particleSystem.endColor.toRgb();
+			_endColorAlpha = _particleSystem.endColor.alpha;
+			_endColorVariance = _particleSystem.endColorVariance.toRgb();
+			_endColorVarAlpha = _particleSystem.endColorVariance.alpha;
+			
+			_maxCapacity = _particleSystem.maxCapacity;
+			_emissionRate = _particleSystem.emissionRate;
+			_emitterX = _particleSystem.emitterX;
+			_emitterY = _particleSystem.emitterY;
+			_emitterXVariance = _particleSystem.emitterXVariance;
+			_emitterYVariance = _particleSystem.emitterYVariance;
+			_blendFactorSource = _particleSystem.blendFactorSource;
+			_blendFactorDest = _particleSystem.blendFactorDestination;
+			_maxNumParticles = _particleSystem.maxNumParticles;
+			_lifespan = _particleSystem.lifespan;
+			_lifespanVariance = _particleSystem.lifespanVariance;
+			_startSize = _particleSystem.startSize;
+			_startSizeVariance = _particleSystem.startSizeVariance;
+			_endSize = _particleSystem.endSize;
+			_endSizeVariance = _particleSystem.endSizeVariance;
+			_speed = _particleSystem.speed;
+			_speedVariance = _particleSystem.speedVariance;
+			_gravityX = _particleSystem.gravityX;
+			_gravityY = _particleSystem.gravityY;
+			_radialAcceleration = _particleSystem.radialAcceleration;
+			_radialAccelVar =_particleSystem.radialAccelerationVariance;
+			_tangentialAccel = _particleSystem.tangentialAcceleration;
+			_tangentialAccelVar = _particleSystem.tangentialAccelerationVariance; 
+			_maxRadius = _particleSystem.maxRadius;
+			_maxRadiusVariance = _particleSystem.maxRadiusVariance;
+			_minRadius = _particleSystem.minRadius;
+			
+			// Angles
+			_emitAngle = rad2deg(_particleSystem.emitAngle); 
+			_emitAngleVariance = rad2deg(_particleSystem.emitAngleVariance); 
+			_startRotation = rad2deg(_particleSystem.startRotation);
+			_startRotationVar = rad2deg(_particleSystem.startRotationVariance);
+			_endRotation = rad2deg(_particleSystem.endRotation);
+			_endRotationVar = rad2deg(_particleSystem.endRotationVariance);
+			_rotatePerSecond = rad2deg(_particleSystem.rotatePerSecond);
+			_rotatePerSecondVar = rad2deg(_particleSystem.rotatePerSecondVariance); 
+			
+			_startColorARGB.copyFrom(_particleSystem.startColor);
+			_startColorVarARGB.copyFrom(_particleSystem.startColorVariance);
+			_endColorARGB.copyFrom(_particleSystem.endColor);
+			_endColorVarARGB.copyFrom(_particleSystem.endColorVariance);			
+			
 			addToJuggler();
-			addToDisplayList();
-			if (_autoplay) start();
+			if (_autoplay || _previewAnimation) start();
 		}
 		
 		private function validateDisplay():void
-		{			
-			if ( _targetSkin ) {
-				if ( _targetSkin.displayObject is DisplayObjectContainer ) {
-					_displayObjectContainer = DisplayObjectContainer(_targetSkin.displayObject);
-				}
-			} else {
-				// If targetSkin is deselected, revert to renderer viewport
-				if ( _renderer && _renderer.initialised ) {
-					_displayObjectContainer = _renderer.viewport;
-				}
+		{
+			// Set start and end colors for serializing.
+			_startColorARGB = ColorArgb.fromRgb(_startColor);
+			_startColorARGB.alpha = _startColorAlpha;
+			_startColorVarARGB = ColorArgb.fromArgb(_startColorVariance);
+			_startColorVarARGB.alpha = _startColorVarAlpha;
+			_endColorARGB = ColorArgb.fromRgb(_endColor);
+			_endColorARGB.alpha = _endColorAlpha;
+			_endColorVarARGB = ColorArgb.fromArgb(_endColorVariance);
+			_endColorVarARGB.alpha = _endColorVarAlpha;			
+			
+			if (!_particleSystem) return;
+			
+			_particleSystem.emitterType = emitterTypeInt; 
+			// Start Color
+			_particleSystem.startColor = ColorArgb.fromRgb(_startColor); 
+			_particleSystem.startColor.alpha = _startColorAlpha;
+			_particleSystem.startColorVariance = ColorArgb.fromRgb(_startColorVariance); 
+			_particleSystem.startColorVariance.alpha = _startColorVarAlpha; 
+			// End Color
+			_particleSystem.endColor = ColorArgb.fromRgb(_endColor);
+			_particleSystem.endColor.alpha = _endColorAlpha;
+			_particleSystem.endColorVariance = ColorArgb.fromRgb(_endColorVariance);
+			_particleSystem.endColorVariance.alpha = _endColorVarAlpha;
+			
+			_particleSystem.maxCapacity = _maxCapacity;
+			_particleSystem.emissionRate = _emissionRate;
+			_particleSystem.emitterX = _emitterX;
+			_particleSystem.emitterY = _emitterY;
+			_particleSystem.emitterXVariance = _emitterXVariance;
+			_particleSystem.emitterYVariance = _emitterYVariance;
+			_particleSystem.blendFactorSource = _blendFactorSource;
+			_particleSystem.blendFactorDestination = _blendFactorDest;
+			_particleSystem.maxNumParticles = _maxNumParticles;
+			_particleSystem.lifespan = _lifespan;
+			_particleSystem.lifespanVariance = _lifespanVariance;
+			_particleSystem.startSize = _startSize;
+			_particleSystem.startSizeVariance = _startSizeVariance;
+			_particleSystem.endSize = _endSize;
+			_particleSystem.endSizeVariance = _endSizeVariance;
+			_particleSystem.speed = _speed;
+			_particleSystem.speedVariance = _speedVariance;
+			_particleSystem.gravityX = _gravityX;
+			_particleSystem.gravityY = _gravityY;
+			_particleSystem.radialAcceleration = _radialAcceleration;
+			_particleSystem.radialAccelerationVariance = _radialAccelVar;
+			_particleSystem.tangentialAcceleration = _tangentialAccel;
+			_particleSystem.tangentialAccelerationVariance = _tangentialAccelVar; 
+			_particleSystem.maxRadius = _maxRadius;
+			_particleSystem.maxRadiusVariance = _maxRadiusVariance;
+			_particleSystem.minRadius = _minRadius;
+			
+			// Angles
+			_particleSystem.emitAngle = deg2rad(_emitAngle); 
+			_particleSystem.emitAngleVariance = deg2rad(_emitAngleVariance); 
+			_particleSystem.startRotation = deg2rad(_startRotation);
+			_particleSystem.startRotationVariance = deg2rad(_startRotationVar);
+			_particleSystem.endRotation = deg2rad(_endRotation);
+			_particleSystem.endRotationVariance = deg2rad(_endRotationVar);
+			_particleSystem.rotatePerSecond = deg2rad(_rotatePerSecond);
+			_particleSystem.rotatePerSecondVariance = deg2rad(_rotatePerSecondVar); 
+			
+			_startColorARGB.copyFrom(_particleSystem.startColor);
+			_startColorVarARGB.copyFrom(_particleSystem.startColorVariance);
+			_endColorARGB.copyFrom(_particleSystem.endColor);
+			_endColorVarARGB.copyFrom(_particleSystem.endColorVariance);
+				
+			addToJuggler();
+			if (_autoplay || _previewAnimation) start();
+		}
+		
+		// -------------------------------------------------------------------------------------
+		// ITRANSFORM2D API
+		// -------------------------------------------------------------------------------------
+		
+		[Inspectable( priority="50" )]
+		public function set x( value:Number ):void
+		{
+			if ( isNaN(value) ) {
+				throw( new Error( "value is not a number" ) );
 			}
 			
-			removeFromDisplayList();
-			
-			addToJuggler();
-			addToDisplayList();
-			if (_autoplay) start();
+			_x = value;
+			invalidate(TRANSFORM);
 		}
+		public function get x():Number { return _x; }
+		
+		[Inspectable( priority="51" )]
+		public function set y( value:Number ):void
+		{
+			if ( isNaN(value) ) {
+				throw( new Error( "value is not a number" ) );
+			}
+			
+			_y = value;
+			invalidate(TRANSFORM);
+		}
+		public function get y():Number { return _y; }
+		
+		[Inspectable( priority="52" )]
+		public function set scaleX( value:Number ):void
+		{
+			if ( isNaN(value) ) {
+				throw( new Error( "value is not a number" ) );
+			}
+			
+			_scaleX = value;
+			invalidate(TRANSFORM);
+		}
+		public function get scaleX():Number { return _scaleX; }
+		
+		[Inspectable( priority="53" )]
+		public function set scaleY( value:Number ):void
+		{
+			if ( isNaN(value) ) {
+				throw( new Error( "value is not a number" ) );
+			}
+			
+			_scaleY = value;
+			invalidate(TRANSFORM);
+		}
+		public function get scaleY():Number { return _scaleY; }
+		
+		[Inspectable(priority="54", editor="Slider", min="0", max="360", snapInterval="1" ) ]
+		public function set rotation( value:Number ):void
+		{
+			if ( isNaN(value) ) {
+				throw( new Error( "value is not a number" ) );
+			}
+			
+			_rotation = deg2rad(value);
+			invalidate(TRANSFORM);
+		}
+		public function get rotation():Number { return rad2deg(_rotation); }
+		
+		public function set matrix( value:Matrix ):void
+		{
+			_displayObject.transformationMatrix = value;
+			_x = _displayObject.x;
+			_y = _displayObject.y;
+			_scaleX = _displayObject.scaleX;
+			_scaleY = _displayObject.scaleY;
+			_rotation = _displayObject.rotation;
+			
+			invalidate(TRANSFORM);
+		}
+		public function get matrix():Matrix 
+		{ 
+			if (isInvalid(TRANSFORM)) {
+				validateTransform();
+			}
+			
+			return _displayObject.transformationMatrix; 
+		}
+		
+		[Serializable(alias="matrix")]
+		public function set serializedMatrix( value:String ):void
+		{
+			var split:Array = value.split( "," );
+			matrix = new Matrix( split[0], split[1], split[2], split[3], split[4], split[5] );
+		}
+		
+		public function get serializedMatrix():String 
+		{ 
+			var m:Matrix = matrix;
+			return m.a + "," + m.b + "," + m.c + "," + m.d + "," + m.tx + "," + m.ty;
+		}		
+		
+		// -------------------------------------------------------------------------------------		
 		
 		// -------------------------------------------------------------------------------------
 		// INSPECTABLE API
@@ -183,16 +463,7 @@ package cadet2D.components.particles
 			return _autoplay;
 		}
 		
-		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="50" )]
-		public function set targetSkin( value:AbstractSkin2D ):void
-		{
-			_targetSkin = value;
-			
-			invalidate( DISPLAY );
-		}
-		public function get targetSkin():AbstractSkin2D { return _targetSkin; }
-		
-		[Serializable( type="resource" )][Inspectable( priority="51", editor="ResourceItemEditor", extensions="[pex]")]
+		[Serializable( type="resource" )][Inspectable( priority="55", editor="ResourceItemEditor", extensions="[pex]")]
 		public function set xml( value:XML ):void
 		{
 			_xml = value;
@@ -200,7 +471,7 @@ package cadet2D.components.particles
 		}
 		public function get xml():XML { return _xml; }
 		
-		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="52" )]
+		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="56" )]
 		public function set texture( value:TextureComponent ):void
 		{
 			_texture = value;
@@ -237,9 +508,13 @@ package cadet2D.components.particles
 			invalidate( DISPLAY );
 		}
 		
+		// -------------------------------------------------------------------------------------
+		// IANIMATABLE API
+		// -------------------------------------------------------------------------------------
+		
 		public function addToJuggler():Boolean
 		{
-			if (!_initialised) return false;	// only add if in run mode
+			if (!_initialised && !_previewAnimation) return false;	// only add if in run mode or if previewing
 			if (!renderer || !renderer.initialised) return false;
 			if (!_particleSystem) return false;
 			if (_addedToJuggler) return false;
@@ -260,28 +535,27 @@ package cadet2D.components.particles
 			
 			return true;
 		}
+		public function get isAnimating():Boolean
+		{
+			return _addedToJuggler;
+		}
 		
-		private function addToDisplayList():void
+		// IAnimatable : Design time
+		public function get previewAnimation():Boolean
 		{
-			if (!_initialised) return;	// only add if in run mode
-			if (!_particleSystem) return;
-			if (_addedToDisplayList) return;
-			if (!_displayObjectContainer) return;
-			
-			_displayObjectContainer.addChild(_particleSystem);
-			_addedToDisplayList = true;
+			return _previewAnimation;
 		}
-		private function removeFromDisplayList(dispose:Boolean = false):void
+		public function set previewAnimation( value:Boolean ):void
 		{
-			if ( !_particleSystem || !_particleSystem.parent ) return;
-			if (!_addedToDisplayList) return;
-			
-			_particleSystem.removeFromParent(dispose);
-			_addedToDisplayList = false;
+			_previewAnimation = value;
+			invalidate( DISPLAY );
 		}
+		
+		// -------------------------------------------------------------------------------------
+		
 		public function start(duration:Number = Number.MAX_VALUE):void
 		{
-			if (!_initialised) return;
+			if (!_initialised && !_previewAnimation) return;
 			if (!_particleSystem) return;
 			//if (_started) return;
 			
@@ -297,435 +571,506 @@ package cadet2D.components.particles
 			_started = false;
 		}
 		
-		[Serializable][Inspectable( priority="53", editor="DropDownMenu", dataProvider="[Gravity,Radial]" )]
+		[Serializable][Inspectable( priority="57", editor="DropDownMenu", dataProvider="[Gravity,Radial]" )]
 		public function get emitterType():String 
 		{ 
-			var uintType:uint = _particleSystem.emitterType;
-			
-			if ( uintType == 0 ) {
-				_emitterType = EMITTER_TYPE_GRAVITY;
-			} else if ( uintType == 1 ) {
-				_emitterType = EMITTER_TYPE_RADIAL;
-			}
-			
 			return _emitterType; 
 		}
 		public function set emitterType(value:String):void 
 		{ 
 			_emitterType = value;
-			
-			var uintType:uint = 0;
-			if ( _emitterType == EMITTER_TYPE_RADIAL ) {
-				uintType = 1;
+			invalidate( DISPLAY );
+		}
+		
+		private function emitterTypeIntToString( value:int ):String
+		{
+			if ( value == 0 ) {
+				return EMITTER_TYPE_GRAVITY;
+			} else if ( value == 1 ) {
+				return EMITTER_TYPE_RADIAL;
 			}
 			
-			_particleSystem.emitterType = uintType; 
+			return null;
 		}
 		
 		private function get emitterTypeInt():int
-		{
-			if (!_particleSystem) return 0;
-			else return _particleSystem.emitterType;
+		{	
+			var intType:int = 0;
+			if ( _emitterType == EMITTER_TYPE_RADIAL ) {
+				intType = 1;
+			}
+			
+			return intType;
 		}
 		
-		[Serializable][Inspectable( priority="54", editor="ColorPicker" )]
+		[Serializable][Inspectable( priority="58", editor="ColorPicker" )]
 		public function get startColor():uint { return _particleSystem.startColor.toRgb(); }
 		public function set startColor(value:uint):void 
 		{ 
-			_startColor = value;
-			_particleSystem.startColor = ColorArgb.fromRgb(_startColor); 
+			_startColor = value;			
+			invalidate( DISPLAY );
 		}
 		
-		[Serializable][Inspectable( priority="55", editor="Slider", min="0", max="1", snapInterval="0.05" )]
+		[Serializable][Inspectable( priority="59", editor="Slider", min="0", max="1", snapInterval="0.05" )]
 		public function get startColorAlpha():Number 
-		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.startColor.alpha;
+		{
+			return _startColorAlpha;
 		}
 		public function set startColorAlpha(value:Number):void 
 		{ 
-			_particleSystem.startColor.alpha = value;
+			_startColorAlpha = value;
+			invalidate( DISPLAY );
 		}
-		
-		[Serializable][Inspectable( priority="56", editor="ColorPicker" )]
+				
+		[Serializable][Inspectable( priority="60", editor="ColorPicker" )]
 		public function get startColorVariance():uint 
 		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.startColorVariance.toRgb(); 
+			return _startColorVariance;
 		}
 		public function set startColorVariance(value:uint):void 
 		{ 
 			_startColorVariance = value;
-			_particleSystem.startColorVariance = ColorArgb.fromRgb(_startColorVariance); 
+			invalidate( DISPLAY );
 		}
 		
-		[Serializable][Inspectable( priority="57", editor="Slider", min="0", max="1", snapInterval="0.05" )]
+		[Serializable][Inspectable( priority="61", editor="Slider", min="0", max="1", snapInterval="0.05" )]
 		public function get startColorVarAlpha():Number 
 		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.startColorVariance.alpha; 
+			return _startColorVarAlpha;
 		}
 		public function set startColorVarAlpha(value:Number):void 
-		{ 
-			_particleSystem.startColorVariance.alpha = value; 
+		{
+			_startColorVarAlpha = value;
+			invalidate( DISPLAY );
 		}
 		
-		[Serializable][Inspectable( priority="58", editor="ColorPicker" )]
-		public function get endColor():uint { return _particleSystem.endColor.toRgb(); }
+		[Serializable][Inspectable( priority="62", editor="ColorPicker" )]
+		public function get endColor():uint { return _endColor; }
 		public function set endColor(value:uint):void 
 		{ 
 			_endColor = value;
-			_particleSystem.endColor = ColorArgb.fromRgb(_endColor); 
+			invalidate( DISPLAY );
 		}
 		
-		[Serializable][Inspectable( priority="59", editor="Slider", min="0", max="1", snapInterval="0.05" )]
+		[Serializable][Inspectable( priority="63", editor="Slider", min="0", max="1", snapInterval="0.05" )]
 		public function get endColorAlpha():Number 
-		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.endColor.alpha; 
+		{
+			return _endColorAlpha;
 		}
 		public function set endColorAlpha(value:Number):void 
 		{ 
-			_particleSystem.endColor.alpha = value;
+			_endColorAlpha = value;
+			invalidate( DISPLAY );
 		}				
 		
-		[Serializable][Inspectable( priority="60", editor="ColorPicker" )]
+		[Serializable][Inspectable( priority="64", editor="ColorPicker" )]
 		public function get endColorVariance():uint 
-		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.endColorVariance.toRgb(); 
+		{
+			return _endColorVariance;
 		}
 		public function set endColorVariance(value:uint):void 
 		{ 
 			_endColorVariance = value;
-			_particleSystem.endColorVariance = ColorArgb.fromRgb(_endColorVariance);
+			invalidate( DISPLAY );
 		}
 		
-		[Serializable][Inspectable( priority="61", editor="Slider", min="0", max="1", snapInterval="0.05" )]
+		[Serializable][Inspectable( priority="65", editor="Slider", min="0", max="1", snapInterval="0.05" )]
 		public function get endColorVarAlpha():Number 
 		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.endColorVariance.alpha; 
+			return _endColorVarAlpha;
 		}
 		public function set endColorVarAlpha(value:Number):void 
-		{ 
-			_particleSystem.endColorVariance.alpha = value; 
+		{
+			_endColorVarAlpha = value;
+			invalidate( DISPLAY );
 		}
 		
-		private function get startColorRGBA():ColorArgb
-		{
-			if (!_particleSystem) return _defaultStartColor;
-			return _particleSystem.startColor;
-		}
-		private function get startColorVarianceRGBA():ColorArgb
-		{
-			if (!_particleSystem) return new ColorArgb();
-			return _particleSystem.startColorVariance;
-		}
-		private function get endColorRGBA():ColorArgb
-		{
-			if (!_particleSystem) return _defaultEndColor;
-			return _particleSystem.endColor;
-		}
-		private function get endColorVarianceRGBA():ColorArgb
-		{
-			if (!_particleSystem) return new ColorArgb();
-			return _particleSystem.endColorVariance;
-		}
-
-		[Serializable][Inspectable(priority="62") ]
+		[Serializable][Inspectable(priority="66") ]
 		public function get maxCapacity():int 
-		{ 
-			if (!_particleSystem) return _defaultMaxCapacity;
-			return _particleSystem.maxCapacity; 
+		{
+			return _maxCapacity;
 		}
 		public function set maxCapacity(value:int):void 
 		{ 
-			_particleSystem.maxCapacity = value; 
+			_maxCapacity = value;
+			invalidate( DISPLAY );
 		}
 		
-		[Serializable][Inspectable(priority="63") ]
+		[Serializable][Inspectable(priority="67") ]
 		public function get emissionRate():Number 
 		{
-			if (!_particleSystem) return _defaultEmissionRate;
-			return _particleSystem.emissionRate; 
+			return _emissionRate;
 		}
 		public function set emissionRate(value:Number):void 
 		{ 
-			_particleSystem.emissionRate = value; 
+			_emissionRate = value;
+			invalidate( DISPLAY );
 		}
 		
-		[Serializable][Inspectable(priority="64") ]
+		[Serializable][Inspectable(priority="68") ]
 		public function get emitterX():Number
 		{
-			if (!_particleSystem) return 0;
-			return _particleSystem.emitterX;
+			return _emitterX;
 		}
 		public function set emitterX(value:Number):void
 		{
-			_particleSystem.emitterX = value;
+			_emitterX = value;
+			invalidate(DISPLAY);
 		}
 		
-		[Serializable][Inspectable(priority="65") ]
+		[Serializable][Inspectable(priority="69") ]
 		public function get emitterY():Number
 		{
-			if (!_particleSystem) return 0;
-			return _particleSystem.emitterY;
+			return _emitterY;
 		}
 		public function set emitterY(value:Number):void
 		{
-			_particleSystem.emitterY = value;
+			_emitterY = value;
+			invalidate( DISPLAY );
+		}
+
+		[Serializable][Inspectable(priority="70") ]
+		public function get emitterXVariance():Number 
+		{
+			return _emitterXVariance;
+		}
+		public function set emitterXVariance(value:Number):void 
+		{
+			_emitterXVariance = value;
+			invalidate( DISPLAY );
 		}
 		
-		[Serializable][Inspectable(priority="66", editor="DropDownMenu", dataProvider="[zero,one,sourceColor,oneMinusSourceColor,sourceAlpha,oneMinusSourceAlpha,destinationAlpha,oneMinusDestinationAlpha,destinationColor,oneMinusDestinationColor]") ]
+		[Serializable][Inspectable(priority="71") ]
+		public function get emitterYVariance():Number 
+		{ 
+			return _emitterYVariance;
+		}
+		public function set emitterYVariance(value:Number):void 
+		{
+			_emitterYVariance = value;
+			invalidate( DISPLAY );
+		}
+		
+		[Serializable][Inspectable(priority="72", editor="DropDownMenu", dataProvider="[zero,one,sourceColor,oneMinusSourceColor,sourceAlpha,oneMinusSourceAlpha,destinationAlpha,oneMinusDestinationAlpha,destinationColor,oneMinusDestinationColor]") ]
 		public function get blendFactorSource():String 
 		{ 
-			if (!_particleSystem) return _defaultBlendFactorSource;
-			return _particleSystem.blendFactorSource; 
+			return _blendFactorSource;
 		}
 		public function set blendFactorSource(value:String):void 
 		{ 
-			_particleSystem.blendFactorSource = value; 
+			_blendFactorSource = value;
+			invalidate( DISPLAY );
 		}
 		
-		[Serializable][Inspectable(priority="67", editor="DropDownMenu", dataProvider="[zero,one,sourceColor,oneMinusSourceColor,sourceAlpha,oneMinusSourceAlpha,destinationAlpha,oneMinusDestinationAlpha,destinationColor,oneMinusDestinationColor]") ]
+		[Serializable][Inspectable(priority="73", editor="DropDownMenu", dataProvider="[zero,one,sourceColor,oneMinusSourceColor,sourceAlpha,oneMinusSourceAlpha,destinationAlpha,oneMinusDestinationAlpha,destinationColor,oneMinusDestinationColor]") ]
 		public function get blendFactorDest():String 
 		{ 
-			if (!_particleSystem) return _defaultBlendFactorDest;
-			return _particleSystem.blendFactorDestination; 
+			return _blendFactorDest;
 		}
 		public function set blendFactorDest(value:String):void 
 		{ 
-			_particleSystem.blendFactorDestination = value; 
-		}
-				
-		
-		[Serializable][Inspectable(priority="68") ]
-		public function get emitterXVariance():Number 
-		{
-			if (!_particleSystem)	return 0;
-			return _particleSystem.emitterXVariance; 
-		}
-		public function set emitterXVariance(value:Number):void { _particleSystem.emitterXVariance = value; }
-		
-		[Serializable][Inspectable(priority="69") ]
-		public function get emitterYVariance():Number 
-		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.emitterYVariance; 
-		}
-		public function set emitterYVariance(value:Number):void { _particleSystem.emitterYVariance = value; }
-		
-		[Serializable][Inspectable(priority="70") ]
-		public function get maxNumParticles():int 
-		{ 
-			if (!_particleSystem)	return _defaultMaxNumParticles;
-			return _particleSystem.maxNumParticles; 
-		}
-		public function set maxNumParticles(value:int):void { _particleSystem.maxNumParticles = value; }
-		
-		[Serializable][Inspectable(priority="71") ]
-		public function get lifespan():Number 
-		{ 
-			if (!_particleSystem)	return _defaultLifeSpan;
-			return _particleSystem.lifespan; 
-		}
-		public function set lifespan(value:Number):void { _particleSystem.lifespan = value; }
-		
-		[Serializable][Inspectable(priority="72") ]
-		public function get lifespanVariance():Number 
-		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.lifespanVariance; 
-		}
-		public function set lifespanVariance(value:Number):void { _particleSystem.lifespanVariance = value; }
-		
-		[Serializable][Inspectable(priority="73") ]
-		public function get startSize():Number 
-		{ 
-			if (!_particleSystem)	return _defaultStartSize;
-			return _particleSystem.startSize; 
-		}
-		public function set startSize(value:Number):void { _particleSystem.startSize = value; }
+			_blendFactorDest = value;
+			invalidate( DISPLAY );
+		}		
 		
 		[Serializable][Inspectable(priority="74") ]
-		public function get startSizeVariance():Number 
+		public function get maxNumParticles():int 
 		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.startSizeVariance; 
+			return _maxNumParticles;
 		}
-		public function set startSizeVariance(value:Number):void { _particleSystem.startSizeVariance = value; }
+		public function set maxNumParticles(value:int):void 
+		{
+			_maxNumParticles = value;
+			invalidate( DISPLAY );
+		}
 		
 		[Serializable][Inspectable(priority="75") ]
-		public function get endSize():Number 
+		public function get lifespan():Number 
 		{ 
-			if (!_particleSystem)	return _defaultEndSize;
-			return _particleSystem.endSize; 
+			return _lifespan;
 		}
-		public function set endSize(value:Number):void { _particleSystem.endSize = value; }
+		public function set lifespan(value:Number):void 
+		{
+			_lifespan = value;
+			invalidate( DISPLAY );
+		}
 		
 		[Serializable][Inspectable(priority="76") ]
+		public function get lifespanVariance():Number 
+		{
+			return _lifespanVariance;
+		}
+		public function set lifespanVariance(value:Number):void 
+		{
+			_lifespanVariance = value;
+			invalidate( DISPLAY );
+		}
+		
+		[Serializable][Inspectable(priority="77") ]
+		public function get startSize():Number 
+		{ 
+			return _startSize;
+		}
+		public function set startSize(value:Number):void 
+		{
+			_startSize = value;
+			invalidate( DISPLAY );
+		}
+		
+		[Serializable][Inspectable(priority="78") ]
+		public function get startSizeVariance():Number 
+		{ 
+			return _startSizeVariance;
+		}
+		public function set startSizeVariance(value:Number):void
+		{
+			_startSizeVariance = value;
+			invalidate( DISPLAY );
+		}
+		
+		[Serializable][Inspectable(priority="79") ]
+		public function get endSize():Number 
+		{ 
+			return _endSize;
+		}
+		public function set endSize(value:Number):void 
+		{
+			_endSize = value;
+			invalidate( DISPLAY );
+		}
+		
+		[Serializable][Inspectable(priority="80") ]
 		public function get endSizeVariance():Number 
 		{
-			if (!_particleSystem)	return 0;
-			return _particleSystem.endSizeVariance; 
+			return _endSizeVariance;
 		}
-		public function set endSizeVariance(value:Number):void { _particleSystem.endSizeVariance = value; }
+		public function set endSizeVariance(value:Number):void 
+		{ 
+			_endSizeVariance = value;
+			invalidate( DISPLAY );
+		}
 		
-		[Serializable][Inspectable(priority="77", editor="Slider", min="0", max="360", snapInterval="1" ) ]
+		// Degrees
+		[Serializable][Inspectable(priority="81", editor="Slider", min="0", max="360", snapInterval="1" ) ]
 		public function get emitAngle():Number 
 		{ 
-			if (!_particleSystem)	return 0;
-			return rad2deg(_particleSystem.emitAngle); 
+			return _emitAngle;
 		}
-		public function set emitAngle(value:Number):void { _particleSystem.emitAngle = deg2rad(value); }
+		public function set emitAngle(value:Number):void
+		{ 
+			_emitAngle = value;
+			invalidate( DISPLAY );
+		}
 		
-		[Serializable][Inspectable(priority="78", editor="Slider", min="0", max="360", snapInterval="1" ) ]
+		// Degrees
+		[Serializable][Inspectable(priority="82", editor="Slider", min="0", max="360", snapInterval="1" ) ]
 		public function get emitAngleVariance():Number 
 		{ 
-			if (!_particleSystem)	return 0;
-			return rad2deg(_particleSystem.emitAngleVariance); 
+			return _emitAngleVariance;
 		}
-		public function set emitAngleVariance(value:Number):void { _particleSystem.emitAngleVariance = deg2rad(value); }
+		public function set emitAngleVariance(value:Number):void 
+		{
+			_emitAngleVariance = value;
+			invalidate( DISPLAY );
+		}
 		
-		[Serializable][Inspectable( priority="79", editor="Slider", min="0", max="360", snapInterval="1" ) ]
+		// Degrees
+		[Serializable][Inspectable( priority="83", editor="Slider", min="0", max="360", snapInterval="1" ) ]
 		public function get startRotation():Number 
 		{ 
-			if (!_particleSystem)	return 0;
-			return rad2deg(_particleSystem.startRotation); 
+			return _startRotation;
 		} 
-		public function set startRotation(value:Number):void { _particleSystem.startRotation = deg2rad(value); }
+		public function set startRotation(value:Number):void 
+		{
+			_startRotation = value;
+			invalidate( DISPLAY );
+		}
 		
-		[Serializable][Inspectable( priority="80", editor="Slider", min="0", max="360", snapInterval="1" ) ]
+		// Degrees
+		[Serializable][Inspectable( priority="84", editor="Slider", min="0", max="360", snapInterval="1" ) ]
 		public function get startRotationVar():Number 
 		{ 
-			if (!_particleSystem)	return 0;
-			return rad2deg(_particleSystem.startRotationVariance); 
+			return _startRotationVar;
 		} 
-		public function set startRotationVar(value:Number):void { _particleSystem.startRotationVariance = deg2rad(value); }
+		public function set startRotationVar(value:Number):void 
+		{
+			_startRotationVar = value;
+			invalidate( DISPLAY );
+		}
 		
-		[Serializable][Inspectable(priority="81", editor="Slider", min="0", max="360", snapInterval="1" ) ]
+		// Degrees
+		[Serializable][Inspectable(priority="85", editor="Slider", min="0", max="360", snapInterval="1" ) ]
 		public function get endRotation():Number 
-		{ 
-			if (!_particleSystem)	return 0;
-			return rad2deg(_particleSystem.endRotation); 
+		{
+			return _endRotation;
 		} 
-		public function set endRotation(value:Number):void { _particleSystem.endRotation = deg2rad(value); }
+		public function set endRotation(value:Number):void 
+		{
+			_endRotation = value;
+			invalidate( DISPLAY );
+		}
 		
-		[Serializable][Inspectable(priority="82", editor="Slider", min="0", max="360", snapInterval="1" ) ]
+		// Degrees
+		[Serializable][Inspectable(priority="86", editor="Slider", min="0", max="360", snapInterval="1" ) ]
 		public function get endRotationVar():Number 
-		{ 
-			if (!_particleSystem)	return 0;
-			return rad2deg(_particleSystem.endRotationVariance); 
+		{
+			return _endRotationVar;
 		} 
-		public function set endRotationVar(value:Number):void { _particleSystem.endRotationVariance = deg2rad(value); }
-		
-		[Serializable][Inspectable(priority="83") ]
-		public function get speed():Number 
-		{ 
-			if (!_particleSystem)	return _defaultSpeed;
-			return _particleSystem.speed; 
+		public function set endRotationVar(value:Number):void 
+		{
+			_endRotationVar = value;
+			invalidate( DISPLAY );
 		}
-		public function set speed(value:Number):void { _particleSystem.speed = value; }
-		
-		[Serializable][Inspectable(priority="84") ]
-		public function get speedVariance():Number 
-		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.speedVariance; 
-		}
-		public function set speedVariance(value:Number):void { _particleSystem.speedVariance = value; }
-		
-		[Serializable][Inspectable(priority="85") ]
-		public function get gravityX():Number 
-		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.gravityX; 
-		}
-		public function set gravityX(value:Number):void { _particleSystem.gravityX = value; }
-		
-		[Serializable][Inspectable(priority="86") ]
-		public function get gravityY():Number 
-		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.gravityY; 
-		}
-		public function set gravityY(value:Number):void { _particleSystem.gravityY = value; }
 		
 		[Serializable][Inspectable(priority="87") ]
-		public function get radialAcceleration():Number 
-		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.radialAcceleration; 
+		public function get speed():Number 
+		{
+			return _speed;
 		}
-		public function set radialAcceleration(value:Number):void { _particleSystem.radialAcceleration = value; }
+		public function set speed(value:Number):void
+		{
+			_speed = value;
+			invalidate( DISPLAY );
+		}
 		
 		[Serializable][Inspectable(priority="88") ]
-		public function get radialAccelVar():Number 
+		public function get speedVariance():Number 
 		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.radialAccelerationVariance; 
+			return _speedVariance;
 		}
-		public function set radialAccelVar(value:Number):void { _particleSystem.radialAccelerationVariance = value; }
+		public function set speedVariance(value:Number):void 
+		{
+			_speedVariance = value;
+			invalidate( DISPLAY );
+		}
 		
 		[Serializable][Inspectable(priority="89") ]
-		public function get tangentialAccel():Number 
-		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.tangentialAcceleration; 
+		public function get gravityX():Number 
+		{
+			return _gravityX;
 		}
-		public function set tangentialAccel(value:Number):void { _particleSystem.tangentialAcceleration = value; }
+		public function set gravityX(value:Number):void 
+		{
+			_gravityX = value;
+			invalidate( DISPLAY );
+		}
 		
 		[Serializable][Inspectable(priority="90") ]
-		public function get tangentialAccelVar():Number 
+		public function get gravityY():Number 
 		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.tangentialAccelerationVariance; 
+			return _gravityY;
 		}
-		public function set tangentialAccelVar(value:Number):void { _particleSystem.tangentialAccelerationVariance = value; }
+		public function set gravityY(value:Number):void 
+		{
+			_gravityY = value;
+			invalidate( DISPLAY );
+		}
 		
 		[Serializable][Inspectable(priority="91") ]
-		public function get maxRadius():Number 
+		public function get radialAcceleration():Number 
 		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.maxRadius; 
+			return _radialAcceleration;
 		}
-		public function set maxRadius(value:Number):void { _particleSystem.maxRadius = value; }
+		public function set radialAcceleration(value:Number):void
+		{
+			_radialAcceleration = value;
+			invalidate( DISPLAY );
+		}
 		
 		[Serializable][Inspectable(priority="92") ]
-		public function get maxRadiusVariance():Number 
+		public function get radialAccelVar():Number 
 		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.maxRadiusVariance; 
+			return _radialAccelVar;
 		}
-		public function set maxRadiusVariance(value:Number):void { _particleSystem.maxRadiusVariance = value; }
+		public function set radialAccelVar(value:Number):void
+		{
+			_radialAccelVar = value;
+			invalidate( DISPLAY );
+		}
 		
 		[Serializable][Inspectable(priority="93") ]
-		public function get minRadius():Number 
-		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.minRadius; 
+		public function get tangentialAccel():Number 
+		{
+			return _tangentialAccel;
 		}
-		public function set minRadius(value:Number):void { _particleSystem.minRadius = value; }
+		public function set tangentialAccel(value:Number):void
+		{
+			_tangentialAccel = value;
+			invalidate( DISPLAY );
+		}
 		
 		[Serializable][Inspectable(priority="94") ]
-		public function get rotatePerSecond():Number 
-		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.rotatePerSecond; 
+		public function get tangentialAccelVar():Number 
+		{
+			return _tangentialAccelVar;
 		}
-		public function set rotatePerSecond(value:Number):void { _particleSystem.rotatePerSecond = value; }
+		public function set tangentialAccelVar(value:Number):void 
+		{
+			_tangentialAccelVar = value;
+			invalidate( DISPLAY );
+		}
 		
 		[Serializable][Inspectable(priority="95") ]
+		public function get maxRadius():Number 
+		{ 
+			return _maxRadius;
+		}
+		public function set maxRadius(value:Number):void 
+		{
+			_maxRadius = value;
+			invalidate( DISPLAY );
+		}
+		
+		[Serializable][Inspectable(priority="96") ]
+		public function get maxRadiusVariance():Number 
+		{ 
+			return _maxRadiusVariance;
+		}
+		public function set maxRadiusVariance(value:Number):void
+		{
+			_maxRadiusVariance = value;
+			invalidate( DISPLAY ); 
+		}
+		
+		[Serializable][Inspectable(priority="97") ]
+		public function get minRadius():Number 
+		{ 
+			return _minRadius; 
+		}
+		public function set minRadius(value:Number):void 
+		{
+			_minRadius = value;
+			invalidate( DISPLAY );
+		}
+
+		// Degrees
+		[Serializable][Inspectable(priority="98") ]
+		public function get rotatePerSecond():Number 
+		{
+			return _rotatePerSecond; 
+		}
+		public function set rotatePerSecond(value:Number):void 
+		{
+			trace("set rotatePerSecond "+value);
+			_rotatePerSecond = value;
+			invalidate( DISPLAY ); 
+		}
+		
+		// Degrees
+		[Serializable][Inspectable(priority="99") ]
 		public function get rotatePerSecondVar():Number 
 		{ 
-			if (!_particleSystem)	return 0;
-			return _particleSystem.rotatePerSecondVariance; 
+			return _rotatePerSecondVar;
 		}
-		public function set rotatePerSecondVar(value:Number):void { _particleSystem.rotatePerSecondVariance = value; }
-				
+		public function set rotatePerSecondVar(value:Number):void
+		{
+			_rotatePerSecondVar = value;
+			invalidate( DISPLAY );
+		}
+		
 		public function serialise():XML
 		{
+			// Note: XML Angles are stored in degrees
 			var defaultXML:XML =
 				<particleEmitterConfig>
 				  <texture name="drugs_particle.png"/>
@@ -735,17 +1080,15 @@ package cadet2D.components.particles
 				  <speedVariance value={speedVariance}/>
 				  <particleLifeSpan value={lifespan}/>
 				  <particleLifespanVariance value={lifespanVariance}/>
-				  <angle value={emitAngle}/>
-				  <angleVariance value={emitAngleVariance}/>
 				  <gravity x={gravityX} y={gravityY}/>
 				  <radialAcceleration value={radialAcceleration}/>
 				  <tangentialAcceleration value={tangentialAccel}/>
 				  <radialAccelVariance value={radialAccelVar}/>
 				  <tangentialAccelVariance value={tangentialAccelVar}/>
-				  <startColor red={startColorRGBA.red} green={startColorRGBA.green} blue={startColorRGBA.blue} alpha={startColorRGBA.alpha}/>
-				  <startColorVariance red={startColorVarianceRGBA.red} green={startColorVarianceRGBA.green} blue={startColorVarianceRGBA.blue} alpha={startColorVarianceRGBA.alpha}/>
-				  <finishColor red={endColorRGBA.red} green={endColorRGBA.green} blue={endColorRGBA.blue} alpha={endColorRGBA.alpha}/>
-				  <finishColorVariance red={endColorVarianceRGBA.red} green={endColorVarianceRGBA.green} blue={endColorVarianceRGBA.blue} alpha={endColorVarianceRGBA.alpha}/>
+				  <startColor red={_startColorARGB.red} green={_startColorARGB.green} blue={_startColorARGB.blue} alpha={_startColorARGB.alpha}/>
+				  <startColorVariance red={_startColorVarARGB.red} green={_startColorVarARGB.green} blue={_startColorVarARGB.blue} alpha={_startColorVarARGB.alpha}/>
+				  <finishColor red={_endColorARGB.red} green={_endColorARGB.green} blue={_endColorARGB.blue} alpha={_endColorARGB.alpha}/>
+				  <finishColorVariance red={_endColorVarARGB.red} green={_endColorVarARGB.green} blue={_endColorVarARGB.blue} alpha={_endColorVarARGB.alpha}/>
 				  <maxParticles value={maxNumParticles}/>
 				  <startParticleSize value={startSize}/>
 				  <startParticleSizeVariance value={startSizeVariance}/>
@@ -756,14 +1099,16 @@ package cadet2D.components.particles
 				  <maxRadius value={maxRadius}/>
 				  <maxRadiusVariance value={maxRadiusVariance}/>
 				  <minRadius value={minRadius}/>
-				  <rotatePerSecond value={rotatePerSecond}/>
-				  <rotatePerSecondVariance value={rotatePerSecondVar}/>
 				  <blendFuncSource value={getBlendFunc(blendFactorSource)}/>
 				  <blendFuncDestination value={getBlendFunc(blendFactorDest)}/>
+				  <angle value={emitAngle}/>
+				  <angleVariance value={emitAngleVariance}/>
 				  <rotationStart value={startRotation}/>
 				  <rotationStartVariance value={startRotationVar}/>
 				  <rotationEnd value={endRotation}/>
 				  <rotationEndVariance value={endRotationVar}/>
+				  <rotatePerSecond value={rotatePerSecond}/>
+				  <rotatePerSecondVariance value={rotatePerSecondVar}/>
 				</particleEmitterConfig>;
 			
 			return defaultXML;
@@ -786,5 +1131,44 @@ package cadet2D.components.particles
 				default:    throw new ArgumentError("unsupported blending function: " + value);
 			}
 		}
+		
+		// -------------------------------------------------------------------------------------
+		// IRENDERABLE API
+		// -------------------------------------------------------------------------------------
+		
+		public function get displayObject():DisplayObject
+		{
+			return _displayObject;
+		}
+		
+		public function get indexStr():String
+		{
+			// Refresh the indices
+			var component:IComponent = this;
+			while ( component.parentComponent ) {
+				component.index = component.parentComponent.children.getItemIndex(component);
+				component = component.parentComponent;
+			}
+			
+			// Refresh the indexStr
+			var indexArr:Array = [index];
+			
+			var parent:IComponentContainer = parentComponent;
+			while (parent) {
+				if (parent.index != -1) {
+					indexArr.push(parent.index);
+				} else {
+					break;
+				}
+				parent = parent.parentComponent;
+			}
+			indexArr.reverse();
+			_indexStr = indexArr.toString();
+			_indexStr = _indexStr.replace(",", "_");
+			
+			return _indexStr;
+		}
+		
+		// -------------------------------------------------------------------------------------
 	}
 }

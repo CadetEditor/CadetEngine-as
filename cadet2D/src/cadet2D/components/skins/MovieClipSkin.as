@@ -12,8 +12,6 @@
 
 package cadet2D.components.skins
 {
-	import cadet.util.ComponentUtil;
-	
 	import cadet2D.components.renderers.Renderer2D;
 	import cadet2D.components.textures.TextureAtlasComponent;
 	
@@ -35,6 +33,7 @@ package cadet2D.components.skins
 		// These vars make sure it keeps on trying.
 		private var _loopDirty				:Boolean;
 		private var _addedToJuggler			:Boolean;
+		private var _previewAnimation		:Boolean;
 		
 		public function MovieClipSkin()
 		{
@@ -94,8 +93,6 @@ package cadet2D.components.skins
 		
 		private function validateLoop():void
 		{
-			//var renderer:Renderer2D = ComponentUtil.getChildOfType(scene, Renderer2D, true);
-			
 			if ( !renderer || !_quad ) {
 				_loopDirty = true;
 				return;
@@ -137,9 +134,10 @@ package cadet2D.components.skins
 			return newSkin;
 		}
 		
+		// IAnimatable
 		public function addToJuggler():Boolean
 		{
-			if (!scene.runMode) return false;	// only add if in run mode
+			if (!scene.runMode && !_previewAnimation) return false;	// only add if in run mode or if previewing
 			if (!renderer || !renderer.initialised) return false;
 //			if (_addedToJuggler) return true;
 			
@@ -157,6 +155,21 @@ package cadet2D.components.skins
 			_addedToJuggler = false;
 			
 			return true;
+		}
+		
+		public function get isAnimating():Boolean
+		{
+			return _addedToJuggler;
+		}
+		
+		// IAnimatable : Design time
+		public function set previewAnimation( value:Boolean ):void
+		{
+			_previewAnimation = value;
+		}
+		public function get previewAnimation():Boolean
+		{
+			return _previewAnimation;
 		}
 	}
 }

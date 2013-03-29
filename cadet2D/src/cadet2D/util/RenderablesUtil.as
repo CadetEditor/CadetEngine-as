@@ -1,13 +1,13 @@
 package cadet2D.util
 {
-	import cadet2D.components.skins.AbstractSkin2D;
+	import cadet2D.components.skins.IRenderable;
 
-	public class SkinsUtil
+	public class RenderablesUtil
 	{
-		public static function sortSkinsById( skinA:AbstractSkin2D, skinB:AbstractSkin2D):int
+		public static function sortSkinsById( renderableA:IRenderable, renderableB:IRenderable):int
 		{
-			var skinA_Ids:Array = skinA.indexStr.split("_");
-			var skinB_Ids:Array = skinB.indexStr.split("_");
+			var skinA_Ids:Array = renderableA.indexStr.split("_");
+			var skinB_Ids:Array = renderableB.indexStr.split("_");
 			
 			var longest:uint = Math.max(skinA_Ids.length, skinB_Ids.length);
 			var index:uint = 0;

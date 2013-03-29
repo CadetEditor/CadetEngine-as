@@ -1,8 +1,10 @@
 package cadet2D.components.transforms
 {
 	import flash.geom.Matrix;
+	
+	import cadet.core.IComponent;
 
-	public interface ITransform2D
+	public interface ITransform2D extends IComponent
 	{
 		function set x( value:Number ):void
 		function get x():Number

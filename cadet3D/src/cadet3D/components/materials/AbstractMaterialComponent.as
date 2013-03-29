@@ -12,11 +12,8 @@
 package cadet3D.components.materials
 {
 	import away3d.materials.DefaultMaterialBase;
-	import away3d.materials.MaterialBase;
 	
 	import cadet.core.Component;
-	
-	import flash.display3D.Context3DCompareMode;
 	
 	public class AbstractMaterialComponent extends Component
 	{

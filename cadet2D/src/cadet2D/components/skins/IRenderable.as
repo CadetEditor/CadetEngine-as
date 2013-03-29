@@ -10,18 +10,16 @@
 
 package cadet2D.components.skins
 {
-	import flash.geom.Matrix;
+	import cadet2D.components.transforms.ITransform2D;
 	
-	import cadet.core.IComponent;
-	
-	import cadet2D.components.transforms.Transform2D;
-	
-	public interface IRenderable extends IComponent
+	import starling.display.DisplayObject;
+
+	public interface IRenderable extends ITransform2D
 	{
-		function get transform2D():Transform2D
-		function get indexStr():String
-		function get matrix():Matrix
-		function set matrix(value:Matrix):void
-		//function get displayObject():DisplayObject //TODO: Not sure about this...
+//		function get transform2D():Transform2D
+		function get indexStr():String	// For depth sorting
+//		function get matrix():Matrix
+//		function set matrix(value:Matrix):void
+		function get displayObject():DisplayObject // Ties this implementation to Starling
 	}
 }

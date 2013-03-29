@@ -42,7 +42,7 @@ package
 			var bunnySpawner:BunnySpawner = new BunnySpawner();
 			bunnySpawner.textureComponent = textureComponent;
 			bunnySpawner.numEntities = 1000;
-			bunnySpawner.screenRect = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+			bunnySpawner.boundsRect = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 			cadetScene.children.addItem(bunnySpawner);
 			
 			addEventListener( Event.ENTER_FRAME, enterFrameHandler );			

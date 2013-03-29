@@ -63,7 +63,7 @@ package
 			var randomVelocity:Point = new Point(Math.random() * 10, (Math.random() * 10) - 5);
 			var bounceBehaviour:BounceBehaviour = new BounceBehaviour();
 			bounceBehaviour.velocity = randomVelocity;
-			bounceBehaviour.screenRect = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+			bounceBehaviour.boundsRect = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 			cadetScene.children.addItem(bounceBehaviour);
 			
 			// Add a Skin to the scene
@@ -71,7 +71,8 @@ package
 			skin.texture = textureComponent;
 			cadetScene.children.addItem(skin);
 			
-			bounceBehaviour.skin = skin;
+			// Pass reference to skin to bounceBehaviour
+			bounceBehaviour.transform = skin;
 		}
 	}
 }

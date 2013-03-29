@@ -5,7 +5,7 @@
     <classEntry path="cadet2D.util.NullBitmapTexture"/>
     <classEntry path="cadet2D.components.textures.TextureAtlasComponent"/>
     <classEntry path="cadet2D.components.behaviours.SimpleFootprintBehaviour"/>
-    <classEntry path="cadet2D.util.SkinsUtil"/>
+    <classEntry path="cadet2D.util.RenderablesUtil"/>
     <classEntry path="cadet2D.events.SkinEvent"/>
     <classEntry path="cadet2D.components.transforms.ITransform2D"/>
     <classEntry path="cadet2D.components.particles.PDParticleSystemComponent"/>

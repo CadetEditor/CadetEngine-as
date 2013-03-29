@@ -26,10 +26,9 @@ package cadet2D.components.renderers
 	import cadet.events.RendererEvent;
 	import cadet.util.ComponentUtil;
 	
-	import cadet2D.components.skins.AbstractSkin2D;
 	import cadet2D.components.skins.IRenderable;
 	import cadet2D.overlays.Overlay;
-	import cadet2D.util.SkinsUtil;
+	import cadet2D.util.RenderablesUtil;
 	
 	import core.app.util.AsynchronousUtil;
 	
@@ -57,8 +56,8 @@ package cadet2D.components.renderers
 			
 		// Misc
 		protected var skinTable				:Dictionary; //These two...
-		protected var displayObjectTable	:Dictionary; //...perform the same function?
-		protected var displayListArray		:Array;
+		//protected var displayObjectTable	:Dictionary; //...perform the same function?
+		protected var displayListVector		:Vector.<IRenderable>;
 		protected var identityMatrix		:Matrix;
 		
 		private var star					:Starling;
@@ -174,8 +173,8 @@ package cadet2D.components.renderers
 		{
 			identityMatrix = new Matrix();
 			skinTable = new Dictionary();
-			displayObjectTable = new Dictionary();
-			displayListArray = [];
+			//displayObjectTable = new Dictionary();
+			displayListVector = new Vector.<IRenderable>();
 			overlaysTable = new Dictionary();
 		}
 		
@@ -196,7 +195,7 @@ package cadet2D.components.renderers
 			_viewportOverlayContainer = new Sprite();
 			_viewport.addChild(_viewportOverlayContainer);
 			
-			addSkins();
+			addRenderables();
 			addOverlays();
 			
 			dispatchEvent(new RendererEvent(RendererEvent.INITIALISED));
@@ -289,23 +288,18 @@ package cadet2D.components.renderers
 			}
 		}
 		
-		public function getSkinForDisplayObject( displayObject:starling.display.DisplayObject ):IRenderable
-		{
-			return displayObjectTable[displayObject];
-		}
-		
 		override protected function addedToScene():void
 		{
 			scene.addEventListener(ComponentEvent.ADDED_TO_SCENE, componentAddedToSceneHandler);
 			scene.addEventListener(ComponentEvent.REMOVED_FROM_SCENE, componentRemovedFromSceneHandler);
 		}
 		
-		private function addSkins():void
+		private function addRenderables():void
 		{
-			var allSkins:Vector.<IComponent> = ComponentUtil.getChildrenOfType( scene, IRenderable, true );
-			for each ( var skin:IRenderable in allSkins )
+			var allRenderables:Vector.<IComponent> = ComponentUtil.getChildrenOfType( scene, IRenderable, true );
+			for each ( var renderable:IRenderable in allRenderables )
 			{
-				addSkin( skin );
+				addRenderable( renderable );
 			}
 		}
 		
@@ -321,108 +315,90 @@ package cadet2D.components.renderers
 		private function componentAddedToSceneHandler( event:ComponentEvent ):void
 		{
 			if ( event.component is IRenderable == false ) return;
-			addSkin( IRenderable( event.component ) );
+			addRenderable( IRenderable( event.component ) );
 		}
 		
 		private function componentRemovedFromSceneHandler( event:ComponentEvent ):void
 		{
 			if ( event.component is IRenderable == false ) return;
-			removeSkin( IRenderable( event.component ) );
+			removeRenderable( IRenderable( event.component ) );
 		}
 		
-		private function addSkin( skin:IRenderable ):void
+		private function addRenderable( renderable:IRenderable ):void
 		{
-			// Could be a Flash Skin of type ISkin2D
-			if (!(skin is AbstractSkin2D)) return;
+			addRenderableToDisplayList(renderable);
 			
-			addSkinToDisplayList(skin);
+			var displayObject:starling.display.DisplayObject = renderable.displayObject;
 			
-			var displayObject:starling.display.DisplayObject = AbstractSkin2D(skin).displayObject;
+			renderable.invalidate("*");
+			renderable.validateNow();
 			
-			skin.invalidate("*");
-			skin.validateNow();
+			renderable.addEventListener(InvalidationEvent.INVALIDATE, invalidateRenderableHandler);
 			
-			skin.addEventListener(InvalidationEvent.INVALIDATE, invalidateSkinHandler);
-			skinTable[displayObject] = skin;
-			displayObjectTable[displayObject] = skin;
+			skinTable[displayObject] = renderable;
+			//displayObjectTable[displayObject] = renderable;
 		}
 		
-		private function removeSkin( skin:IRenderable ):void
+		private function removeRenderable( renderable:IRenderable ):void
 		{
-			// Could be a Flash Skin of type ISkin2D
-			if (!(skin is AbstractSkin2D)) return;
+			var displayObject:starling.display.DisplayObject = renderable.displayObject;
 			
-			var displayObject:starling.display.DisplayObject = AbstractSkin2D(skin).displayObject;
+			removeRenderableFromDisplayList(renderable);
+			renderable.removeEventListener(InvalidationEvent.INVALIDATE, invalidateRenderableHandler);
 			
-			removeSkinFromDisplayList(skin);
-			skin.removeEventListener(InvalidationEvent.INVALIDATE, invalidateSkinHandler);
 			delete skinTable[displayObject];
-			delete displayObjectTable[displayObject];
+			//delete displayObjectTable[displayObject];
 		}
 		
-		private function invalidateSkinHandler( event:InvalidationEvent ):void
+		private function invalidateRenderableHandler( event:InvalidationEvent ):void
 		{
-			var skin:IRenderable = IRenderable(event.target);
-			var displayObject:starling.display.DisplayObject = AbstractSkin2D(skin).displayObject;
+//			var renderable:IRenderable = IRenderable(event.target);
+//			var displayObject:starling.display.DisplayObject = AbstractSkin2D(renderable).displayObject;
 			
 /*			if ( displayObject.parent == null )
 			{
-				addSkinToDisplayList(skin);
+				addRenderableToDisplayList(skin);
 			}*/
 			
 			// The the layer index, or containerID on a ISkin2D has changed, then re-add them
 			// to the displaylist at the appropriate place
 /*			if ( event.invalidationType == "layer" || event.invalidationType == "container" )
 			{
-				addSkinToDisplayList(skin);
+				addRenderableToDisplayList(skin);
 			}*/
 		}
 		
-		private function addSkinToDisplayList( skin:IRenderable ):void
+		private function addRenderableToDisplayList( renderable:IRenderable ):void
 		{
 			if (!_worldContainer) return;
 		
-			var displayObject:starling.display.DisplayObject = AbstractSkin2D(skin).displayObject;
+			var displayObject:starling.display.DisplayObject = renderable.displayObject;
 			
 			if (depthSort) {
-				var indexStr:String = skin.indexStr;
+				var indexStr:String = renderable.indexStr;
 				
-				displayListArray.push(skin);
-				//displayListArray.sortOn("indexStr");
-				displayListArray.sort(SkinsUtil.sortSkinsById);
+				displayListVector.push(renderable);
+				//displayListVector.sortOn("indexStr");
+				displayListVector.sort(RenderablesUtil.sortSkinsById);
 				
-				var index:int = displayListArray.indexOf(skin);
+				var index:int = displayListVector.indexOf(renderable);
 				
-				//trace("ADD SKIN INDEX "+indexStr+" at index "+index+" dlArray "+displayListArray);
-				
-				// Items in the display order will need to have their indices updated,
-				// so loop through them invalidating their indices and that of their parent's.
-	/*			for ( var i:uint = 0; i < displayListArray.length; i ++ )
-				{
-					var iSkin:AbstractSkin2D = displayListArray[i];
-					iSkin.invalidate(Component.INDEX);
-					var parent:IComponent;
-					while (parent) {
-						parent.invalidate(Component.INDEX);
-						parent = parent.parentComponent;
-					}
-				}*/
-								
+				//trace("ADD SKIN INDEX "+indexStr+" at index "+index+" dlArray "+displayListVector);								
 				_worldContainer.addChildAt( displayObject, index );
 			} else {
 				_worldContainer.addChild( displayObject );
 			}
 		}
 		
-		private function removeSkinFromDisplayList( skin:IRenderable ):void
+		private function removeRenderableFromDisplayList( renderable:IRenderable ):void
 		{
 			//var indexStr:String = indexStrTable[skin];
-			var index:int = displayListArray.indexOf(skin);//indexStr);
-			displayListArray.splice(index, 1);
+			var index:int = displayListVector.indexOf(renderable);//indexStr);
+			displayListVector.splice(index, 1);
 			
-			//trace("REMOVE SKIN INDEX "+skin.indexStr+" at index "+index+" dlArray "+displayListArray);
+			//trace("REMOVE SKIN INDEX "+skin.indexStr+" at index "+index+" dlArray "+displayListVector);
 			
-			var displayObject:starling.display.DisplayObject = AbstractSkin2D(skin).displayObject;
+			var displayObject:starling.display.DisplayObject = renderable.displayObject;
 			
 			if ( displayObject.parent ) {
 				displayObject.parent.removeChild(displayObject);

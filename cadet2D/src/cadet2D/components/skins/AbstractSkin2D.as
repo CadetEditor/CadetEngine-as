@@ -27,6 +27,7 @@ package cadet2D.components.skins
 
 	public class AbstractSkin2D extends Component implements IRenderable, ITransform2D
 	{
+		// ITransform2D
 		protected var _x						:Number = 0;
 		protected var _y						:Number = 0;
 		protected var _scaleX					:Number = 1;
