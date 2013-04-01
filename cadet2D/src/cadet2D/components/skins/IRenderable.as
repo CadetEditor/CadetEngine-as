@@ -16,10 +16,7 @@ package cadet2D.components.skins
 
 	public interface IRenderable extends ITransform2D
 	{
-//		function get transform2D():Transform2D
-		function get indexStr():String	// For depth sorting
-//		function get matrix():Matrix
-//		function set matrix(value:Matrix):void
+		function get indexStr():String
 		function get displayObject():DisplayObject // Ties this implementation to Starling
 	}
 }
