@@ -15,9 +15,9 @@ package cadet.components.sounds
 		private var _loops:uint = 0;
 		private var _soundTransform:SoundTransform = null;
 		
-		public function SoundComponent()
+		public function SoundComponent( name:String = "SoundComponent" )
 		{
-			
+			super(name);	
 		}
 		
 		// -------------------------------------------------------------------------------------
@@ -31,11 +31,13 @@ package cadet.components.sounds
 		}
 		public function get asset():Sound { return _asset; }
 		
-		public function play():void
+		public function play():Boolean
 		{
-			if (!_asset) return;
+			if (!_asset) return false;
 			
 			_channel = _asset.play(_startTime, _loops, _soundTransform);
+			
+			return true;
 		}
 		
 		public function stop():void

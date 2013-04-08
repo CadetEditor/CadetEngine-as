@@ -13,9 +13,8 @@ package cadet2D.components.processes
 	import flash.geom.Rectangle;
 	
 	import cadet.core.Component;
+	import cadet.events.InvalidationEvent;
 	
-	import core.events.PropertyChangeEvent;
-
 	public class WorldBounds2D extends Component
 	{
 		private static const BOUNDS	:String = "bounds";
@@ -29,7 +28,7 @@ package cadet2D.components.processes
 		
 		public function WorldBounds2D()
 		{
-			name = "WorldBounds2D";
+			super("WorldBounds2D");
 		}
 		
 		[Serializable][Inspectable]
@@ -37,7 +36,7 @@ package cadet2D.components.processes
 		{
 			_left = value;
 			invalidate(BOUNDS);
-			dispatchEvent( new PropertyChangeEvent( "propertyChange_left", null, _name ) );
+			//dispatchEvent( new PropertyChangeEvent( "propertyChange_left", null, _name ) );
 		}
 		public function get left():Number { return _left; }
 		
@@ -46,7 +45,7 @@ package cadet2D.components.processes
 		{
 			_right = value;
 			invalidate(BOUNDS);
-			dispatchEvent( new PropertyChangeEvent( "propertyChange_right", null, _name ) );
+			//dispatchEvent( new PropertyChangeEvent( "propertyChange_right", null, _name ) );
 		}
 		public function get right():Number { return _right; }
 		
@@ -55,7 +54,7 @@ package cadet2D.components.processes
 		{
 			_top = value;
 			invalidate(BOUNDS);
-			dispatchEvent( new PropertyChangeEvent( "propertyChange_top", null, _name ) );
+			//dispatchEvent( new PropertyChangeEvent( "propertyChange_top", null, _name ) );
 		}
 		public function get top():Number { return _top; }
 		
@@ -64,7 +63,7 @@ package cadet2D.components.processes
 		{
 			_bottom = value;
 			invalidate(BOUNDS);
-			dispatchEvent( new PropertyChangeEvent( "propertyChange_bottom", null, _name ) );
+			//dispatchEvent( new PropertyChangeEvent( "propertyChange_bottom", null, _name ) );
 		}
 		public function get bottom():Number { return _bottom; }
 		
@@ -72,6 +71,7 @@ package cadet2D.components.processes
 		{
 			if ( isInvalid(BOUNDS) ) {
 				validateBounds();
+				dispatchEvent( new InvalidationEvent( InvalidationEvent.INVALIDATE ) );
 			}
 			
 			super.validateNow();

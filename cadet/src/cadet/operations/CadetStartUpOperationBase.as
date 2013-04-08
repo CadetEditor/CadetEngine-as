@@ -55,7 +55,7 @@ package cadet.operations
 		
 		public function getResult():ICadetScene
 		{
-			return readAndDeserializeOperation.getResult();
+			return readAndDeserializeOperation ? readAndDeserializeOperation.getResult() : null;
 		}
 	}
 }

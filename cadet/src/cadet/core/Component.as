@@ -52,8 +52,9 @@ package cadet.core
 		private var invalidationEvent		:InvalidationEvent;
 		
 		
-		public function Component()
+		public function Component( name:String = "Component ")
 		{
+			this.name = name;
 			// Delegate work to init() function to gain
 			// performance increase from JIT compilation (which ignores constructors).
 			init();
@@ -70,8 +71,6 @@ package cadet.core
 			_invalidationTable = {};
 			invalidationEvent = new InvalidationEvent( InvalidationEvent.INVALIDATE );
 			invalidate("*");
-			
-			name = "Component";
 		}
 		
 		public function dispose():void

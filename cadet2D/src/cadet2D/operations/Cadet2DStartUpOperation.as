@@ -22,7 +22,7 @@ package cadet2D.operations
 	
 	public class Cadet2DStartUpOperation extends CadetStartUpOperationBase
 	{		
-		public function Cadet2DStartUpOperation( cadetFileURL:String )
+		public function Cadet2DStartUpOperation( cadetFileURL:String = null )
 		{
 			super(cadetFileURL);
 			
@@ -49,11 +49,12 @@ package cadet2D.operations
 			var loadManifestsOperation:LoadManifestsOperation = new LoadManifestsOperation(config.manifest);
 			addOperation(loadManifestsOperation);
 			
-			// Read and deserialize the Cadet XML into a CadetScene
-			var uri:URI = new URI(fspID+cadetFileURL);
-			readAndDeserializeOperation = new ReadCadetFileAndDeserializeOperation( uri, CoreApp.fileSystemProvider, CoreApp.resourceManager );
-			addOperation(readAndDeserializeOperation);
-			
+			if ( cadetFileURL ) {
+				// Read and deserialize the Cadet XML into a CadetScene
+				var uri:URI = new URI(fspID+cadetFileURL);
+				readAndDeserializeOperation = new ReadCadetFileAndDeserializeOperation( uri, CoreApp.fileSystemProvider, CoreApp.resourceManager );
+				addOperation(readAndDeserializeOperation);
+			}
 			super.execute();
 		}
 	}

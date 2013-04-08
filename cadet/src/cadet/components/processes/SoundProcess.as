@@ -8,16 +8,23 @@ package cadet.components.processes
 	import cadet.core.IComponent;
 	import cadet.core.IInitialisableComponent;
 	import cadet.events.ComponentEvent;
+	import cadet.events.InvalidationEvent;
 	import cadet.util.ComponentUtil;
 	
 	public class SoundProcess extends Component implements IInitialisableComponent
 	{
+		private const SOUNDS		:String = "sounds";
+		
+		private var _muted			:Boolean = false;
+		private var _musicPlaying	:Boolean = false;
+		private var _initialised	:Boolean = false;
 		private var _music			:SoundComponent;
 		private var soundArray		:Array;
 		
-		public function SoundProcess()
+		public function SoundProcess(name:String = "SoundProcess")
 		{
 			soundArray = new Array();
+			super(name);
 		}
 		
 		override protected function addedToScene():void
@@ -31,16 +38,27 @@ package cadet.components.processes
 		//IInitialisableComponent
 		public function init():void
 		{
-			if ( _music ) {
-				_music.play();
-			}
+			_initialised = true;
+			invalidate( SOUNDS );
 		}
 		
 		// -------------------------------------------------------------------------------------
 		// INSPECTABLE API
 		// -------------------------------------------------------------------------------------
 		
-		[Serializable][Inspectable( priority="50", editor="ComponentList", scope="scene" )]
+		[Serializable][Inspectable( priority="50" )]
+		public function set muted( value:Boolean ):void
+		{
+			_muted = value;
+			
+			invalidate( SOUNDS );
+		}
+		public function get muted():Boolean
+		{
+			return _muted;
+		}
+		
+		[Serializable][Inspectable( priority="51", editor="ComponentList", scope="scene" )]
 		public function set music( value:SoundComponent ):void
 		{
 			_music = value;
@@ -51,6 +69,38 @@ package cadet.components.processes
 		}
 		
 		// -------------------------------------------------------------------------------------
+		
+		override public function validateNow():void
+		{
+			if ( isInvalid(SOUNDS) ) {
+				validateSounds();
+				dispatchEvent( new InvalidationEvent( InvalidationEvent.INVALIDATE ) );
+			}
+			
+			super.validateNow();
+		}
+		
+		private function validateSounds():void
+		{
+			if ( !_initialised ) return;
+			
+			if ( !_muted ) {
+				if ( _music && !_musicPlaying ) {
+					_musicPlaying = _music.play();
+				}				
+			} else {
+				if ( _music && _musicPlaying ) {
+					_musicPlaying = false;
+					_music.stop();
+				}
+			}
+		}
+		
+		public function playSound( sound:ISound ):void
+		{
+			if ( muted ) return;
+			sound.play();
+		}
 		
 		private function addSounds():void
 		{

@@ -36,9 +36,9 @@ package cadet2D.components.skins
 		
 		protected var _textureDirty			:Boolean;
 		
-		public function ImageSkin()
+		public function ImageSkin( name:String = "ImageSkin" )
 		{
-			name = "ImageSkin";
+			super(name);
 		}
 		
 		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="100" )]

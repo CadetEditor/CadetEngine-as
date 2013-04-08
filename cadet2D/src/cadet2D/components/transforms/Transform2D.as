@@ -44,7 +44,7 @@ package cadet2D.components.transforms
 		
 		public function Transform2D( x:Number = 0, y:Number = 0, rotation:Number = 0, scaleX:Number = 1, scaleY:Number = 1 )
 		{
-			name = "Transform";
+			super( "Transform2D" );
 			
 			_displayObject = new Shape();
 			this.x = x;

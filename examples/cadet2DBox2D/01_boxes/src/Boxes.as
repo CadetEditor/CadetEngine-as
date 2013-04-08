@@ -28,20 +28,11 @@ package
 			cadetScene = new CadetScene();
 			
 			var renderer:Renderer2D = new Renderer2D();
-			renderer.addEventListener(RendererEvent.INITIALISED, rendererInitialisedHandler );
 			renderer.viewportWidth = stage.stageWidth;
 			renderer.viewportHeight = stage.stageHeight;
 			cadetScene.children.addItem(renderer);
 			renderer.enable(this);
-		}
-		
-		private function rendererInitialisedHandler( event:Event ):void
-		{
-			initScene();
-		}
-		
-		private function initScene():void
-		{
+
 			cadetScene.children.addItem( new PhysicsProcess() );
 			
 			var boxSize:uint = 10;

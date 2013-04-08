@@ -19,12 +19,14 @@ package cadet2D.components.textures
 	
 	public class TextureComponent extends Component
 	{
+		private const TEXTURE:String = "texture";
+		
 		private var _bitmapData:BitmapData;
 		private var _texture:Texture;
 		
-		public function TextureComponent()
+		public function TextureComponent( name:String = "TextureComponent" )
 		{
-			super();
+			super(name);
 		}
 		
 		[Serializable( type="resource" )][Inspectable(editor="ResourceItemEditor")]
@@ -33,14 +35,29 @@ package cadet2D.components.textures
 			if ( !value ) return;
 			
 			_bitmapData = value;
-			_texture = Texture.fromBitmap( new Bitmap(value), false );
-			//trace("texture width "+_texture.width+" height "+_texture.height);
+			
+			invalidate(TEXTURE);
 		}
 		public function get bitmapData():BitmapData { return _bitmapData; }
 		
 		public function get texture():Texture
 		{
 			return _texture;
+		}
+		
+		override public function validateNow():void
+		{
+			if ( isInvalid( TEXTURE ) ) {
+				validateTexture();
+			}
+			super.validateNow();
+		}
+		
+		private function validateTexture():void
+		{
+			if ( _bitmapData ) {
+				_texture = Texture.fromBitmap( new Bitmap(_bitmapData), false );
+			}
 		}
 	}
 }

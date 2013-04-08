@@ -133,8 +133,9 @@ package cadet2D.components.particles
 		private var _displayObject					:Sprite;
 		protected var _indexStr						:String;	
 		
-		public function PDParticleSystemComponent( config:XML = null, textureComponent:TextureComponent = null )
+		public function PDParticleSystemComponent( config:XML = null, textureComponent:TextureComponent = null, name:String = "PDParticleSystemComponent" )
 		{
+			super( name );
 			_xml = config;
 			_texture = texture;
 			_displayObject = new Sprite();
@@ -604,7 +605,10 @@ package cadet2D.components.particles
 		}
 		
 		[Serializable][Inspectable( priority="58", editor="ColorPicker" )]
-		public function get startColor():uint { return _particleSystem.startColor.toRgb(); }
+		public function get startColor():uint 
+		{ 
+			return _startColor; 
+		}
 		public function set startColor(value:uint):void 
 		{ 
 			_startColor = value;			

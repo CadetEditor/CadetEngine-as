@@ -1,7 +1,6 @@
 package
 {
 	import cadet.core.CadetScene;
-	import cadet.events.RendererEvent;
 	
 	import cadet2D.components.renderers.Renderer2D;
 	import cadet2D.components.textures.TextureComponent;
@@ -27,16 +26,13 @@ package
 			var renderer:Renderer2D = new Renderer2D();
 			renderer.viewportWidth = stage.stageWidth;
 			renderer.viewportHeight = stage.stageHeight;
-			renderer.addEventListener(RendererEvent.INITIALISED, rendererInitHandler);
 			cadetScene.children.addItem(renderer);
 			renderer.enable(this);
-		}
-		
-		private function rendererInitHandler( event:RendererEvent ):void
-		{
+			
 			// Create the shared TextureComponent
 			var textureComponent:TextureComponent = new TextureComponent();
 			textureComponent.bitmapData = new BunnyAsset().bitmapData;
+			cadetScene.children.addItem(textureComponent);
 			
 			// Create the BunnySpawner Process
 			var bunnySpawner:BunnySpawner = new BunnySpawner();

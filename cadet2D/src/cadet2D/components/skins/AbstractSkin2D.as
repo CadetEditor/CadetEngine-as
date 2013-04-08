@@ -46,8 +46,9 @@ package cadet2D.components.skins
 		protected var _width					:Number = 0;
 		protected var _height					:Number = 0;
 		
-		public function AbstractSkin2D()
+		public function AbstractSkin2D( name:String = "AbstractSkin2D" )
 		{
+			super( name );
 			_displayObject = new Sprite();
 		}
 		

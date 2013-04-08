@@ -117,7 +117,7 @@ package cadet2D.components.renderers
 				AsynchronousUtil.callLater(init);
 			}
 			
-			validateViewport();
+			invalidate( RendererInvalidationTypes.VIEWPORT );
 		}
 		
 		// When we know this isn't the only Starling instance and we want to render into a specific starling.display.DisplayObjectContainer
@@ -135,7 +135,7 @@ package cadet2D.components.renderers
 			star = Starling.current;
 			AsynchronousUtil.callLater(init);
 			
-			validateViewport();
+			invalidate( RendererInvalidationTypes.VIEWPORT );
 		}
 		
 		public function disable():void
@@ -260,7 +260,8 @@ package cadet2D.components.renderers
 		
 		private function validateViewport():void
 		{
-			if (!_nativeStage) return;
+//			if (!_nativeStage) return;
+			if (!_parent && !_nativeParent) return;
 			
 			var pt:Point;
 			if ( _parent )				pt = _parent.localToGlobal(new Point(0,0));

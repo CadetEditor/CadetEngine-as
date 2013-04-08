@@ -88,8 +88,8 @@ package cadet.operations
 				return;
 			}
 			
-			try
-			{
+/*			try
+			{*/
 				var xmlString:String = readFileOperation.bytes.readUTFBytes( readFileOperation.bytes.length );
 				xml = XML( xmlString );
 				
@@ -97,12 +97,12 @@ package cadet.operations
 				{
 					throw( new Error( "Invalid xml" ) )
 				}
-			}
+/*			}
 			catch ( e:Error )
 			{
 				dispatchEvent( new ErrorEvent( ErrorEvent.ERROR, false, false, e.message ) )
 				return;
-			}
+			}*/
 			
 			var getTemplatesAndMergeOperation:GetTemplatesAndMergeXMLOperation = new GetTemplatesAndMergeXMLOperation( xml, fileSystemProvider );
 			getTemplatesAndMergeOperation.addEventListener(OperationProgressEvent.PROGRESS, getTemplatesAndMergeProgressHandler);

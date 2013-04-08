@@ -34,8 +34,9 @@ package cadet.core
 		private var childAddedEvent		:ComponentContainerEvent;
 		
 		
-		public function ComponentContainer()
+		public function ComponentContainer( name:String = "ComponentContainer" )
 		{
+			super( name );
 			init();
 		}
 		

@@ -16,9 +16,9 @@ package cadet2D.components.textures
 		
 		private var _atlasDirty			:Boolean;
 		
-		public function TextureAtlasComponent()
+		public function TextureAtlasComponent( name:String = "TextureAtlasComponent" )
 		{
-			super();
+			super(name);
 		}
 		
 		[Serializable( type="resource" )][Inspectable(editor="ResourceItemEditor", extensions="[xml]")]

@@ -35,9 +35,9 @@ package cadet2D.components.skins
 		private var _addedToJuggler			:Boolean;
 		private var _previewAnimation		:Boolean;
 		
-		public function MovieClipSkin()
+		public function MovieClipSkin( name:String = "MovieClipSkin" )
 		{
-			
+			super( name );
 		}
 		
 		override protected function addedToScene():void

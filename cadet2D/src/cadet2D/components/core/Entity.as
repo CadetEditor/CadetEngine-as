@@ -15,9 +15,9 @@ package cadet2D.components.core
 	
 	public class Entity extends ComponentContainer
 	{
-		public function Entity()
+		public function Entity( name:String = "Entity" )
 		{
-			name = "Entity";
+			super( name );
 		}
 	}
 }

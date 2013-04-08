@@ -1,7 +1,6 @@
 package
 {
 	import cadet.core.CadetScene;
-	import cadet.events.RendererEvent;
 	
 	import cadet2D.components.core.Entity;
 	import cadet2D.components.geom.CircleGeometry;
@@ -27,22 +26,13 @@ package
 			cadetScene = new CadetScene();
 			
 			var renderer:Renderer2D = new Renderer2D();
-			renderer.addEventListener(RendererEvent.INITIALISED, rendererInitialisedHandler );
 			renderer.viewportWidth = stage.stageWidth;
 			renderer.viewportHeight = stage.stageHeight;
 			cadetScene.children.addItem(renderer);
 			renderer.enable(this);
 			
 			addEventListener( Event.ENTER_FRAME, enterFrameHandler );
-		}
-		
-		private function rendererInitialisedHandler( event:Event ):void
-		{
-			initScene();
-		}
-		
-		private function initScene():void
-		{
+
 			// Rectangle Entity
 			var rectangleEntity:Entity = new Entity();
 			rectangleEntity.name = "Rectangle";
