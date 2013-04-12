@@ -37,7 +37,7 @@
       <libraryPathEntry kind="3" linkType="1" path="/Starling/bin-debug/Starling.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="/Starling-Extension-Graphics/bin/Starling-Extension-Graphics.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="/CoreApp/bin/CoreApp.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="3" linkType="1" path="/Starling-Extension-Particles/bin/Starling-Extension-Particles.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="/Starling-Extension-Particle-System/bin/Starling-Extension-Particle-System.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
