@@ -72,12 +72,17 @@ package cadet.components.processes
 		
 		override public function validateNow():void
 		{
+			var soundsInvalid:Boolean = false;
 			if ( isInvalid(SOUNDS) ) {
-				validateSounds();
-				dispatchEvent( new InvalidationEvent( InvalidationEvent.INVALIDATE ) );
+				soundsInvalid = true;
+				//dispatchEvent( new InvalidationEvent( InvalidationEvent.INVALIDATE ) );
 			}
 			
 			super.validateNow();
+			
+			if ( soundsInvalid ) {
+				validateSounds();
+			}
 		}
 		
 		private function validateSounds():void
@@ -87,6 +92,9 @@ package cadet.components.processes
 			if ( !_muted ) {
 				if ( _music && !_musicPlaying ) {
 					_musicPlaying = _music.play();
+					if (!_musicPlaying) {
+						invalidate(SOUNDS);
+					}
 				}				
 			} else {
 				if ( _music && _musicPlaying ) {

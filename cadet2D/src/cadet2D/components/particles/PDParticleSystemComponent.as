@@ -1055,7 +1055,6 @@ package cadet2D.components.particles
 		}
 		public function set rotatePerSecond(value:Number):void 
 		{
-			trace("set rotatePerSecond "+value);
 			_rotatePerSecond = value;
 			invalidate( DISPLAY ); 
 		}
