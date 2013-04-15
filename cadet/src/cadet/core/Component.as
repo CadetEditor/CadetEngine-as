@@ -15,7 +15,7 @@ package cadet.core
 	import flash.events.EventDispatcher;
 	
 	import cadet.events.ComponentEvent;
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	import cadet.util.ComponentReferenceUtil;
 	
 	import core.events.PropertyChangeEvent;
@@ -24,7 +24,8 @@ package cadet.core
 	[Event( type="cadet.events.ComponentEvent", name="removedFromParent" )]
 	[Event( type="cadet.events.ComponentEvent", name="addedToScene" )]
 	[Event( type="cadet.events.ComponentEvent", name="removedFromScene" )]
-	[Event( type="cadet.events.InvalidationEvent", name="invalidate" )]
+	[Event( type="cadet.events.ValidationEvent", name="invalidate" )]
+	[Event( type="cadet.events.ValidationEvent", name="validated" )]
 	
 	/**
 	 * Abstract. This class is not designed to be directly instantiated. 
@@ -49,10 +50,10 @@ package cadet.core
 		private var removedFromParentEvent	:ComponentEvent;
 		
 		protected var _invalidationTable	:Object;
-		private var invalidationEvent		:InvalidationEvent;
+		private var invalidationEvent		:ValidationEvent;
 		
 		
-		public function Component( name:String = "Component ")
+		public function Component( name:String = "Component" )
 		{
 			this.name = name;
 			// Delegate work to init() function to gain
@@ -69,7 +70,7 @@ package cadet.core
 			removedFromParentEvent = new ComponentEvent( ComponentEvent.REMOVED_FROM_PARENT, this );
 			
 			_invalidationTable = {};
-			invalidationEvent = new InvalidationEvent( InvalidationEvent.INVALIDATE );
+			invalidationEvent = new ValidationEvent( ValidationEvent.INVALIDATE );
 			invalidate("*");
 		}
 		
@@ -167,7 +168,7 @@ package cadet.core
 		{
 			//if ( _invalidationTable[invalidationType] ) return;
 			_invalidationTable[invalidationType] = true;
-			invalidationEvent.invalidationType = invalidationType;
+			invalidationEvent.validationType = invalidationType;
 			dispatchEvent( invalidationEvent );
 		}
 		

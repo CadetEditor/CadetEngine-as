@@ -12,21 +12,22 @@ package cadet.events
 {
 	import flash.events.Event;
 	
-	public class InvalidationEvent extends Event
+	public class ValidationEvent extends Event
 	{
 		public static const INVALIDATE	:String = "invalidate";
+		public static const VALIDATED	:String = "validated";
 		
-		public var invalidationType		:String;
+		public var validationType		:String;
 		
-		public function InvalidationEvent(type:String, invalidationType:String = null)
+		public function ValidationEvent(type:String, validationType:String = null)
 		{
 			super(type);
-			this.invalidationType = invalidationType;
+			this.validationType = validationType;
 		}
 		
 		override public function clone():Event
 		{
-			return new InvalidationEvent( type, invalidationType );
+			return new ValidationEvent( type, validationType );
 		}
 	}
 }

@@ -17,7 +17,7 @@ package cadet2DBox2D.components.behaviours
 	import cadet.core.Component;
 	import cadet.core.ISteppableComponent;
 	import cadet.events.ComponentEvent;
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	import cadet.util.ComponentUtil;
 	
 	import cadet2D.components.connections.Connection;
@@ -75,7 +75,7 @@ package cadet2DBox2D.components.behaviours
 			{
 				_connection.removeEventListener(ComponentEvent.ADDED_TO_PARENT, connectionChangeHandler);
 				_connection.removeEventListener(ComponentEvent.REMOVED_FROM_PARENT, connectionChangeHandler);
-				_connection.removeEventListener(InvalidationEvent.INVALIDATE, connectionChangeHandler);
+				_connection.removeEventListener(ValidationEvent.INVALIDATE, connectionChangeHandler);
 			}
 			_connection = value;
 			
@@ -83,7 +83,7 @@ package cadet2DBox2D.components.behaviours
 			{
 				_connection.addEventListener(ComponentEvent.ADDED_TO_PARENT, connectionChangeHandler);
 				_connection.addEventListener(ComponentEvent.REMOVED_FROM_PARENT, connectionChangeHandler);
-				_connection.addEventListener(InvalidationEvent.INVALIDATE, connectionChangeHandler);
+				_connection.addEventListener(ValidationEvent.INVALIDATE, connectionChangeHandler);
 			}
 			
 			invalidate(BEHAVIOURS);

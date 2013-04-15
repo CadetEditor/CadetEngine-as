@@ -13,7 +13,7 @@ package cadet3D.components.materials
 	import away3d.materials.TextureMaterial;
 	import away3d.materials.methods.EnvMapMethod;
 	
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	
 	import cadet3D.components.textures.AbstractTexture2DComponent;
 	import cadet3D.components.textures.BitmapCubeTextureComponent;
@@ -71,11 +71,11 @@ package cadet3D.components.materials
 		public function set ambientTexture( value:AbstractTexture2DComponent  ):void
 		{
 			if ( _ambientTexture ) {
-				_ambientTexture.removeEventListener(InvalidationEvent.INVALIDATE, invalidateDiffuseTextureHandler);
+				_ambientTexture.removeEventListener(ValidationEvent.INVALIDATE, invalidateDiffuseTextureHandler);
 			}
 			_ambientTexture = value;
 			if ( _ambientTexture ) {
-				_ambientTexture.addEventListener(InvalidationEvent.INVALIDATE, invalidateDiffuseTextureHandler);
+				_ambientTexture.addEventListener(ValidationEvent.INVALIDATE, invalidateDiffuseTextureHandler);
 			}
 			updateAmbientTexture();
 		}
@@ -89,11 +89,11 @@ package cadet3D.components.materials
 		public function set diffuseTexture( value:AbstractTexture2DComponent  ):void
 		{
 			if ( _diffuseTexture ) {
-				_diffuseTexture.removeEventListener(InvalidationEvent.INVALIDATE, invalidateDiffuseTextureHandler);
+				_diffuseTexture.removeEventListener(ValidationEvent.INVALIDATE, invalidateDiffuseTextureHandler);
 			}
 			_diffuseTexture = value;
 			if ( _diffuseTexture ) {
-				_diffuseTexture.addEventListener(InvalidationEvent.INVALIDATE, invalidateDiffuseTextureHandler);
+				_diffuseTexture.addEventListener(ValidationEvent.INVALIDATE, invalidateDiffuseTextureHandler);
 			}
 			updateDiffuseTexture();
 		}
@@ -107,11 +107,11 @@ package cadet3D.components.materials
 		public function set environmentMap( value:BitmapCubeTextureComponent  ):void
 		{
 			if ( _environmentMap ) {
-				_environmentMap.removeEventListener(InvalidationEvent.INVALIDATE, invalidateEnvironmentMapHandler);
+				_environmentMap.removeEventListener(ValidationEvent.INVALIDATE, invalidateEnvironmentMapHandler);
 			}
 			_environmentMap = value;
 			if ( _environmentMap ) {
-				_environmentMap.addEventListener(InvalidationEvent.INVALIDATE, invalidateEnvironmentMapHandler);
+				_environmentMap.addEventListener(ValidationEvent.INVALIDATE, invalidateEnvironmentMapHandler);
 			}
 			updateEnvironmentMap();
 		}
@@ -125,11 +125,11 @@ package cadet3D.components.materials
 		public function set normalMap( value:AbstractTexture2DComponent  ):void
 		{
 			if ( _normalMap ) {
-				_normalMap.removeEventListener(InvalidationEvent.INVALIDATE, invalidateNormalMapHandler);
+				_normalMap.removeEventListener(ValidationEvent.INVALIDATE, invalidateNormalMapHandler);
 			}
 			_normalMap = value;
 			if ( _normalMap ) {
-				_normalMap.addEventListener(InvalidationEvent.INVALIDATE, invalidateNormalMapHandler);
+				_normalMap.addEventListener(ValidationEvent.INVALIDATE, invalidateNormalMapHandler);
 			}
 			updateNormalMap();
 		}
@@ -143,11 +143,11 @@ package cadet3D.components.materials
 		public function set specularMap( value:AbstractTexture2DComponent  ):void
 		{
 			if ( _specularMap ) {
-				_specularMap.removeEventListener(InvalidationEvent.INVALIDATE, invalidateSpecularMapHandler);
+				_specularMap.removeEventListener(ValidationEvent.INVALIDATE, invalidateSpecularMapHandler);
 			}
 			_specularMap = value;
 			if ( _specularMap ) {
-				_specularMap.addEventListener(InvalidationEvent.INVALIDATE, invalidateSpecularMapHandler);
+				_specularMap.addEventListener(ValidationEvent.INVALIDATE, invalidateSpecularMapHandler);
 			}
 			updateSpecularMap();
 		}
@@ -158,22 +158,22 @@ package cadet3D.components.materials
 		}
 		
 		
-		private function invalidateDiffuseTextureHandler( event:InvalidationEvent ):void
+		private function invalidateDiffuseTextureHandler( event:ValidationEvent ):void
 		{
 			updateDiffuseTexture();
 		}
 		
-		private function invalidateNormalMapHandler( event:InvalidationEvent ):void
+		private function invalidateNormalMapHandler( event:ValidationEvent ):void
 		{
 			updateNormalMap();
 		}
 		
-		private function invalidateEnvironmentMapHandler( event:InvalidationEvent ):void
+		private function invalidateEnvironmentMapHandler( event:ValidationEvent ):void
 		{
 			updateEnvironmentMap();
 		}
 		
-		private function invalidateSpecularMapHandler( event:InvalidationEvent ):void
+		private function invalidateSpecularMapHandler( event:ValidationEvent ):void
 		{
 			updateSpecularMap();
 		}

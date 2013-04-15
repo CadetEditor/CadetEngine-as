@@ -16,31 +16,36 @@ package cadet2D.components.skins
 	import flash.geom.Matrix;
 	
 	import cadet.components.geom.IGeometry;
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	import cadet.util.BitmapDataUtil;
 	
 	import cadet2D.components.geom.BezierCurve;
 	import cadet2D.components.geom.CircleGeometry;
 	import cadet2D.components.geom.CompoundGeometry;
 	import cadet2D.components.geom.PolygonGeometry;
+	import cadet2D.components.materials.IMaterialComponent;
+	import cadet2D.components.textures.TextureComponent;
 	import cadet2D.geom.QuadraticBezier;
 	import cadet2D.geom.Vertex;
 	
 	import starling.core.Starling;
 	import starling.display.Graphics;
 	import starling.display.Shape;
+	import starling.display.materials.IMaterial;
 
 	public class GeometrySkin extends AbstractSkin2D implements IRenderable
 	{
-		private var _lineThickness	:Number;
-		private var _lineColor		:uint;
-		private var _lineAlpha		:Number;
-		private var _fillColor		:uint;
-		private var _fillAlpha		:Number;
-		private var _fillBitmap		:BitmapData;
-//		private var _fillXOffset	:Number = 0;
-//		private var _fillYOffset	:Number = 0;
-		private var _drawVertices	:Boolean = false;
+		private var _lineThickness		:Number;
+		private var _lineColor			:uint;
+		private var _lineAlpha			:Number;
+		private var _fillColor			:uint;
+		private var _fillAlpha			:Number;
+		private var _fillBitmap			:BitmapData;
+		private var _lineMaterial		:IMaterialComponent;
+		private var _lineTexture		:TextureComponent;
+//		private var _fillXOffset		:Number = 0;
+//		private var _fillYOffset		:Number = 0;
+		private var _drawVertices		:Boolean = false;
 		
 		private var _geometry	:IGeometry;
 		
@@ -69,20 +74,20 @@ package cadet2D.components.skins
 		{
 			if ( _geometry )
 			{
-				_geometry.removeEventListener(InvalidationEvent.INVALIDATE, invalidateGeometryHandler);
+				_geometry.removeEventListener(ValidationEvent.INVALIDATE, invalidateGeometryHandler);
 			}
 			_geometry = value;
 			
 			if ( _geometry )
 			{
-				_geometry.addEventListener(InvalidationEvent.INVALIDATE, invalidateGeometryHandler);
+				_geometry.addEventListener(ValidationEvent.INVALIDATE, invalidateGeometryHandler);
 			}
 			
 			invalidate(DISPLAY);
 		}
 		public function get geometry():IGeometry { return _geometry; }
 				
-		private function invalidateGeometryHandler( event:InvalidationEvent ):void
+		private function invalidateGeometryHandler( event:ValidationEvent ):void
 		{
 			invalidate(DISPLAY);
 		}
@@ -110,44 +115,43 @@ package cadet2D.components.skins
 			
 			var graphics:Graphics = _shape.graphics;
 			graphics.clear();
-			render( _geometry, graphics );
+			
+			render( _geometry );
 		}
 		
-		private function render( geometry:IGeometry, graphics:Graphics ):void
+		private function render( geometry:IGeometry ):void
 		{
 			if ( geometry is PolygonGeometry )
 			{
-				renderPolygon( PolygonGeometry( geometry ), graphics );
+				renderPolygon( PolygonGeometry( geometry ) );
 			}
 			else if ( geometry is CircleGeometry )
 			{
-				renderCircle( CircleGeometry( geometry ), graphics );
+				renderCircle( CircleGeometry( geometry ) );
 			}
 			else if ( geometry is BezierCurve )
 			{
-				renderBezier( BezierCurve( geometry ), graphics );
+				renderBezier( BezierCurve( geometry ) );
 			}
 			else if ( geometry is CompoundGeometry )
 			{
 				var compoundGeometry:CompoundGeometry = CompoundGeometry(geometry);
 				for each ( var childGeometry:IGeometry in compoundGeometry.children )
 				{
-					render( childGeometry, graphics );
+					render( childGeometry );
 				}
 			}
 		}
 		
-		protected function renderPolygon( polygon:PolygonGeometry, graphics:Graphics ):void
+		protected function renderPolygon( polygon:PolygonGeometry ):void
 		{
-			//var graphics:Graphics = _shape.graphics;
-			graphics = _shape.graphics;
+			var graphics:Graphics = _shape.graphics;
 			
 			var vertices:Array = polygon.vertices;
 			var firstVertex:Vertex = vertices[0];
 			if ( !firstVertex ) return;
 			
-			//TODO: handle further arguments
-			if ( _lineThickness != 0 ) graphics.lineStyle( _lineThickness, _lineColor, _lineAlpha );//, false, LineScaleMode.NONE );
+			setLineStyle();
 			
 			if ( _fillBitmap )
 			{
@@ -180,13 +184,11 @@ package cadet2D.components.skins
 			}
 		}
 		
-		protected function renderCircle( circle:CircleGeometry, graphics:Graphics ):void
+		protected function renderCircle( circle:CircleGeometry ):void
 		{
-			//var graphics:Graphics = _shape.graphics;
-			graphics = _shape.graphics;
+			var graphics:Graphics = _shape.graphics;
 			
-			//TODO: handle further arguments
-			if ( _lineThickness != 0 ) graphics.lineStyle( _lineThickness, _lineColor, _lineAlpha );//, false, LineScaleMode.NONE );
+			setLineStyle();
 			
 			if ( _fillBitmap )
 			{
@@ -205,27 +207,48 @@ package cadet2D.components.skins
 			graphics.lineTo(circle.x+circle.radius, circle.y);
 		}
 		
-		protected function renderBezier( bezierCurve:BezierCurve, graphics:Graphics ):void
+		protected function renderBezier( bezierCurve:BezierCurve ):void
 		{
-			//TODO: handle further arguments
-			if ( _lineThickness != 0 ) graphics.lineStyle( _lineThickness, _lineColor, _lineAlpha );//, false, LineScaleMode.NONE );
-			//QuadraticBezierUtil.draw(graphics, bezierCurve.segments);
-			draw( graphics, bezierCurve.segments);
-		}
-	
-		private function draw( graphics:Graphics, segments:Vector.<QuadraticBezier> ):void
-		{
-			if (segments.length == 0) return;
+			var graphics:Graphics = _shape.graphics;
 			
-			var segment:QuadraticBezier = segments[0];
+			if ( !setLineStyle() ) return;
+			
+			//QuadraticBezierUtil.draw(graphics, bezierCurve.segments);
+
+			if (bezierCurve.segments.length == 0) return;
+			
+			var segment:QuadraticBezier = bezierCurve.segments[0];
 			graphics.moveTo(segment.startX, segment.startY);
 			
-			for ( var i:int = 0; i < segments.length; i++ )
+			for ( var i:int = 0; i < bezierCurve.segments.length; i++ )
 			{
-				segment = segments[i];
-				//graphics.moveTo(segment.startX, segment.startY);
+				segment = bezierCurve.segments[i];
 				graphics.curveTo(segment.controlX, segment.controlY, segment.endX, segment.endY);
 			}
+		}
+		
+		private function setLineStyle():Boolean
+		{
+			var graphics:Graphics = _shape.graphics;
+			
+			if ( _lineThickness != 0 ) {
+				if ( _lineMaterial ) {
+					if ( _lineMaterial.material.textures && _lineMaterial.material.textures.length > 0 ) {
+						graphics.lineMaterial( _lineThickness, _lineMaterial.material );
+						return true;
+					}
+				} else if ( _lineTexture ) {
+					if ( _lineTexture.texture ) {
+						graphics.lineTexture( _lineThickness, _lineTexture.texture );
+						return true;
+					}
+				} else {
+					graphics.lineStyle( _lineThickness, _lineColor, _lineAlpha );//, false, LineScaleMode.NONE );	
+					return true;
+				}
+			}
+			
+			return false;
 		}
 		
 		[Serializable][Inspectable( label="Line alpha", priority="100", editor="Slider", min="0", max="1" )]
@@ -236,7 +259,7 @@ package cadet2D.components.skins
 		}
 		public function get lineAlpha():Number { return _lineAlpha; }
 		
-		[Serializable][Inspectable( label="Line thickness", priority="101", editor="Slider", min="0.1", max="100", snapInterval="0.1" )]
+		[Serializable][Inspectable( label="Line thickness", priority="101" )]//, editor="Slider", min="0.1", max="100", snapInterval="0.1" )]
 		public function set lineThickness( value:Number ):void
 		{
 			_lineThickness = value;
@@ -274,11 +297,51 @@ package cadet2D.components.skins
 		{
 			// Needs to be a power of two in order to be tileable
 			_fillBitmap = BitmapDataUtil.makePowerOfTwo(value);
-			
 			invalidate( DISPLAY );
 		}
 		public function get fillBitmap():BitmapData { return _fillBitmap; }
 		
+		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="106" )]
+		public function set lineMaterial( value:IMaterialComponent ):void
+		{
+			if ( _lineMaterial ) {
+				_lineMaterial.removeEventListener( ValidationEvent.VALIDATED, lineTextureValidatedHandler );
+			}
+			
+			_lineMaterial = value;	
+			
+			if ( _lineMaterial ) {
+				lineTexture = null; 	// Mutually exclusive values
+				_lineMaterial.addEventListener( ValidationEvent.VALIDATED, lineTextureValidatedHandler );
+			}
+			
+			invalidate( DISPLAY );
+		}
+		public function get lineMaterial():IMaterialComponent
+		{
+			return _lineMaterial;
+		}
+		
+		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="107" )]
+		public function set lineTexture( value:TextureComponent ):void
+		{
+			if ( _lineTexture ) {
+				_lineTexture.removeEventListener( ValidationEvent.VALIDATED, lineTextureValidatedHandler );
+			}
+			
+			_lineTexture = value;	
+			
+			if ( _lineTexture ) {
+				lineMaterial = null;	// Mutually exclusive values
+				_lineTexture.addEventListener( ValidationEvent.VALIDATED, lineTextureValidatedHandler );
+			}
+			
+			invalidate( DISPLAY );
+		}
+		public function get lineTexture():TextureComponent
+		{
+			return _lineTexture;
+		}
 		
 /*		[Serializable][Inspectable( priority="106")]
 		public function set fillXOffset( value:Number ):void
@@ -303,5 +366,16 @@ package cadet2D.components.skins
 			invalidate( DISPLAY );
 		}
 		public function get drawVertices():Boolean { return _drawVertices; }
+		
+		private function lineTextureValidatedHandler( event:ValidationEvent ):void
+		{
+			invalidate( DISPLAY );
+		}
 	}
 }
+
+
+
+
+
+

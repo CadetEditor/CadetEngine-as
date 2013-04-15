@@ -13,7 +13,7 @@ package cadet2D.components.skins
 	import flash.display.BitmapData;
 	import flash.geom.Matrix;
 	
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	
 	import cadet2D.components.geom.TerrainGeometry;
 	import cadet2D.geom.Vertex;
@@ -110,26 +110,26 @@ package cadet2D.components.skins
 		{
 			if ( _terrainGeometry )
 			{
-				_terrainGeometry.removeEventListener(InvalidationEvent.INVALIDATE, invalidateTerrainHandler);
+				_terrainGeometry.removeEventListener(ValidationEvent.INVALIDATE, invalidateTerrainHandler);
 			}
 			_terrainGeometry = value;
 			if ( _terrainGeometry )
 			{
-				_terrainGeometry.addEventListener(InvalidationEvent.INVALIDATE, invalidateTerrainHandler);
+				_terrainGeometry.addEventListener(ValidationEvent.INVALIDATE, invalidateTerrainHandler);
 			}
 			invalidate(ALL_BUCKETS);
 			invalidate(DISPLAY);
 		}
 		public function get terrainGeometry():TerrainGeometry { return _terrainGeometry; }
 		
-		private function invalidateTerrainHandler( event:InvalidationEvent ):void
+		private function invalidateTerrainHandler( event:ValidationEvent ):void
 		{
-			if ( event.invalidationType == TerrainGeometry.ALL_BUCKETS )
+			if ( event.validationType == TerrainGeometry.ALL_BUCKETS )
 			{
 				invalidate(ALL_BUCKETS);
 				invalidate(DISPLAY);
 			}
-			else if ( event.invalidationType == TerrainGeometry.SOME_BUCKETS )
+			else if ( event.validationType == TerrainGeometry.SOME_BUCKETS )
 			{
 				invalidate(SOME_BUCKETS);
 				invalidate(DISPLAY);

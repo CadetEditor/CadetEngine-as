@@ -22,7 +22,7 @@ package cadet2D.components.renderers
 	import cadet.core.Component;
 	import cadet.core.IComponent;
 	import cadet.events.ComponentEvent;
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	import cadet.events.RendererEvent;
 	import cadet.util.ComponentUtil;
 	
@@ -334,7 +334,7 @@ package cadet2D.components.renderers
 			renderable.invalidate("*");
 			renderable.validateNow();
 			
-			renderable.addEventListener(InvalidationEvent.INVALIDATE, invalidateRenderableHandler);
+			renderable.addEventListener(ValidationEvent.INVALIDATE, invalidateRenderableHandler);
 			
 			skinTable[displayObject] = renderable;
 			//displayObjectTable[displayObject] = renderable;
@@ -345,13 +345,13 @@ package cadet2D.components.renderers
 			var displayObject:starling.display.DisplayObject = renderable.displayObject;
 			
 			removeRenderableFromDisplayList(renderable);
-			renderable.removeEventListener(InvalidationEvent.INVALIDATE, invalidateRenderableHandler);
+			renderable.removeEventListener(ValidationEvent.INVALIDATE, invalidateRenderableHandler);
 			
 			delete skinTable[displayObject];
 			//delete displayObjectTable[displayObject];
 		}
 		
-		private function invalidateRenderableHandler( event:InvalidationEvent ):void
+		private function invalidateRenderableHandler( event:ValidationEvent ):void
 		{
 //			var renderable:IRenderable = IRenderable(event.target);
 //			var displayObject:starling.display.DisplayObject = AbstractSkin2D(renderable).displayObject;

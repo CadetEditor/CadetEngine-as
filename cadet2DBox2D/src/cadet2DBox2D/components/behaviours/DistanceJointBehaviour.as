@@ -16,7 +16,7 @@ package cadet2DBox2D.components.behaviours
 	
 	import cadet.core.Component;
 	import cadet.events.ComponentEvent;
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	import cadet.util.ComponentUtil;
 	
 	import cadet2D.components.connections.Connection;
@@ -71,7 +71,7 @@ package cadet2DBox2D.components.behaviours
 			{
 				_connection.removeEventListener(ComponentEvent.ADDED_TO_PARENT, connectionChangeHandler);
 				_connection.removeEventListener(ComponentEvent.REMOVED_FROM_PARENT, connectionChangeHandler);
-				_connection.removeEventListener(InvalidationEvent.INVALIDATE, connectionChangeHandler);
+				_connection.removeEventListener(ValidationEvent.INVALIDATE, connectionChangeHandler);
 			}
 			_connection = value;
 			
@@ -79,7 +79,7 @@ package cadet2DBox2D.components.behaviours
 			{
 				_connection.addEventListener(ComponentEvent.ADDED_TO_PARENT, connectionChangeHandler);
 				_connection.addEventListener(ComponentEvent.REMOVED_FROM_PARENT, connectionChangeHandler);
-				_connection.addEventListener(InvalidationEvent.INVALIDATE, connectionChangeHandler);
+				_connection.addEventListener(ValidationEvent.INVALIDATE, connectionChangeHandler);
 			}
 			
 			invalidate(BEHAVIOURS);
@@ -92,18 +92,18 @@ package cadet2DBox2D.components.behaviours
 			destroyJoint();
 			if ( _physicsProcess )
 			{
-				_physicsProcess.removeEventListener(InvalidationEvent.INVALIDATE, invalidatePhysicsProcessHandler);
+				_physicsProcess.removeEventListener(ValidationEvent.INVALIDATE, invalidatePhysicsProcessHandler);
 			}
 			_physicsProcess = value;
 			if ( _physicsProcess )
 			{
-				_physicsProcess.addEventListener(InvalidationEvent.INVALIDATE, invalidatePhysicsProcessHandler);
+				_physicsProcess.addEventListener(ValidationEvent.INVALIDATE, invalidatePhysicsProcessHandler);
 			}
 			invalidate(JOINT);
 		}
 		public function get physicsProcess():PhysicsProcess { return _physicsProcess; }
 		
-		private function invalidatePhysicsProcessHandler( event:InvalidationEvent ):void
+		private function invalidatePhysicsProcessHandler( event:ValidationEvent ):void
 		{
 			invalidate(JOINT);
 		}

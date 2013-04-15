@@ -10,7 +10,7 @@
 
 package cadet2D.components.skins
 {
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	
 	import cadet2D.components.connections.Connection;
 	import cadet2D.components.renderers.Renderer2D;
@@ -64,13 +64,13 @@ package cadet2D.components.skins
 		{
 			if ( _connection )
 			{
-				_connection.removeEventListener(InvalidationEvent.INVALIDATE, invalidateConnectionHandler);
+				_connection.removeEventListener(ValidationEvent.INVALIDATE, invalidateConnectionHandler);
 			}
 			_connection = value;
 			
 			if ( _connection )
 			{
-				_connection.addEventListener(InvalidationEvent.INVALIDATE, invalidateConnectionHandler);
+				_connection.addEventListener(ValidationEvent.INVALIDATE, invalidateConnectionHandler);
 			}
 			
 			invalidate(DISPLAY);
@@ -79,7 +79,7 @@ package cadet2D.components.skins
 		
 		
 		
-		private function invalidateConnectionHandler( event:InvalidationEvent ):void
+		private function invalidateConnectionHandler( event:ValidationEvent ):void
 		{
 			invalidate(DISPLAY);
 		}

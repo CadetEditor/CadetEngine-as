@@ -4,7 +4,7 @@ package cadet3D.components.materials
 	import away3d.textures.BitmapCubeTexture;
 	
 	import cadet.core.Component;
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	
 	import cadet3D.components.textures.BitmapCubeTextureComponent;
 	import cadet3D.util.NullBitmapCubeTexture;
@@ -31,13 +31,13 @@ package cadet3D.components.materials
 		public function set cubeTexture(value : BitmapCubeTextureComponent) : void
 		{
 			if ( _bmpCubeTextureComponent  ) {
-				_bmpCubeTextureComponent.removeEventListener(InvalidationEvent.INVALIDATE, invalidateTextureHandler);
+				_bmpCubeTextureComponent.removeEventListener(ValidationEvent.INVALIDATE, invalidateTextureHandler);
 			}
 			
 			_bmpCubeTextureComponent = value;
 			
 			if ( _bmpCubeTextureComponent  ) {
-				_bmpCubeTextureComponent.addEventListener(InvalidationEvent.INVALIDATE, invalidateTextureHandler);
+				_bmpCubeTextureComponent.addEventListener(ValidationEvent.INVALIDATE, invalidateTextureHandler);
 			}
 			
 			updateCubeTexture();
@@ -48,7 +48,7 @@ package cadet3D.components.materials
 		}
 		
 		
-		private function invalidateTextureHandler( event:InvalidationEvent ):void
+		private function invalidateTextureHandler( event:ValidationEvent ):void
 		{
 			updateCubeTexture();
 		}

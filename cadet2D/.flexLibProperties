@@ -10,6 +10,12 @@
     <classEntry path="cadet2D.components.transforms.ITransform2D"/>
     <classEntry path="cadet2D.components.particles.PDParticleSystemComponent"/>
     <classEntry path="cadet2D.resources.ExternalXMLResourceParser"/>
+    <classEntry path="cadet2D.components.materials.StandardMaterialComponent"/>
+    <classEntry path="cadet2D.components.shaders.vertex.AnimateUVVertexShaderComponent"/>
+    <classEntry path="cadet2D.components.shaders.IShaderComponent"/>
+    <classEntry path="cadet2D.components.shaders.fragment.TextureFragmentShaderComponent"/>
+    <classEntry path="cadet2D.components.skins.TransformableSkin"/>
+    <classEntry path="cadet2D.components.materials.IMaterialComponent"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

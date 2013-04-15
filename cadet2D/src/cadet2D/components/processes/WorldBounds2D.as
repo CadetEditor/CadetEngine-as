@@ -13,7 +13,7 @@ package cadet2D.components.processes
 	import flash.geom.Rectangle;
 	
 	import cadet.core.Component;
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	
 	public class WorldBounds2D extends Component
 	{
@@ -71,7 +71,7 @@ package cadet2D.components.processes
 		{
 			if ( isInvalid(BOUNDS) ) {
 				validateBounds();
-				dispatchEvent( new InvalidationEvent( InvalidationEvent.INVALIDATE ) );
+				dispatchEvent( new ValidationEvent( ValidationEvent.INVALIDATE ) );
 			}
 			
 			super.validateNow();

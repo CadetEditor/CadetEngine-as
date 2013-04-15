@@ -11,17 +11,14 @@
 package cadet2D.components.geom
 {
 	import cadet.components.geom.IGeometry;
-	import cadet.core.CadetScene;
 	import cadet.core.Component;
 	import cadet.core.IComponent;
-	import cadet.core.IComponentContainer;
 	import cadet.util.ComponentUtil;
 	
 	import cadet2D.components.connections.Connection;
 	import cadet2D.components.transforms.Transform2D;
 	import cadet2D.geom.Vertex;
 	
-	import flash.events.Event;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	

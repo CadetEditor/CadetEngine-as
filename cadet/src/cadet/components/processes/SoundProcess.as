@@ -8,7 +8,7 @@ package cadet.components.processes
 	import cadet.core.IComponent;
 	import cadet.core.IInitialisableComponent;
 	import cadet.events.ComponentEvent;
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	import cadet.util.ComponentUtil;
 	
 	public class SoundProcess extends Component implements IInitialisableComponent

@@ -18,7 +18,7 @@ package cadet2DBox2D.components.behaviours
 	
 	import cadet.core.Component;
 	import cadet.events.ComponentEvent;
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	import cadet2D.components.connections.Pin;
 	import cadet2DBox2D.components.processes.PhysicsProcess;
 	import cadet.util.ComponentUtil;
@@ -144,18 +144,18 @@ package cadet2DBox2D.components.behaviours
 			destroyJoint();
 			if ( _physicsProcess )
 			{
-				_physicsProcess.removeEventListener(InvalidationEvent.INVALIDATE, invalidatePhysicsProcessHandler);
+				_physicsProcess.removeEventListener(ValidationEvent.INVALIDATE, invalidatePhysicsProcessHandler);
 			}
 			_physicsProcess = value;
 			if ( _physicsProcess )
 			{
-				_physicsProcess.addEventListener(InvalidationEvent.INVALIDATE, invalidatePhysicsProcessHandler);
+				_physicsProcess.addEventListener(ValidationEvent.INVALIDATE, invalidatePhysicsProcessHandler);
 			}
 			invalidate(JOINT);
 		}
 		public function get physicsProcess():PhysicsProcess { return _physicsProcess; }
 		
-		private function invalidatePhysicsProcessHandler( event:InvalidationEvent ):void
+		private function invalidatePhysicsProcessHandler( event:ValidationEvent ):void
 		{
 			invalidate(JOINT);
 		}

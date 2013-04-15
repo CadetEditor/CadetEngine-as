@@ -12,7 +12,7 @@ package cadet3D.components.lights
 {
 	import away3d.lights.LightProbe;
 	
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	
 	import cadet3D.components.textures.AbstractCubeTextureComponent;
 	import cadet3D.util.NullBitmapCubeTexture;
@@ -32,12 +32,12 @@ package cadet3D.components.lights
 		{
 			if ( _diffuseMap )
 			{
-				_diffuseMap.removeEventListener(InvalidationEvent.INVALIDATE, invalidateDiffuseMapHandler);
+				_diffuseMap.removeEventListener(ValidationEvent.INVALIDATE, invalidateDiffuseMapHandler);
 			}
 			_diffuseMap = value;
 			if ( _diffuseMap )
 			{
-				_diffuseMap.addEventListener(InvalidationEvent.INVALIDATE, invalidateDiffuseMapHandler);
+				_diffuseMap.addEventListener(ValidationEvent.INVALIDATE, invalidateDiffuseMapHandler);
 			}
 			updateDiffuseMap();
 		}
@@ -48,7 +48,7 @@ package cadet3D.components.lights
 		}
 		
 		
-		private function invalidateDiffuseMapHandler( event:InvalidationEvent ):void
+		private function invalidateDiffuseMapHandler( event:ValidationEvent ):void
 		{
 			updateDiffuseMap();
 		}

@@ -12,7 +12,7 @@ package cadet2D.components.behaviours
 {
 	import cadet.components.geom.IGeometry;
 	import cadet.core.Component;
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	
 	import cadet2D.components.geom.CircleGeometry;
 	import cadet2D.components.geom.PolygonGeometry;
@@ -189,12 +189,12 @@ package cadet2D.components.behaviours
 		{
 			if ( _geometry )
 			{
-				_geometry.removeEventListener(InvalidationEvent.INVALIDATE, invalidateGeometryHandler)
+				_geometry.removeEventListener(ValidationEvent.INVALIDATE, invalidateGeometryHandler)
 			}
 			_geometry = value;
 			if ( _geometry )
 			{
-				_geometry.addEventListener(InvalidationEvent.INVALIDATE, invalidateGeometryHandler)
+				_geometry.addEventListener(ValidationEvent.INVALIDATE, invalidateGeometryHandler)
 			}
 			invalidate("values");
 		}
@@ -205,24 +205,24 @@ package cadet2D.components.behaviours
 		{
 			if ( _transform )
 			{
-				_transform.removeEventListener(InvalidationEvent.INVALIDATE, invalidateTransformHandler);
+				_transform.removeEventListener(ValidationEvent.INVALIDATE, invalidateTransformHandler);
 			}
 			_transform = value;
 			if ( _transform )
 			{
-				_transform.addEventListener(InvalidationEvent.INVALIDATE, invalidateTransformHandler);
+				_transform.addEventListener(ValidationEvent.INVALIDATE, invalidateTransformHandler);
 			}
 			invalidate("values");
 		}
 		public function get transform():Transform2D { return _transform; }
 		
 		
-		private function invalidateGeometryHandler( event:InvalidationEvent ):void
+		private function invalidateGeometryHandler( event:ValidationEvent ):void
 		{
 			invalidate("values");
 		}
 		
-		private function invalidateTransformHandler( event:InvalidationEvent ):void
+		private function invalidateTransformHandler( event:ValidationEvent ):void
 		{
 			invalidate("values");
 		}

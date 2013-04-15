@@ -15,7 +15,7 @@ package cadet2D.components.behaviours
 	import flash.geom.Rectangle;
 	
 	import cadet.core.Component;
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	
 	import cadet2D.components.geom.BezierCurve;
 	import cadet2D.components.processes.FootprintManagerProcess;
@@ -108,7 +108,8 @@ package cadet2D.components.behaviours
 			var dy:Number;
 			var d:Number;
 			
-			var segments:Vector.<QuadraticBezier> = QuadraticBezierUtil.clone(_curve.segments);
+			//var segments:Vector.<QuadraticBezier> = QuadraticBezierUtil.clone(_curve.segments);
+			var segments:Array = QuadraticBezierUtil.clone(_curve.segments);
 			QuadraticBezierUtil.transform(segments, _transform.matrix);
 			bounds = QuadraticBezierUtil.getBounds(segments);
 			bounds.inflate(thickness, thickness);
@@ -207,12 +208,12 @@ package cadet2D.components.behaviours
 		{
 			if ( _curve )
 			{
-				_curve.removeEventListener(InvalidationEvent.INVALIDATE, invalidateCurveHandler)
+				_curve.removeEventListener(ValidationEvent.INVALIDATE, invalidateCurveHandler)
 			}
 			_curve = value;
 			if ( _curve )
 			{
-				_curve.addEventListener(InvalidationEvent.INVALIDATE, invalidateCurveHandler)
+				_curve.addEventListener(ValidationEvent.INVALIDATE, invalidateCurveHandler)
 			}
 			invalidate(VALUES);
 		}
@@ -223,12 +224,12 @@ package cadet2D.components.behaviours
 		{
 			if ( _transform )
 			{
-				_transform.removeEventListener(InvalidationEvent.INVALIDATE, invalidateTransformHandler);
+				_transform.removeEventListener(ValidationEvent.INVALIDATE, invalidateTransformHandler);
 			}
 			_transform = value;
 			if ( _transform )
 			{
-				_transform.addEventListener(InvalidationEvent.INVALIDATE, invalidateTransformHandler);
+				_transform.addEventListener(ValidationEvent.INVALIDATE, invalidateTransformHandler);
 			}
 			invalidate(VALUES);
 		}
@@ -251,12 +252,12 @@ package cadet2D.components.behaviours
 		}
 		public function get capEnds():Boolean { return _capEnds; }
 		
-		protected function invalidateCurveHandler( event:InvalidationEvent ):void
+		protected function invalidateCurveHandler( event:ValidationEvent ):void
 		{
 			invalidate(VALUES);
 		}
 		
-		private function invalidateTransformHandler( event:InvalidationEvent ):void
+		private function invalidateTransformHandler( event:ValidationEvent ):void
 		{
 			invalidate(VALUES);
 		}

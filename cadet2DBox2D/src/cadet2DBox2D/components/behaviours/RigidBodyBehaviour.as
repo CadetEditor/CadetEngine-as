@@ -21,7 +21,7 @@ package cadet2DBox2D.components.behaviours
 	import cadet.components.geom.IGeometry;
 	import cadet.core.Component;
 	import cadet.core.ISteppableComponent;
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	
 	import cadet2D.components.geom.CircleGeometry;
 	import cadet2D.components.geom.CompoundGeometry;
@@ -115,18 +115,18 @@ package cadet2DBox2D.components.behaviours
 			destroyBody();
 			if ( _physicsProcess )
 			{
-				_physicsProcess.removeEventListener(InvalidationEvent.INVALIDATE, invalidatePhysicsProcessHandler);
+				_physicsProcess.removeEventListener(ValidationEvent.INVALIDATE, invalidatePhysicsProcessHandler);
 			}
 			_physicsProcess = value;
 			if ( _physicsProcess )
 			{
-				_physicsProcess.addEventListener(InvalidationEvent.INVALIDATE, invalidatePhysicsProcessHandler);
+				_physicsProcess.addEventListener(ValidationEvent.INVALIDATE, invalidatePhysicsProcessHandler);
 			}
 			invalidate(BODY);
 		}
 		public function get physicsProcess():PhysicsProcess { return _physicsProcess; }
 		
-		private function invalidatePhysicsProcessHandler( event:InvalidationEvent ):void
+		private function invalidatePhysicsProcessHandler( event:ValidationEvent ):void
 		{
 			destroyBody();
 			invalidate(BODY);

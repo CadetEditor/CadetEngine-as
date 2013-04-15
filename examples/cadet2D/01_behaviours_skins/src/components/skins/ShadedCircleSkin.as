@@ -2,7 +2,7 @@ package components.skins
 {
 	import flash.display.GradientType;
 	
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	
 	import cadet2D.components.geom.CircleGeometry;
 	import cadet2D.components.skins.AbstractSkin2D;
@@ -34,14 +34,14 @@ package components.skins
 		{
 			if ( _circle )
 			{
-				_circle.removeEventListener(InvalidationEvent.INVALIDATE, invalidateCircleHandler);
+				_circle.removeEventListener(ValidationEvent.INVALIDATE, invalidateCircleHandler);
 			}
 			
 			_circle = value;
 			
 			if ( _circle )
 			{
-				_circle.addEventListener(InvalidationEvent.INVALIDATE, invalidateCircleHandler);
+				_circle.addEventListener(ValidationEvent.INVALIDATE, invalidateCircleHandler);
 			}
 			
 			invalidate("display");
@@ -49,7 +49,7 @@ package components.skins
 		public function get circle():CircleGeometry{ return _circle; }
 		
 		
-		private function invalidateCircleHandler( event:InvalidationEvent ):void
+		private function invalidateCircleHandler( event:ValidationEvent ):void
 		{
 			invalidate("display");
 		}

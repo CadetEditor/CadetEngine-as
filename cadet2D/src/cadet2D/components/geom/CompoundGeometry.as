@@ -13,7 +13,7 @@ package cadet2D.components.geom
 	import cadet.components.geom.IGeometry;
 	import cadet.core.ComponentContainer;
 	import cadet.core.IComponent;
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	
 	public class CompoundGeometry extends ComponentContainer implements IGeometry
 	{
@@ -30,20 +30,20 @@ package cadet2D.components.geom
 				throw( new Error( "CompoundGeometry only supports children of type IGeometry" ));
 				return;
 			}
-			child.addEventListener(InvalidationEvent.INVALIDATE, invalidateChildHandler);
+			child.addEventListener(ValidationEvent.INVALIDATE, invalidateChildHandler);
 			invalidate("geometry");
 		}
 		
 		override protected function childRemoved(child:IComponent):void
 		{
 			super.childRemoved(child);
-			child.removeEventListener(InvalidationEvent.INVALIDATE, invalidateChildHandler);
+			child.removeEventListener(ValidationEvent.INVALIDATE, invalidateChildHandler);
 			invalidate("geometry");
 		}
 		
-		private function invalidateChildHandler( event:InvalidationEvent ):void
+		private function invalidateChildHandler( event:ValidationEvent ):void
 		{
-			invalidate(event.invalidationType);
+			invalidate(event.validationType);
 		}
 		
 		public function get label():String { return "Compound Geometry"; }

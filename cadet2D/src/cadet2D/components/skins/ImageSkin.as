@@ -12,7 +12,7 @@
 
 package cadet2D.components.skins
 {	
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	
 	import cadet2D.components.textures.TextureAtlasComponent;
 	import cadet2D.components.textures.TextureComponent;
@@ -23,7 +23,7 @@ package cadet2D.components.skins
 	import starling.display.Quad;
 	import starling.textures.Texture;
 	
-	public class ImageSkin extends AbstractSkin2D
+	public class ImageSkin extends TransformableSkin
 	{
 		private static const TEXTURE		:String = "texture";
 		
@@ -45,11 +45,11 @@ package cadet2D.components.skins
 		public function set textureAtlas( value:TextureAtlasComponent ):void
 		{
 			if ( _textureAtlas ) {
-				_textureAtlas.removeEventListener(InvalidationEvent.INVALIDATE, invalidateAtlasHandler);
+				_textureAtlas.removeEventListener(ValidationEvent.INVALIDATE, invalidateAtlasHandler);
 			}
 			_textureAtlas = value;
 			if ( _textureAtlas ) {
-				_textureAtlas.addEventListener(InvalidationEvent.INVALIDATE, invalidateAtlasHandler);
+				_textureAtlas.addEventListener(ValidationEvent.INVALIDATE, invalidateAtlasHandler);
 			}
 			// textureAtlas & texture are mutually exclusive values
 			if (value)	_texture = null;
@@ -182,7 +182,7 @@ package cadet2D.components.skins
 			return new Image(textures[0]);
 		}
 		
-		private function invalidateAtlasHandler( event:InvalidationEvent ):void
+		private function invalidateAtlasHandler( event:ValidationEvent ):void
 		{
 			invalidate( TEXTURE );
 		}

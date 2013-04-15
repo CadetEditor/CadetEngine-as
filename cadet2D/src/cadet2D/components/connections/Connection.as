@@ -12,7 +12,7 @@ package cadet2D.components.connections
 {
 	import cadet2D.components.transforms.Transform2D;
 	import cadet.core.Component;
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	import cadet2D.geom.Vertex;
 	
 	public class Connection extends Component
@@ -34,14 +34,14 @@ package cadet2D.components.connections
 		{
 			if ( _transformA )
 			{
-				_transformA.removeEventListener(InvalidationEvent.INVALIDATE, invalidateTransformHandler);
+				_transformA.removeEventListener(ValidationEvent.INVALIDATE, invalidateTransformHandler);
 			}
 			
 			_transformA = value;
 			
 			if ( _transformA )
 			{
-				_transformA.addEventListener(InvalidationEvent.INVALIDATE, invalidateTransformHandler);
+				_transformA.addEventListener(ValidationEvent.INVALIDATE, invalidateTransformHandler);
 			}
 			invalidate(TRANSFORM);
 		}
@@ -52,14 +52,14 @@ package cadet2D.components.connections
 		{
 			if ( _transformB )
 			{
-				_transformB.removeEventListener(InvalidationEvent.INVALIDATE, invalidateTransformHandler);
+				_transformB.removeEventListener(ValidationEvent.INVALIDATE, invalidateTransformHandler);
 			}
 			
 			_transformB = value;
 			
 			if ( _transformB )
 			{
-				_transformB.addEventListener(InvalidationEvent.INVALIDATE, invalidateTransformHandler);
+				_transformB.addEventListener(ValidationEvent.INVALIDATE, invalidateTransformHandler);
 			}
 			invalidate(TRANSFORM);
 		}
@@ -81,7 +81,7 @@ package cadet2D.components.connections
 		}
 		public function get localPosB():Vertex { return _localPosB; }
 		
-		protected function invalidateTransformHandler( event:InvalidationEvent ):void
+		protected function invalidateTransformHandler( event:ValidationEvent ):void
 		{
 			invalidate(TRANSFORM);
 		}

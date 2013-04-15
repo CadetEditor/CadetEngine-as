@@ -11,7 +11,7 @@
 package cadet2D.components.behaviours
 {
 	import cadet.core.Component;
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	
 	import cadet2D.components.processes.FootprintManagerProcess;
 	import cadet2D.components.transforms.Transform2D;
@@ -96,18 +96,18 @@ package cadet2D.components.behaviours
 		{
 			if ( _transform )
 			{
-				_transform.removeEventListener(InvalidationEvent.INVALIDATE, invalidateTransformHandler);
+				_transform.removeEventListener(ValidationEvent.INVALIDATE, invalidateTransformHandler);
 			}
 			_transform = value;
 			if ( _transform )
 			{
-				_transform.addEventListener(InvalidationEvent.INVALIDATE, invalidateTransformHandler);
+				_transform.addEventListener(ValidationEvent.INVALIDATE, invalidateTransformHandler);
 			}
 			invalidate("values");
 		}
 		public function get transform():Transform2D { return _transform; }
 		
-		private function invalidateTransformHandler( event:InvalidationEvent ):void
+		private function invalidateTransformHandler( event:ValidationEvent ):void
 		{
 			invalidate("values");
 		}

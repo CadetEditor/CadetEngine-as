@@ -10,11 +10,11 @@
 
 package cadet2D.components.skins
 {
-	import cadet2D.components.transforms.ITransform2D;
+	import cadet.core.IComponent;
 	
 	import starling.display.DisplayObject;
 
-	public interface IRenderable extends ITransform2D
+	public interface IRenderable extends IComponent
 	{
 		function get indexStr():String
 		function get displayObject():DisplayObject // Ties this implementation to Starling

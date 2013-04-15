@@ -14,12 +14,13 @@ package cadet2D.components.textures
 	import flash.display.BitmapData;
 	
 	import cadet.core.Component;
+	import cadet.events.ValidationEvent;
 	
 	import starling.textures.Texture;
 	
 	public class TextureComponent extends Component
 	{
-		private const TEXTURE:String = "texture";
+		public static const TEXTURE:String = "texture";
 		
 		private var _bitmapData:BitmapData;
 		private var _texture:Texture;
@@ -57,6 +58,8 @@ package cadet2D.components.textures
 		{
 			if ( _bitmapData ) {
 				_texture = Texture.fromBitmap( new Bitmap(_bitmapData), false );
+				var event:ValidationEvent = new ValidationEvent(ValidationEvent.VALIDATED, TEXTURE);
+				dispatchEvent(event);
 			}
 		}
 	}

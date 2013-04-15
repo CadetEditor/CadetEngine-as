@@ -10,7 +10,7 @@
 
 package cadet2D.components.skins
 {
-	import cadet.events.InvalidationEvent;
+	import cadet.events.ValidationEvent;
 	
 	import cadet2D.components.connections.Pin;
 	import cadet2D.components.renderers.IRenderer2D;
@@ -64,20 +64,20 @@ package cadet2D.components.skins
 		{
 			if ( _pin )
 			{
-				_pin.removeEventListener(InvalidationEvent.INVALIDATE, invalidatePinHandler);
+				_pin.removeEventListener(ValidationEvent.INVALIDATE, invalidatePinHandler);
 			}
 			_pin = value;
 			
 			if ( _pin )
 			{
-				_pin.addEventListener(InvalidationEvent.INVALIDATE, invalidatePinHandler);
+				_pin.addEventListener(ValidationEvent.INVALIDATE, invalidatePinHandler);
 			}
 			
 			invalidate(DISPLAY);
 		}
 		public function get pin():Pin { return _pin; }
 		
-		private function invalidatePinHandler( event:InvalidationEvent ):void
+		private function invalidatePinHandler( event:ValidationEvent ):void
 		{
 			invalidate(DISPLAY);
 		}
