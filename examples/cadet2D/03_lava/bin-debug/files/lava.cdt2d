@@ -1,0 +1,66 @@
+<cadet:CadetScene x:id="0" name="Scene" framerate="60" timeScale="1" xmlns:cadet="www.unwrong.com/cadet/1.0.0" xmlns:x="core.app.core.serialization.Serializer" xmlns:core="www.unwrong.com/core/1.0.0" xmlns:cadet2D="www.unwrong.com/cadet2D/1.0.0" xmlns:ns0="cadet2D.components.textures" xmlns:ns1="cadet2D.components.materials" xmlns:ns2="cadet2D.components.shaders.vertex" xmlns:ns3="cadet2D.components.shaders.fragment">
+  <core:DependencyManager x:name="dependencyManager" x:id="1">
+    <core:ArrayCollection x:name="dependencyNodes" x:id="2"/>
+  </core:DependencyManager>
+  <core:ArrayCollection x:name="children" x:id="3">
+    <cadet2D:Renderer2D x:name="0" x:id="4" name="Starling Renderer" depthSort="0"/>
+    <cadet2D:Entity x:name="1" x:id="5" name="Background Entity">
+      <core:ArrayCollection x:name="children" x:id="6">
+        <ns0:TextureComponent x:name="0" x:id="7" name="Bg Texture" bitmapData="lavaDemo/FinalBackground.png"/>
+        <cadet2D:ImageSkin x:name="1" x:id="8" width="800" height="600" name="Bg Skin" touchable="1" visible="1" matrix="1,0,0,1,0,0">
+          <x:Ref x:name="texture" x:id="7"/>
+        </cadet2D:ImageSkin>
+      </core:ArrayCollection>
+    </cadet2D:Entity>
+    <cadet2D:Entity x:name="2" x:id="9" name="Lava Entity">
+      <core:ArrayCollection x:name="children" x:id="10">
+        <cadet2D:BezierCurve x:name="0" x:id="11" name="BezierCurve">
+          <Array x:name="segments" x:id="12">
+            <cadet2D:QuadraticBezier x:name="0" x:id="13" endX="500" startX="150" controlX="500" startY="0" endY="300" controlY="100"/>
+            <cadet2D:QuadraticBezier x:name="1" x:id="14" endX="700" startX="500" controlX="500" startY="300" endY="650" controlY="500"/>
+          </Array>
+        </cadet2D:BezierCurve>
+        <cadet2D:Transform2D x:name="1" x:id="15" name="Transform2D" matrix="1,0,0,1,0,0"/>
+        <cadet2D:GeometrySkin x:name="2" x:id="16" lineAlpha="0.7" fillColor="16777215" width="0" height="0" lineThickness="90" lineColor="16777215" name="GeometrySkin" touchable="1" visible="1" drawVertices="0" fillAlpha="0.04">
+          <x:Ref x:name="transform2D" x:id="15"/>
+          <ns1:StandardMaterialComponent x:name="lineMaterial" x:id="17" name="StandardMaterialComponent">
+            <core:ArrayCollection x:name="children" x:id="18">
+              <ns0:TextureComponent x:name="0" x:id="19" name="Lava Texture" bitmapData="lavaDemo/LavaTiled.png"/>
+            </core:ArrayCollection>
+            <ns2:AnimateUVVertexShaderComponent x:name="vertexShader" x:id="20" name="AnimateUVVertexShaderComponent" uSpeed="0.1" vSpeed="0"/>
+            <x:Ref x:name="texturesContainer" x:id="17">
+              <ns3:TextureFragmentShaderComponent x:name="fragmentShader" x:id="21" name="TextureFragmentShaderComponent"/>
+            </x:Ref>
+          </ns1:StandardMaterialComponent>
+        </cadet2D:GeometrySkin>
+        <x:Ref x:name="3" x:id="17"/>
+        <x:Ref x:name="4" x:id="20"/>
+        <x:Ref x:name="5" x:id="21"/>
+      </core:ArrayCollection>
+    </cadet2D:Entity>
+    <cadet2D:Entity x:name="3" x:id="22" name="Banks Entity">
+      <core:ArrayCollection x:name="children" x:id="23">
+        <cadet2D:BezierCurve x:name="0" x:id="24" name="BezierCurve">
+          <Array x:name="segments" x:id="25">
+            <cadet2D:QuadraticBezier x:name="0" x:id="26" endX="500" startX="150" controlX="500" startY="0" endY="300" controlY="100"/>
+            <cadet2D:QuadraticBezier x:name="1" x:id="27" endX="700" startX="500" controlX="500" startY="300" endY="650" controlY="500"/>
+          </Array>
+        </cadet2D:BezierCurve>
+        <cadet2D:Transform2D x:name="1" x:id="28" name="Transform2D" matrix="1,0,0,1,0,0"/>
+        <cadet2D:GeometrySkin x:name="2" x:id="29" lineAlpha="0.7" fillColor="16777215" width="0" height="0" lineThickness="198.00000000000003" lineColor="16777215" name="GeometrySkin" touchable="1" visible="1" drawVertices="0" fillAlpha="0.04">
+          <x:Ref x:name="transform2D" x:id="28"/>
+          <ns0:TextureComponent x:name="lineTexture" x:id="30" name="Banks Texture" bitmapData="lavaDemo/BanksTiled.png"/>
+        </cadet2D:GeometrySkin>
+        <x:Ref x:name="3" x:id="30"/>
+      </core:ArrayCollection>
+    </cadet2D:Entity>
+    <cadet2D:Entity x:name="4" x:id="31" name="Foreground Entity">
+      <core:ArrayCollection x:name="children" x:id="32">
+        <ns0:TextureComponent x:name="0" x:id="33" name="Fg Texture" bitmapData="lavaDemo/FinalRock.png"/>
+        <cadet2D:ImageSkin x:name="1" x:id="34" width="800" height="960" name="Fg Skin" touchable="1" visible="1" matrix="1,0,0,1,0,0">
+          <x:Ref x:name="texture" x:id="33"/>
+        </cadet2D:ImageSkin>
+      </core:ArrayCollection>
+    </cadet2D:Entity>
+  </core:ArrayCollection>
+</cadet:CadetScene>

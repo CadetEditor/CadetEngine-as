@@ -2,6 +2,9 @@ package cadet2D.components.skins
 {
 	import flash.geom.Matrix;
 	
+	import cadet.util.deg2rad;
+	import cadet.util.rad2deg;
+	
 	import cadet2D.components.transforms.ITransform2D;
 
 	public class TransformableSkin extends AbstractSkin2D implements ITransform2D
@@ -70,7 +73,7 @@ package cadet2D.components.skins
 		}
 		public function get scaleY():Number { return _scaleY; }
 		
-		[Inspectable( priority="54" )]
+		[Inspectable( priority="54", editor="Slider", min="0", max="360", snapInterval="1" ) ]
 		public function set rotation( value:Number ):void
 		{
 			if ( isNaN(value) ) {
@@ -89,7 +92,7 @@ package cadet2D.components.skins
 			_y = _displayObject.y;
 			_scaleX = _displayObject.scaleX;
 			_scaleY = _displayObject.scaleY;
-			_rotation = _displayObject.rotation;
+			_rotation = rad2deg(_displayObject.rotation);
 			
 			invalidate(TRANSFORM);
 		}
@@ -133,7 +136,7 @@ package cadet2D.components.skins
 			_displayObject.y = _y;
 			_displayObject.scaleX = _scaleX;
 			_displayObject.scaleY = _scaleY;
-			_displayObject.rotation = _rotation;
+			_displayObject.rotation = deg2rad(_rotation);
 		}
 	}
 }

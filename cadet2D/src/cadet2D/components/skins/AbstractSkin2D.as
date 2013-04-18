@@ -16,6 +16,7 @@ package cadet2D.components.skins
 	import cadet.core.IComponent;
 	import cadet.core.IComponentContainer;
 	import cadet.events.ValidationEvent;
+	import cadet.util.deg2rad;
 	
 	import cadet2D.components.transforms.Transform2D;
 	
@@ -113,9 +114,14 @@ package cadet2D.components.skins
 				validateTransform();
 			}
 			if (isInvalid(DISPLAY)) {
-				validateDisplay();
+				var displayValidated:Boolean = validateDisplay();
 			}
+			
 			super.validateNow();
+			
+			if (!displayValidated) {
+				invalidate( DISPLAY );
+			}
 		}
 		
 		protected function validateTransform():void
@@ -126,12 +132,15 @@ package cadet2D.components.skins
 			_displayObject.y = _transform2D.y;
 			_displayObject.scaleX = _transform2D.scaleX;
 			_displayObject.scaleY = _transform2D.scaleY;
-			_displayObject.rotation = _transform2D.rotation;
+			_displayObject.rotation = deg2rad(_transform2D.rotation);
 		}
 		
-		protected function validateDisplay():void
+		protected function validateDisplay():Boolean
 		{
+//			_displayObject.width = _width;
+//			_displayObject.height = _height;
 			
+			return true;
 		}
 		
 		[Serializable][Inspectable( priority="55" )]

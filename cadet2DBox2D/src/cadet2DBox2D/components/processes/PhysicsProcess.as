@@ -55,7 +55,7 @@ package cadet2DBox2D.components.processes
 		{
 			name = "PhysicsProcess";
 			
-			scaleFactor = 0.02;
+			scaleFactor = 0.01;
 			var bounds:b2AABB = new b2AABB();
 			bounds.lowerBound = new b2Vec2( -10000, -10000 );
 			bounds.upperBound = new b2Vec2( 10000, 10000 );

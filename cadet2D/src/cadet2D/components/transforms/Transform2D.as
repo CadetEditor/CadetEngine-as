@@ -15,6 +15,8 @@ package cadet2D.components.transforms
 	import flash.geom.Matrix;
 	
 	import cadet.core.Component;
+	import cadet.util.deg2rad;
+	import cadet.util.rad2deg;
 	
 	import core.events.PropertyChangeEvent;
 	
@@ -28,6 +30,8 @@ package cadet2D.components.transforms
 		protected var _y						:Number = 0;
 		protected var _scaleX					:Number = 1;
 		protected var _scaleY					:Number = 1;
+		// Rotation values are stored in degrees for ease of hand editing, then converted
+		// to radians when passed to Starling DisplayObject
 		protected var _rotation					:Number = 0;
 		
 		protected var _displayObject			:DisplayObject;
@@ -118,7 +122,7 @@ package cadet2D.components.transforms
 		}
 		public function get scaleY():Number { return _scaleY; }
 		
-		[Inspectable( priority="54" )]
+		[Inspectable( priority="54", editor="Slider", min="0", max="360", snapInterval="1" ) ]
 		public function set rotation( value:Number ):void
 		{
 			if ( isNaN(value) ) {
@@ -141,7 +145,7 @@ package cadet2D.components.transforms
 			_y = _displayObject.y;
 			_scaleX = _displayObject.scaleX;
 			_scaleY = _displayObject.scaleY;
-			_rotation = _displayObject.rotation;
+			_rotation = rad2deg(_displayObject.rotation);
 			
 			invalidate(TRANSFORM);
 			
@@ -190,7 +194,7 @@ package cadet2D.components.transforms
 			_displayObject.y = _y;
 			_displayObject.scaleX = _scaleX;
 			_displayObject.scaleY = _scaleY;
-			_displayObject.rotation = _rotation;
+			_displayObject.rotation = deg2rad(_rotation);
 		}
 	}
 }

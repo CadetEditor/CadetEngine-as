@@ -16,6 +16,7 @@ package cadet2D.components.textures
 	import cadet.core.Component;
 	import cadet.events.ValidationEvent;
 	
+	import starling.core.Starling;
 	import starling.textures.Texture;
 	
 	public class TextureComponent extends Component
@@ -49,18 +50,24 @@ package cadet2D.components.textures
 		override public function validateNow():void
 		{
 			if ( isInvalid( TEXTURE ) ) {
-				validateTexture();
+				var textureValidated:Boolean = validateTexture();
 			}
 			super.validateNow();
+			
+			if (!textureValidated) {
+				invalidate( TEXTURE );
+			}
 		}
 		
-		private function validateTexture():void
+		private function validateTexture():Boolean
 		{
-			if ( _bitmapData ) {
+			if ( _bitmapData && Starling.context ) {
 				_texture = Texture.fromBitmap( new Bitmap(_bitmapData), false );
 				var event:ValidationEvent = new ValidationEvent(ValidationEvent.VALIDATED, TEXTURE);
 				dispatchEvent(event);
+				return true;
 			}
+			return false;
 		}
 	}
 }

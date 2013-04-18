@@ -16,6 +16,7 @@
     <classEntry path="cadet2D.components.shaders.fragment.TextureFragmentShaderComponent"/>
     <classEntry path="cadet2D.components.skins.TransformableSkin"/>
     <classEntry path="cadet2D.components.materials.IMaterialComponent"/>
+    <classEntry path="cadet2D.util.DisplayUtil"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

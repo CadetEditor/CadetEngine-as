@@ -140,7 +140,6 @@ package cadet2D.components.materials
 		// So the material needs to be reconstructed on each frame.
 		public function get material():IMaterial
 		{
-			_material = new StandardMaterial();
 			validateValues();
 			validateTextures();
 			return _material;

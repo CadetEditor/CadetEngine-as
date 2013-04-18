@@ -31,7 +31,6 @@ package cadet2D.components.skins
 	import starling.core.Starling;
 	import starling.display.Graphics;
 	import starling.display.Shape;
-	import starling.display.materials.IMaterial;
 
 	public class GeometrySkin extends AbstractSkin2D implements IRenderable
 	{
@@ -94,67 +93,59 @@ package cadet2D.components.skins
 		
 		override public function validateNow():void
 		{
-			if ( isInvalid( DISPLAY ) )
-			{
-				validateDisplay();
-			}
+//			if ( isInvalid( DISPLAY ) ) {
+//				validateDisplay();
+//			}
 			
 			super.validateNow();
 			
 			// validateDisplay will have failed in this instance
-			if (!Starling.current) {
-				invalidate( DISPLAY );
-			}
+//			if (!Starling.current) {
+//				invalidate( DISPLAY );
+//			}
 		}
 		
-		override protected function validateDisplay():void
+		override protected function validateDisplay():Boolean
 		{
 			//starling.display.graphics.Graphic has a dependency on Starling.current,
 			//so don't attempt to render if not found
-			if (!Starling.current) return;
+			if (!Starling.current) return false;
 			
 			var graphics:Graphics = _shape.graphics;
 			graphics.clear();
 			
-			render( _geometry );
+			return render( _geometry );
 		}
 		
-		private function render( geometry:IGeometry ):void
+		private function render( geometry:IGeometry ):Boolean
 		{
-			if ( geometry is PolygonGeometry )
-			{
-				renderPolygon( PolygonGeometry( geometry ) );
-			}
-			else if ( geometry is CircleGeometry )
-			{
-				renderCircle( CircleGeometry( geometry ) );
-			}
-			else if ( geometry is BezierCurve )
-			{
-				renderBezier( BezierCurve( geometry ) );
-			}
-			else if ( geometry is CompoundGeometry )
-			{
+			if ( geometry is PolygonGeometry ) {
+				return renderPolygon( PolygonGeometry( geometry ) );
+			} else if ( geometry is CircleGeometry ) {
+				return renderCircle( CircleGeometry( geometry ) );
+			} else if ( geometry is BezierCurve ) {
+				return renderBezier( BezierCurve( geometry ) );
+			} else if ( geometry is CompoundGeometry ) {
 				var compoundGeometry:CompoundGeometry = CompoundGeometry(geometry);
-				for each ( var childGeometry:IGeometry in compoundGeometry.children )
-				{
-					render( childGeometry );
+				for each ( var childGeometry:IGeometry in compoundGeometry.children ) {
+					return render( childGeometry );
 				}
 			}
+			
+			return false;
 		}
 		
-		protected function renderPolygon( polygon:PolygonGeometry ):void
+		protected function renderPolygon( polygon:PolygonGeometry ):Boolean
 		{
 			var graphics:Graphics = _shape.graphics;
 			
 			var vertices:Array = polygon.vertices;
 			var firstVertex:Vertex = vertices[0];
-			if ( !firstVertex ) return;
+			if ( !firstVertex ) return false;
 			
 			setLineStyle();
 			
-			if ( _fillBitmap )
-			{
+			if ( _fillBitmap ) {
 				var m:Matrix = new Matrix();
 				//m.translate(_fillXOffset, _fillYOffset);
 				try {
@@ -162,42 +153,37 @@ package cadet2D.components.skins
 				} catch ( e:Error ) {
 					trace("Error: "+e.errorID+" "+e.message);
 				}
-			}
-			else if ( _fillAlpha > 0 )
-			{
+			} else if ( _fillAlpha > 0 ) {
 				graphics.beginFill( _fillColor, _fillAlpha );
 			}
 			graphics.moveTo( firstVertex.x, firstVertex.y );
-			for ( var i:int = 1; i < vertices.length; i++ )
-			{
+			for ( var i:int = 1; i < vertices.length; i++ ) {
 				var vertex:Vertex = vertices[i];
 				graphics.lineTo( vertex.x, vertex.y );
 			}
 			graphics.lineTo( firstVertex.x, firstVertex.y );
 			graphics.endFill();
 			
-			if ( !_drawVertices ) return;
+			if ( !_drawVertices ) return false;
 			graphics.beginFill(0xFF0000,1);
-			for each ( vertex in vertices )
-			{
+			for each ( vertex in vertices ) {
 				graphics.drawCircle(vertex.x, vertex.y, 2);
 			}
+			
+			return true;
 		}
 		
-		protected function renderCircle( circle:CircleGeometry ):void
+		protected function renderCircle( circle:CircleGeometry ):Boolean
 		{
 			var graphics:Graphics = _shape.graphics;
 			
 			setLineStyle();
 			
-			if ( _fillBitmap )
-			{
+			if ( _fillBitmap ) {
 				var m:Matrix = new Matrix();
 				//m.translate(_fillXOffset, _fillYOffset);
 				graphics.beginBitmapFill(_fillBitmap, m);
-			}
-			else if ( _fillAlpha > 0 )
-			{
+			} else if ( _fillAlpha > 0 ) {
 				graphics.beginFill( _fillColor, _fillAlpha );
 			}
 			graphics.drawCircle( circle.x, circle.y, circle.radius );
@@ -205,26 +191,29 @@ package cadet2D.components.skins
 			
 			graphics.moveTo(circle.x, circle.y);
 			graphics.lineTo(circle.x+circle.radius, circle.y);
+			
+			return true;
 		}
 		
-		protected function renderBezier( bezierCurve:BezierCurve ):void
+		protected function renderBezier( bezierCurve:BezierCurve ):Boolean
 		{
 			var graphics:Graphics = _shape.graphics;
 			
-			if ( !setLineStyle() ) return;
+			if ( !setLineStyle() ) return false;
 			
 			//QuadraticBezierUtil.draw(graphics, bezierCurve.segments);
 
-			if (bezierCurve.segments.length == 0) return;
+			if (bezierCurve.segments.length == 0) return false;
 			
 			var segment:QuadraticBezier = bezierCurve.segments[0];
 			graphics.moveTo(segment.startX, segment.startY);
 			
-			for ( var i:int = 0; i < bezierCurve.segments.length; i++ )
-			{
+			for ( var i:int = 0; i < bezierCurve.segments.length; i++ ) {
 				segment = bezierCurve.segments[i];
 				graphics.curveTo(segment.controlX, segment.controlY, segment.endX, segment.endY);
 			}
+			
+			return true;
 		}
 		
 		private function setLineStyle():Boolean

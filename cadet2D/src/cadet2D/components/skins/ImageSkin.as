@@ -91,18 +91,23 @@ package cadet2D.components.skins
 				invalidate(TEXTURE);
 			}
 			
-			if ( isInvalid(TEXTURE) )
-			{
+			if ( isInvalid(TEXTURE) ) {
 				validateTexture();
 			}
 			
 			super.validateNow();
 		}
 		
-		override protected function validateDisplay():void
+		override protected function validateDisplay():Boolean
 		{
-			_displayObject.width = _width;
-			_displayObject.height = _height;
+			if ( _quad && (_quad.width != _width || _quad.height != _height) ) {
+				_quad.width = _width;
+				_quad.height = _height;
+				
+				return true;
+			}
+			
+			return false;
 		}
 		
 		protected function getTextures():Vector.<Texture>
@@ -165,9 +170,9 @@ package cadet2D.components.skins
 			if (displayObjectContainer) {
 				displayObjectContainer.addChild(_quad);
 				// set default width and height
-				//if (!_width) 	
+				if (!_width) 	
 				_width = _quad.width;
-				//if (!_height) 	
+				if (!_height) 	
 				_height = _quad.height;				
 			}
 			

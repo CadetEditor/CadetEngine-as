@@ -1,0 +1,12 @@
+<manifest prefix="cadet" url="www.unwrong.com/cadet/1.0.0">
+	
+	<!-- Core -->
+	<classMap name="CadetScene" class="cadet.core.CadetScene" />
+	<classMap name="Component" class="cadet.core.Component" />
+	<classMap name="ComponentContainer" class="cadet.core.ComponentContainer" />
+	
+	<!-- Processes -->
+	<classMap name="KeyboardInputMapping" class="cadet.components.processes.KeyboardInputMapping" />
+	<classMap name="TouchInputMapping" class="cadet.components.processes.TouchInputMapping" />
+	
+</manifest>
