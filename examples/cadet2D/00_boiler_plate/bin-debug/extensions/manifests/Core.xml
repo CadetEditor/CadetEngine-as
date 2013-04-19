@@ -1,0 +1,10 @@
+<manifest prefix="core" url="www.unwrong.com/core/1.0.0">
+	
+	<!-- Managers -->
+	<classMap name="DependencyManager" class="core.app.managers.DependencyManager" />
+	<classMap name="DependencyNode" class="core.app.managers.DependencyNode" />
+	
+	<!-- Entities -->
+	<classMap name="ArrayCollection" class="core.data.ArrayCollection" />
+	
+</manifest>

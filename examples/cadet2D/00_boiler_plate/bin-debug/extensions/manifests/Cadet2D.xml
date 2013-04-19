@@ -1,0 +1,62 @@
+<manifest prefix="cadet2D" url="www.unwrong.com/cadet2D/1.0.0">
+
+	<!-- Core -->
+	<classMap name="Renderer2D" class="cadet2D.components.renderers.Renderer2D" />
+	<classMap name="Entity" class="cadet2D.components.core.Entity"/>
+
+	<!-- Core Processes -->
+	<classMap name="InputProcess2D" class="cadet2D.components.processes.InputProcess2D" />
+	<classMap name="WorldBounds2D" class="cadet2D.components.processes.WorldBounds2D" />
+
+  	<!-- Core Skins -->
+
+	<classMap name="ImageSkin" class="cadet2D.components.skins.ImageSkin"/>
+	<classMap name="MovieClipSkin" class="cadet2D.components.skins.MovieClipSkin"/>
+
+  	<!-- Processes -->
+	<classMap name="CollisionDetectionProcess" class="cadet2D.components.processes.CollisionDetectionProcess" />
+	<classMap name="FootprintManagerProcess" class="cadet2D.components.processes.FootprintManagerProcess" />
+	<classMap name="TrackCamera2DProcess" class="cadet2D.components.processes.TrackCamera2DProcess" />
+
+	<!-- Behaviours -->
+	<classMap name="BezierCurveFootprintBehaviour" class="cadet2D.components.behaviours.BezierCurveFootprintBehaviour"/>
+	<classMap name="GeometryFootprintBehaviour" class="cadet2D.components.behaviours.GeometryFootprintBehaviour"/>
+
+	<!-- Connections -->
+	<classMap name="Connection" class="cadet2D.components.connections.Connection"/>
+	<classMap name="Pin" class="cadet2D.components.connections.Pin"/>
+  
+	 <!-- Geom -->
+	<classMap name="BezierCurve" class="cadet2D.components.geom.BezierCurve" />
+	<classMap name="BoundingSphere" class="cadet2D.components.geom.BoundingSphere" />
+	<classMap name="CircleGeometry" class="cadet2D.components.geom.CircleGeometry" />
+	<classMap name="CompoundGeometry" class="cadet2D.components.geom.CompoundGeometry" />
+	<classMap name="CollisionShape" class="cadet2D.components.geom.CollisionShape"/>
+	<classMap name="PolygonGeometry" class="cadet2D.components.geom.PolygonGeometry"/>
+	
+	<classMap name="RectangleGeometry" class="cadet2D.components.geom.RectangleGeometry"/>
+	<classMap name="TerrainGeometry" class="cadet2D.components.geom.TerrainGeometry"/>
+	<classMap name="TriangleGeometry" class="cadet2D.components.geom.TriangleGeometry"/>
+	
+	<!-- Geom Skins -->
+	<classMap name="ConnectionSkin" class="cadet2D.components.skins.ConnectionSkin"/>
+	<!--<classMap name="FootprintManagerDebugSkin" class="cadet2D.components.skins.FootprintManagerDebugSkin"/>
+	<classMap name="FractalPolygonSkin" class="cadet2D.components.skins.FractalPolygonSkin"/>
+	<classMap name="GeometryDebugSkin" class="cadet2D.components.skins.GeometryDebugSkin"/>-->
+	<classMap name="GeometrySkin" class="cadet2D.components.skins.GeometrySkin"/>
+	<classMap name="PinSkin" class="cadet2D.components.skins.PinSkin"/>
+	<!--<classMap name="ScrollingBackgroundSkin" class="cadet2D.components.skins.ScrollingBackgroundSkin"/>-->
+	<classMap name="SpringSkin" class="cadet2D.components.skins.SpringSkin"/>
+	<classMap name="TerrainSkin" class="cadet2D.components.skins.TerrainSkin"/>
+	<!--<classMap name="WorldBoundsDebugSkin" class="cadet2D.components.skins.WorldBoundsDebugSkin"/>-->
+	
+	<!-- Transforms -->
+	<classMap name="Transform2D" class="cadet2D.components.transforms.Transform2D"/>
+	
+	<!--  Non-component geoms -->
+	<classMap name="QuadraticBezier" class="cadet2D.geom.QuadraticBezier"/>
+	<classMap name="CubicBezier" class="cadet2D.geom.CubicBezier"/>
+	<classMap name="Vertex" class="cadet2D.geom.Vertex"/>
+	<classMap name="VertexList" class="cadet2D.geom.VertexList"/>
+  
+</manifest>
