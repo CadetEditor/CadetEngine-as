@@ -1,3 +1,10 @@
+/*
+An example demonstrating an effect achievable with an animated UV vertex shader.
+
+Assets used in the Starling-Graphics-Extension with kind permission of Tomislav Podhraski. Original tutorial here
+http://gamedev.tutsplus.com/tutorials/implementation/create-a-glowing-flowing-lava-river-using-bezier-curves-and-shaders/
+*/
+
 package
 {
 	import flash.display.Sprite;
