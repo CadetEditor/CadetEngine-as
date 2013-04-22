@@ -5,7 +5,6 @@ package components.behaviours
 	import cadet.core.Component;
 	import cadet.core.ISteppableComponent;
 	
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.geom.Vector3D;
 

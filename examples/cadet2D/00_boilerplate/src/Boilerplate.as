@@ -11,12 +11,12 @@ package
 	import model.SceneModel_XML;
 	
 	[SWF( width="800", height="600", backgroundColor="0x002135", frameRate="60" )]
-	public class BoilerPlate extends Sprite
+	public class Boilerplate extends Sprite
 	{
 		private var _sceneModel			:ISceneModel;
 		private var _cadetFileURL		:String = "/scene.cdt2d";	
 		
-		public function BoilerPlate()
+		public function Boilerplate()
 		{
 			// Required when loading data and assets.
 			var startUpOperation:Cadet2DStartUpOperation = new Cadet2DStartUpOperation(_cadetFileURL);
