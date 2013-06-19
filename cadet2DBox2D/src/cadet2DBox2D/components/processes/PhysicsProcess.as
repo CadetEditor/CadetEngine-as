@@ -75,7 +75,7 @@ package cadet2DBox2D.components.processes
 		{
 			var rigidBody:b2Body = _box2D.CreateBody(def);
 			behaviourTable[rigidBody] = behaviour;
-			return rigidBody
+			return rigidBody;
 		}
 		
 		public function destroyRigidBody( behaviour:RigidBodyBehaviour, rigidBody:b2Body ):void
