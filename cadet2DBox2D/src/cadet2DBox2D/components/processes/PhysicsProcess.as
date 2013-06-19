@@ -46,15 +46,15 @@ package cadet2DBox2D.components.processes
 		private var jointTable				:Dictionary;
 		
 		
-		public function PhysicsProcess()
+		public function PhysicsProcess(name:String="PhysicsProcess")
 		{
+			super(name);
+			
 			init();
 		}
 		
 		private function init():void
 		{
-			name = "PhysicsProcess";
-			
 			scaleFactor = 0.01;
 			var bounds:b2AABB = new b2AABB();
 			bounds.lowerBound = new b2Vec2( -10000, -10000 );
@@ -73,7 +73,7 @@ package cadet2DBox2D.components.processes
 		{
 			var rigidBody:b2Body = _box2D.CreateBody(def);
 			behaviourTable[rigidBody] = behaviour;
-			return rigidBody
+			return rigidBody;
 		}
 		
 		public function destroyRigidBody( behaviour:RigidBodyBehaviour, rigidBody:b2Body ):void
