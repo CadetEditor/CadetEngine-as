@@ -44,8 +44,8 @@ package
 				addRectangleEntity( x, y, width, height );
 			}
 			
-			var rotatingRectangle:Entity = addRectangleEntity( 0, 0, 60, 60 );
-			rotatingRectangle.children.addItem( new ApplyTorqueBehaviour(50,2) );
+			var rotatingRectangle:Entity = addRectangleEntity( 0, -100, 60, 60 );
+			rotatingRectangle.children.addItem( new ApplyTorqueBehaviour(10,2) );
 			
 			// Create the floor. We pass 'true' as the 'fixed' property to make the floor static.
 			addRectangleEntity( -200, stage.stageHeight-50, stage.stageWidth+200, 50, true );

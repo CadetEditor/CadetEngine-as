@@ -110,11 +110,13 @@ package cadet2D.components.skins
 		
 		override public function validateNow():void
 		{
+			var displayValidated:Boolean = true;
+			
 			if (isInvalid(TRANSFORM)) {
 				validateTransform();
 			}
 			if (isInvalid(DISPLAY)) {
-				var displayValidated:Boolean = validateDisplay();
+				displayValidated = validateDisplay();
 			}
 			
 			super.validateNow();

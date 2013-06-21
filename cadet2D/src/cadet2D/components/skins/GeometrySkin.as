@@ -34,22 +34,20 @@ package cadet2D.components.skins
 
 	public class GeometrySkin extends AbstractSkin2D implements IRenderable
 	{
-		private var _lineThickness		:Number;
-		private var _lineColor			:uint;
-		private var _lineAlpha			:Number;
-		private var _fillColor			:uint;
-		private var _fillAlpha			:Number;
-		private var _fillBitmap			:BitmapData;
-		private var _lineMaterial		:IMaterialComponent;
-		private var _lineTexture		:TextureComponent;
-//		private var _fillXOffset		:Number = 0;
-//		private var _fillYOffset		:Number = 0;
-		private var _drawVertices		:Boolean = false;
+		private var _lineThickness			:Number;
+		private var _lineColor				:uint;
+		private var _lineAlpha				:Number;
+		private var _fillColor				:uint;
+		private var _fillAlpha				:Number;
+		private var _fillBitmap				:BitmapData;
+		private var _lineMaterial			:IMaterialComponent;
+		private var _lineTexture			:TextureComponent;
+		private var _drawVertices			:Boolean = false;
 		
-		private var _geometry	:IGeometry;
+		private var _geometry				:IGeometry;
 		
-		private var _shape		:Shape;
-		
+		private var _shape					:Shape;
+
 		public function GeometrySkin( lineThickness:Number = 1, lineColor:uint = 0xFFFFFF, lineAlpha:Number = 0.7, fillColor:uint = 0xFFFFFF, fillAlpha:Number = 0.04 )
 		{
 			name = "GeometrySkin";
@@ -85,36 +83,31 @@ package cadet2D.components.skins
 			invalidate(DISPLAY);
 		}
 		public function get geometry():IGeometry { return _geometry; }
-				
+		
+/*		override public function invalidate( invalidationType:String ):void
+		{
+			//trace(invalidationType);
+			if ( invalidationType == DISPLAY ) {
+				trace("I Disp");
+			}
+			super.invalidate( invalidationType );
+		}*/
+		
 		private function invalidateGeometryHandler( event:ValidationEvent ):void
 		{
 			invalidate(DISPLAY);
 		}
 		
-		override public function validateNow():void
-		{
-//			if ( isInvalid( DISPLAY ) ) {
-//				validateDisplay();
-//			}
-			
-			super.validateNow();
-			
-			// validateDisplay will have failed in this instance
-//			if (!Starling.current) {
-//				invalidate( DISPLAY );
-//			}
-		}
-		
 		override protected function validateDisplay():Boolean
 		{
-			//starling.display.graphics.Graphic has a dependency on Starling.current,
-			//so don't attempt to render if not found
+			super.validateDisplay();
+			
 			if (!Starling.current) return false;
 			
 			var graphics:Graphics = _shape.graphics;
 			graphics.clear();
 			
-			return render( _geometry );
+			return render( _geometry );		
 		}
 		
 		private function render( geometry:IGeometry ):Boolean
@@ -141,7 +134,9 @@ package cadet2D.components.skins
 			
 			var vertices:Array = polygon.vertices;
 			var firstVertex:Vertex = vertices[0];
-			if ( !firstVertex ) return false;
+			if ( !firstVertex ) {
+				return false;
+			}
 			
 			setLineStyle();
 			
@@ -164,7 +159,10 @@ package cadet2D.components.skins
 			graphics.lineTo( firstVertex.x, firstVertex.y );
 			graphics.endFill();
 			
-			if ( !_drawVertices ) return false;
+			// Don't have to draw vertices. If you got this far, return true.
+			if ( !_drawVertices ) {
+				return true;
+			}
 			graphics.beginFill(0xFF0000,1);
 			for each ( vertex in vertices ) {
 				graphics.drawCircle(vertex.x, vertex.y, 2);
@@ -199,11 +197,15 @@ package cadet2D.components.skins
 		{
 			var graphics:Graphics = _shape.graphics;
 			
-			if ( !setLineStyle() ) return false;
+			if ( !setLineStyle() ) {
+				return false;
+			}
 			
 			//QuadraticBezierUtil.draw(graphics, bezierCurve.segments);
 
-			if (bezierCurve.segments.length == 0) return false;
+			if (bezierCurve.segments.length == 0) {
+				return false;
+			}
 			
 			var segment:QuadraticBezier = bezierCurve.segments[0];
 			graphics.moveTo(segment.startX, segment.startY);
