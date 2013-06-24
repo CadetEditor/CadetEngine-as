@@ -8,6 +8,8 @@
 //
 // =================================================================================================
 
+// Inspectable Priority range 100-149
+
 package cadet2D.components.connections
 {
 	import cadet2D.components.transforms.Transform2D;
@@ -29,7 +31,7 @@ package cadet2D.components.connections
 			name = "Connection";
 		}
 		
-		[Serializable]
+		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="100" )]
 		public function set transformA( value:Transform2D ):void
 		{
 			if ( _transformA )
@@ -47,7 +49,7 @@ package cadet2D.components.connections
 		}
 		public function get transformA():Transform2D { return _transformA; }
 		
-		[Serializable]
+		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="101" )]
 		public function set transformB( value:Transform2D ):void
 		{
 			if ( _transformB )

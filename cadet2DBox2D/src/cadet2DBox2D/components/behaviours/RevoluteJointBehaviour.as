@@ -10,18 +10,20 @@
 
 package cadet2DBox2D.components.behaviours
 {
+	import flash.geom.Point;
+	
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.Joints.b2RevoluteJoint;
 	import Box2D.Dynamics.Joints.b2RevoluteJointDef;
 	
-	import flash.geom.Point;
-	
 	import cadet.core.Component;
 	import cadet.events.ComponentEvent;
 	import cadet.events.ValidationEvent;
-	import cadet2D.components.connections.Pin;
-	import cadet2DBox2D.components.processes.PhysicsProcess;
 	import cadet.util.ComponentUtil;
+	
+	import cadet2D.components.connections.Pin;
+	
+	import cadet2DBox2D.components.processes.PhysicsProcess;
 
 	public class RevoluteJointBehaviour extends Component
 	{
@@ -31,13 +33,13 @@ package cadet2DBox2D.components.behaviours
 				
 		private static const DEG_TO_RAD		:Number = Math.PI / 180;
 				
-		protected var _pin				:cadet2D.components.connections.Pin;
+		protected var _pin				:Pin;
 		protected var _physicsProcess	:PhysicsProcess;
 		
 		protected var joint				:b2RevoluteJoint;
 		
-		protected var physicsBehaviourA	:RigidBodyBehaviour
-		protected var physicsBehaviourB	:RigidBodyBehaviour
+		protected var physicsBehaviourA	:RigidBodyBehaviour;
+		protected var physicsBehaviourB	:RigidBodyBehaviour;
 		
 		[Serializable][Inspectable]
 		public var collideConnected		:Boolean = false;
@@ -49,9 +51,9 @@ package cadet2DBox2D.components.behaviours
 		private var _maxMotorTorque		:Number = 1;
 		private var _motorSpeed			:Number = 1;
 				
-		public function RevoluteJointBehaviour()
+		public function RevoluteJointBehaviour( name = "RevoluteJointBehaviour" )
 		{
-			name = "RevoluteJointBehaviour";
+			super(name);
 		}
 		
 		override protected function addedToScene():void
@@ -219,6 +221,7 @@ package cadet2DBox2D.components.behaviours
 			jointDef.motorSpeed = _motorSpeed;
 			
 			var pt:Point = _pin.transformA.matrix.transformPoint( _pin.localPos.toPoint() );
+			//var pt:Point = new Point(_pin.transform.x, _pin.transform.y); //TODO: Could this work re tranforms?
 			var pos:b2Vec2 = new b2Vec2( pt.x * _physicsProcess.scaleFactor, pt.y * _physicsProcess.scaleFactor );
 			
 			jointDef.Initialize( physicsBehaviourA.getBody(), physicsBehaviourB.getBody(), pos );

@@ -123,7 +123,9 @@ package cadet2D.components.renderers
 		// When we know this isn't the only Starling instance and we want to render into a specific starling.display.DisplayObjectContainer
 		public function enableToExisting(parent:DisplayObjectContainer):void
 		{
+			star = Starling.current;
 			_parent = parent;
+			_nativeStage = star.nativeStage;
 			
 			if (_enabled) return;
 			
@@ -132,7 +134,6 @@ package cadet2D.components.renderers
 			_viewportWidth = _parent.stage.stageWidth;
 			_viewportHeight = _parent.stage.stageHeight;
 			
-			star = Starling.current;
 			AsynchronousUtil.callLater(init);
 			
 			invalidate( RendererInvalidationTypes.VIEWPORT );

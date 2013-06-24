@@ -10,14 +10,16 @@
 
 package cadet2D.components.skins
 {
+	import flash.geom.Point;
+	
 	import cadet.events.ValidationEvent;
 	
 	import cadet2D.components.connections.Pin;
 	import cadet2D.components.renderers.IRenderer2D;
 	import cadet2D.components.renderers.Renderer2D;
+	import cadet2D.components.transforms.Transform2D;
 	
-	import flash.geom.Point;
-	
+	import starling.core.Starling;
 	import starling.display.Graphics;
 	import starling.display.Shape;
 	
@@ -32,6 +34,7 @@ package cadet2D.components.skins
 		
 		private var _pin				:Pin;
 		private var _renderer			:Renderer2D;
+		//private var _transform			:Transform2D;
 		
 		private var _shape				:Shape;
 		
@@ -49,17 +52,18 @@ package cadet2D.components.skins
 		override protected function addedToScene():void
 		{
 			super.addedToScene();
+			//addSiblingReference(Transform2D, "transform");
 			addSiblingReference(Pin, "pin");
 			addSceneReference( IRenderer2D, "renderer" );
 		}
-		
+				
 		public function set renderer( value:IRenderer2D ):void
 		{
 			_renderer = Renderer2D(value);
 			invalidate(DISPLAY);
 		}
 		public function get renderer():IRenderer2D { return _renderer; }
-		
+
 		public function set pin( value:Pin ):void
 		{
 			if ( _pin )
@@ -82,6 +86,28 @@ package cadet2D.components.skins
 			invalidate(DISPLAY);
 		}
 		
+/*		public function set transform( value:Transform2D ):void
+		{
+			if ( _transform )
+			{
+				_transform.removeEventListener(ValidationEvent.INVALIDATE, invalidateTransformHandler);
+			}
+			_transform = value;
+			
+			if ( _transform )
+			{
+				_transform.addEventListener(ValidationEvent.INVALIDATE, invalidateTransformHandler);
+			}
+			
+			invalidate(DISPLAY);
+		}
+		public function get transform():Transform2D { return _transform; }
+		
+		private function invalidateTransformHandler( event:ValidationEvent ):void
+		{
+			invalidate(DISPLAY);
+		} */
+		
 		override public function validateNow():void
 		{
 			if ( isInvalid( DISPLAY ) )
@@ -98,6 +124,9 @@ package cadet2D.components.skins
 			if ( !_renderer || !_renderer.viewport) return;
 			if ( !_pin.transformA ) return;
 			
+//			if (!Starling.current) return;
+//			if (!_transform) return;
+			
 			var graphics:Graphics = _shape.graphics;
 			graphics.clear();
 			graphics.beginFill( _fillColor, _fillAlpha );
@@ -106,6 +135,8 @@ package cadet2D.components.skins
 			pt = _renderer.worldToViewport(pt);
 			pt = Renderer2D(_renderer).viewport.localToGlobal(pt);
 			pt = _shape.globalToLocal(pt);
+			
+//			var pt:Point = new Point(0,0);
 												
 			graphics.drawCircle( pt.x, pt.y, radius );
 		}

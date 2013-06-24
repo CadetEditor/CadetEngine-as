@@ -7,5 +7,4 @@
 	<!-- Entities -->
 	<classMap name="ArrayCollection" class="core.data.ArrayCollection" />
 	
-	
 </manifest>

@@ -14,7 +14,7 @@ package
 	{
 		private var cadetScene:CadetScene;
 		
-		private var cadetFileURL:String = "/motorbike.cdt2d";
+		private var cadetFileURL:String = "/motorbike2.cdt2d";
 		
 		public function Motorbike()
 		{
