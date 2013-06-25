@@ -22,17 +22,17 @@ package cadet2D.components.connections
 	{
 		private static const TRANSFORM	:String = "transform";
 		
-		//private var _transform		:Transform2D;
+		private var _transform		:Transform2D; // The transform sibling of the Pin component
 		private var _transformA		:Transform2D;
 		private var _transformB		:Transform2D;
 		private var _localPos		:Vertex;
 		
-		public function Pin(name:String = "Pin")
-		{
-			super(name);
+		public function Pin()
+		{			
+			super("Pin");
 		}
 		
-/*		override protected function addedToScene():void
+		override protected function addedToScene():void
 		{
 			addSiblingReference(Transform2D, "transform");
 		}
@@ -50,7 +50,7 @@ package cadet2D.components.connections
 			}
 			invalidate(TRANSFORM);
 		}
-		public function get transform():Transform2D { return _transform; }*/
+		public function get transform():Transform2D { return _transform; }
 		
 		
 		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="100" )]
@@ -89,6 +89,7 @@ package cadet2D.components.connections
 		public function set localPos( value:Vertex ):void
 		{
 			_localPos = value;
+			
 			invalidate( TRANSFORM );
 		}
 		public function get localPos():Vertex { return _localPos; }
@@ -96,6 +97,20 @@ package cadet2D.components.connections
 		protected function invalidateTransformHandler( event:ValidationEvent ):void
 		{
 			invalidate(TRANSFORM);
+		}
+		
+		override public function validateNow():void
+		{
+			if ( isInvalid( TRANSFORM ) ) {
+				validateTransform();
+			}
+			
+			super.validateNow();
+		}
+		
+		private function validateTransform():void
+		{
+			
 		}
 		
 		public function get label():String { return "Connection"; }

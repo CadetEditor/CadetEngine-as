@@ -220,8 +220,8 @@ package cadet2DBox2D.components.behaviours
 			jointDef.maxMotorTorque = _maxMotorTorque;
 			jointDef.motorSpeed = _motorSpeed;
 			
-			var pt:Point = _pin.transformA.matrix.transformPoint( _pin.localPos.toPoint() );
-			//var pt:Point = new Point(_pin.transform.x, _pin.transform.y); //TODO: Could this work re tranforms?
+			var pt:Point = _pin.localPos.toPoint(); // needs to be local to the shape not world coords
+			pt = _pin.transformA.matrix.transformPoint( pt ); //presumes transform = (0,0)
 			var pos:b2Vec2 = new b2Vec2( pt.x * _physicsProcess.scaleFactor, pt.y * _physicsProcess.scaleFactor );
 			
 			jointDef.Initialize( physicsBehaviourA.getBody(), physicsBehaviourB.getBody(), pos );

@@ -8,6 +8,8 @@
 //
 // =================================================================================================
 
+// Inspectable Priority range 100-149
+
 package cadet2D.components.skins
 {
 	import cadet.events.ValidationEvent;
@@ -137,7 +139,7 @@ package cadet2D.components.skins
 		
 		// Getters / Setters ////////////////////////////////////////////////////////////////////////////
 		
-		[Serializable][Inspectable]
+		[Serializable][Inspectable( label="Line thickness", priority="100" )]
 		public function set lineThickness( value:Number ):void
 		{
 			_lineThickness = value;
@@ -145,7 +147,7 @@ package cadet2D.components.skins
 		}
 		public function get lineThickness():Number { return _lineThickness; }
 		
-		[Serializable][Inspectable]
+		[Serializable][Inspectable( label="Line color", priority="101", editor="ColorPicker"  )]
 		public function set lineColor( value:uint ):void
 		{
 			_lineColor = value;
@@ -154,7 +156,7 @@ package cadet2D.components.skins
 		public function get lineColor():uint { return _lineColor; }
 		
 		
-		[Serializable][Inspectable]
+		[Serializable][Inspectable( label="Line alpha", priority="102", editor="Slider", min="0", max="1" )]
 		public function set lineAlpha( value:Number ):void
 		{
 			_lineAlpha = value;

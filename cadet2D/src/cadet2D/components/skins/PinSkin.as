@@ -34,7 +34,6 @@ package cadet2D.components.skins
 		
 		private var _pin				:Pin;
 		private var _renderer			:Renderer2D;
-		//private var _transform			:Transform2D;
 		
 		private var _shape				:Shape;
 		
@@ -52,7 +51,7 @@ package cadet2D.components.skins
 		override protected function addedToScene():void
 		{
 			super.addedToScene();
-			//addSiblingReference(Transform2D, "transform");
+			
 			addSiblingReference(Pin, "pin");
 			addSceneReference( IRenderer2D, "renderer" );
 		}
@@ -66,14 +65,12 @@ package cadet2D.components.skins
 
 		public function set pin( value:Pin ):void
 		{
-			if ( _pin )
-			{
+			if ( _pin ) {
 				_pin.removeEventListener(ValidationEvent.INVALIDATE, invalidatePinHandler);
 			}
 			_pin = value;
 			
-			if ( _pin )
-			{
+			if ( _pin ) {
 				_pin.addEventListener(ValidationEvent.INVALIDATE, invalidatePinHandler);
 			}
 			
@@ -86,32 +83,9 @@ package cadet2D.components.skins
 			invalidate(DISPLAY);
 		}
 		
-/*		public function set transform( value:Transform2D ):void
-		{
-			if ( _transform )
-			{
-				_transform.removeEventListener(ValidationEvent.INVALIDATE, invalidateTransformHandler);
-			}
-			_transform = value;
-			
-			if ( _transform )
-			{
-				_transform.addEventListener(ValidationEvent.INVALIDATE, invalidateTransformHandler);
-			}
-			
-			invalidate(DISPLAY);
-		}
-		public function get transform():Transform2D { return _transform; }
-		
-		private function invalidateTransformHandler( event:ValidationEvent ):void
-		{
-			invalidate(DISPLAY);
-		} */
-		
 		override public function validateNow():void
 		{
-			if ( isInvalid( DISPLAY ) )
-			{
+			if ( isInvalid( DISPLAY ) ) {
 				validateDisplay();
 			}
 			
@@ -131,7 +105,10 @@ package cadet2D.components.skins
 			graphics.clear();
 			graphics.beginFill( _fillColor, _fillAlpha );
 			
-			var pt:Point = _pin.transformA.matrix.transformPoint( _pin.localPos.toPoint() );
+			var pt:Point = _pin.localPos.toPoint();
+			pt = _pin.transformA.matrix.transformPoint( pt ); // presumes the transform = (0,0)
+			
+			// Translate world coords to viewport coords
 			pt = _renderer.worldToViewport(pt);
 			pt = Renderer2D(_renderer).viewport.localToGlobal(pt);
 			pt = _shape.globalToLocal(pt);
