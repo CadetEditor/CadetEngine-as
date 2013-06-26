@@ -39,7 +39,7 @@ Cadet2DBox2D augments Cadet2D with a suite of physics behaviours and processes p
 Cadet3D
 -------
 
-Dependencies: [Cadet (core)](https://github.com/CadetEditor/CadetEngine-as/tree/master/cadet), [CoreApp](https://github.com/CadetEditor/CoreApp-as), [Away3D](https://github.com/away3d/away3d-core-fp11)
+Dependencies: [Cadet (core)](https://github.com/CadetEditor/CadetEngine-as/tree/master/cadet), [CoreApp](https://github.com/CadetEditor/CoreApp-as), [Away3D](https://github.com/CadetEditor/away3d-core-fp11)
 
 Cadet3D augments Cadet with 3D Rendering capability (via Away3D) and various 3D-specific geometries, materials, lights, cameras, textures, etc. 
 

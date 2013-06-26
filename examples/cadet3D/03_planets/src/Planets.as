@@ -6,7 +6,6 @@ package
 	import cadet.core.CadetScene;
 	import cadet.util.ComponentUtil;
 	
-	import cadet3D.components.primitives.SkyBoxComponent;
 	import cadet3D.components.renderers.Renderer3D;
 	import cadet3D.operations.Cadet3DStartUpOperation;
 
@@ -38,10 +37,6 @@ package
 			
 			var renderer:Renderer3D = ComponentUtil.getChildOfType(cadetScene, Renderer3D);
 			renderer.enable(this);
-			
-			var skyBoxComponent:SkyBoxComponent
-			
-			cadetScene.validateNow();
 			
 			addEventListener( Event.ENTER_FRAME, enterFrameHandler );
 		}

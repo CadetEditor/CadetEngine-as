@@ -11,16 +11,14 @@
 package cadet3D.components.textures
 {
 	import away3d.textures.BitmapTexture;
-	import away3d.tools.utils.TextureUtils;
 	
-	import cadet.core.Component;
 	import cadet.util.BitmapDataUtil;
 	
 	import cadet.util.NullBitmap;
 	
 	import flash.display.BitmapData;
 	import flash.display.BitmapDataChannel;
-	import flash.geom.Matrix;
+	
 	import flash.geom.Point;
 	
 	public class BitmapTextureComponent extends AbstractTexture2DComponent

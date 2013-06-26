@@ -234,11 +234,10 @@ package cadet2DBox2D.components.behaviours
 			var bodyDef:b2BodyDef = new b2BodyDef();
 			bodyDef.position.x = _transform.x * _physicsProcess.scaleFactor;
 			bodyDef.position.y = _transform.y * _physicsProcess.scaleFactor;
-			bodyDef.angle = _transform.rotation * 0.0174;
+			bodyDef.angle = _transform.rotation * (Math.PI / 180);
 			
 			storedScaleX = _transform.scaleX;
 			storedScaleY = _transform.scaleY;
-			
 			
 			body = _physicsProcess.createRigidBody(this, bodyDef);
 			buildShape( _geometry, body );
@@ -257,8 +256,7 @@ package cadet2DBox2D.components.behaviours
 			filterData.maskBits = _maskBits;
 			
 			var shape:b2Shape = body.GetShapeList();
-			while ( shape )
-			{
+			while ( shape ) {
 				shape.SetFilterData(filterData);
 				shape.SetRestitution(_restitution);
 				shape.SetFriction(_friction);
@@ -268,8 +266,7 @@ package cadet2DBox2D.components.behaviours
 		
 		protected function destroyBody():void
 		{
-			if ( body )
-			{
+			if ( body ) {
 				/// First, let any listening components know that the rigid body is about to be destroyed.
 				// This is so joints and other behaviours that depend on the rigid body can destroy their resources first.
 				dispatchEvent( new RigidBodyBehaviourEvent( RigidBodyBehaviourEvent.DESTROY_RIGID_BODY ) );
@@ -335,18 +332,13 @@ package cadet2DBox2D.components.behaviours
 					allVertices = VertexUtil.makeConvex(vertices);
 				}
 				
-				
-				
-				
-				for each ( vertices in allVertices )
-				{
+				for each ( vertices in allVertices ) {
 					var polygonShapeDef:b2PolygonDef = new b2PolygonDef();
 					polygonShapeDef.density = fixed ? 0 : density;
 					polygonShapeDef.friction = friction;
 					polygonShapeDef.restitution = restitution;
 					
-					for ( var i:int = 0; i < vertices.length; i++ )
-					{
+					for ( var i:int = 0; i < vertices.length; i++ ) {
 						var vertex:Vertex = vertices[i];
 						polygonShapeDef.vertices[i] = new b2Vec2( vertex.x * _physicsProcess.scaleFactor, vertex.y * _physicsProcess.scaleFactor );
 						polygonShapeDef.vertexCount++;
@@ -354,12 +346,9 @@ package cadet2DBox2D.components.behaviours
 					body.CreateShape( polygonShapeDef );
 				}
 				
-			}
-			else if ( geometry is CompoundGeometry )
-			{
+			} else if ( geometry is CompoundGeometry ) {
 				var compoundGeometry:CompoundGeometry = CompoundGeometry( geometry );
-				for each ( var childData:IGeometry in compoundGeometry.children )
-				{
+				for each ( var childData:IGeometry in compoundGeometry.children ) {
 					buildShape( childData, body );
 				}
 			}
@@ -377,12 +366,9 @@ package cadet2DBox2D.components.behaviours
 		public function set friction( value:Number ):void
 		{
 			_friction = value;
-			if ( body )
-			{
+			if ( body ) {
 				invalidate(SHAPES);
-			}
-			else
-			{
+			} else {
 				invalidate(BODY);
 			}
 		}
@@ -392,12 +378,9 @@ package cadet2DBox2D.components.behaviours
 		public function set restitution( value:Number ):void
 		{
 			_restitution = value;
-			if ( body )
-			{
+			if ( body ) {
 				invalidate(SHAPES);
-			}
-			else
-			{
+			} else {
 				invalidate(BODY);
 			}
 		}
@@ -416,12 +399,9 @@ package cadet2DBox2D.components.behaviours
 		public function set angularDamping( value:Number ):void
 		{
 			_angularDamping = value;
-			if ( body )
-			{
+			if ( body ) {
 				body.SetAngularDamping(_angularDamping);
-			}
-			else
-			{
+			} else {
 				invalidate(BODY);
 			}
 		}
@@ -432,12 +412,9 @@ package cadet2DBox2D.components.behaviours
 		public function set linearDamping( value:Number ):void
 		{
 			_linearDamping = value;
-			if ( body )
-			{
+			if ( body ) {
 				body.SetLinearDamping(_linearDamping);
-			}
-			else
-			{
+			} else {
 				invalidate(BODY);
 			}
 		}
@@ -447,12 +424,9 @@ package cadet2DBox2D.components.behaviours
 		public function set categoryBits( value:uint ):void
 		{
 			_categoryBits = value;
-			if ( body )
-			{
+			if ( body ) {
 				invalidate(SHAPES);
-			}
-			else
-			{
+			} else {
 				invalidate(BODY);
 			}
 		}
@@ -462,12 +436,9 @@ package cadet2DBox2D.components.behaviours
 		public function set maskBits( value:uint ):void
 		{
 			_maskBits = value;
-			if ( body )
-			{
+			if ( body ) {
 				invalidate(SHAPES);
-			}
-			else
-			{
+			} else {
 				invalidate(BODY);
 			}
 		}

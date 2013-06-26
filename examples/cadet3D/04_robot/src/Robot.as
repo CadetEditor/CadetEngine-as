@@ -38,8 +38,6 @@ package
 			var renderer:Renderer3D = ComponentUtil.getChildOfType(cadetScene, Renderer3D);
 			renderer.enable(this);
 			
-			cadetScene.validateNow();
-			
 			addEventListener( Event.ENTER_FRAME, enterFrameHandler );
 		}
 		

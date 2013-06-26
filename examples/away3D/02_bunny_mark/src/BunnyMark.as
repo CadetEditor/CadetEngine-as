@@ -50,9 +50,6 @@ package
 			camera.y = 400;
 			camera.z = 400;
 			
-//			camera.x = 380;
-//			camera.y = 200;
-//			camera.z = -400;
 			view3D.camera = camera;
 			
 			// Create shared TextureMaterial
