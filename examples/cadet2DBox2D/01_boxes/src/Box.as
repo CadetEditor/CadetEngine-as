@@ -13,17 +13,14 @@ package
 	
 	import cadet2DBox2D.components.behaviours.RigidBodyBehaviour;
 	import cadet2DBox2D.components.behaviours.RigidBodyMouseDragBehaviour;
-	import cadet2DBox2D.components.processes.DebugDrawProcess;
 	import cadet2DBox2D.components.processes.PhysicsProcess;
 	
-	import components.behaviours.ApplyTorqueBehaviour;
-	
 	[SWF( width="700", height="400", backgroundColor="0x002135", frameRate="60" )]
-	public class Boxes extends Sprite
+	public class Box extends Sprite
 	{
 		private var cadetScene	: CadetScene;
 		
-		public function Boxes()
+		public function Box()
 		{
 			cadetScene = new CadetScene();
 			
@@ -39,26 +36,15 @@ package
 //			var debugDraw:DebugDrawProcess = new DebugDrawProcess();
 //			cadetScene.children.addItem( debugDraw );
 			
-			var boxSize:uint = 10;
-			for ( var i:int = 0; i < 80; i++ )
-			{
-				var x:Number = Math.random() * stage.stageWidth;
-				var y:Number = Math.random() * 100;
-				var width:Number = boxSize + Math.random() * boxSize;
-				var height:Number = boxSize + Math.random() * boxSize;
-				addRectangleEntity( x, y, width, height, Math.random() * 360 );
-			}
-			
-			var rotatingRectangle:Entity = addRectangleEntity( 0, -100, 60, 60 );
-			rotatingRectangle.children.addItem( new ApplyTorqueBehaviour(10,2) );
+			var rotatingRectangle:Entity = addRectangleEntity( 300, 0, 60, 60, 46 );
 			
 			// Create the floor. We pass 'true' as the 'fixed' property to make the floor static.
 			addRectangleEntity( -200, stage.stageHeight-50, stage.stageWidth+200, 50, 0, true );
-
+			
 			addEventListener(Event.ENTER_FRAME, enterFrameHandler);			
 		}
 		
-		private function addRectangleEntity( x:Number, y:Number, width:Number, height:Number, rotation:Number = 0, fixed:Boolean = false ):Entity
+		private function addRectangleEntity( x:Number, y:Number, width:Number, height:Number, rotation:Number, fixed:Boolean = false ):Entity
 		{
 			var transform:Transform2D = new Transform2D(x, y, rotation);
 			var skin:GeometrySkin = new GeometrySkin();

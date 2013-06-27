@@ -22,8 +22,8 @@ package cadet2D.components.renderers
 	import cadet.core.Component;
 	import cadet.core.IComponent;
 	import cadet.events.ComponentEvent;
-	import cadet.events.ValidationEvent;
 	import cadet.events.RendererEvent;
+	import cadet.events.ValidationEvent;
 	import cadet.util.ComponentUtil;
 	
 	import cadet2D.components.skins.IRenderable;
@@ -503,6 +503,11 @@ package cadet2D.components.renderers
 		public function getNativeStage():flash.display.Stage
 		{
 			return _nativeStage;
+		}
+		
+		public function getNativeParent():flash.display.DisplayObject
+		{
+			return _nativeParent;
 		}
 		
 		public function get initialised():Boolean

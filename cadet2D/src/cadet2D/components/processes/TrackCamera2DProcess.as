@@ -10,6 +10,10 @@
 
 package cadet2D.components.processes
 {
+	import flash.display.Sprite;
+	import flash.geom.Matrix;
+	import flash.geom.Rectangle;
+	
 	import cadet.core.Component;
 	import cadet.core.IComponentContainer;
 	import cadet.core.ISteppableComponent;
@@ -21,18 +25,16 @@ package cadet2D.components.processes
 	import cadet2D.components.skins.AbstractSkin2D;
 	import cadet2D.components.skins.IRenderable;
 	
-	import flash.geom.Matrix;
-	import flash.geom.Rectangle;
-	
 	import core.app.util.Easing;
 	
 	import starling.display.DisplayObject;
 
 	public class TrackCamera2DProcess extends Component implements ISteppableComponent
 	{
-		private var _renderer		:IRenderer2D;
-		private var _target			:IComponentContainer;
-		private var _worldBounds	:WorldBounds2D;
+		private var _renderer			:IRenderer2D;
+		private var _debugDrawProcess	:IDebugDrawProcess;
+		private var _target				:IComponentContainer;
+		private var _worldBounds		:WorldBounds2D;
 		
 		[Serializable][Inspectable]
 		public var ease				:Number = 0.2;
@@ -66,6 +68,7 @@ package cadet2D.components.processes
 		{
 			addSceneReference(IRenderer2D, "renderer");
 			addSceneReference(WorldBounds2D, "worldBounds");
+			addSceneReference(IDebugDrawProcess, "debugDrawProcess");
 		}
 		
 		[Serializable][Inspectable( editor="ComponentList" )]
@@ -88,6 +91,12 @@ package cadet2D.components.processes
 			_worldBounds = value;
 		}
 		public function get worldBounds():WorldBounds2D { return _worldBounds; }
+		
+		public function set debugDrawProcess( value:IDebugDrawProcess ):void
+		{
+			_debugDrawProcess = value;
+		}
+		public function get debugDrawProcess():IDebugDrawProcess { return _debugDrawProcess; }
 		
 		public function step( dt:Number ):void
 		{
@@ -204,6 +213,13 @@ package cadet2D.components.processes
 			
 			Renderer2D(_renderer).worldContainer.transformationMatrix = matrix;
 			_renderer.invalidate("container");
+			
+			if ( _debugDrawProcess && _debugDrawProcess.trackCamera ) {
+				if ( _debugDrawProcess.sprite is flash.display.Sprite ) {
+					var flashSprite:flash.display.Sprite = flash.display.Sprite(_debugDrawProcess.sprite);
+					flashSprite.transform.matrix = matrix;
+				}
+			}
 			
 			oldCameraRect = cameraRect.clone();
 			oldObjectX = objectX;

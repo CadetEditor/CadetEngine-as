@@ -309,7 +309,7 @@ package cadet2DBox2D.components.behaviours
 				//m = _transform.matrix;
 				m = _transform.matrix.clone();
 				m.translate(-_transform.x, -_transform.y);
-				m.rotate(-_transform.rotation);//* 0.0174);
+				m.rotate(-_transform.rotation * Math.PI/180);
 				//Note: Starling rotation already in radians.
 				
 				// Transform the vertices to world space

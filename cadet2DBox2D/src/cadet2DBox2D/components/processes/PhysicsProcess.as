@@ -10,18 +10,19 @@
 
 package cadet2DBox2D.components.processes
 {
+	import flash.utils.Dictionary;
+	
 	import Box2D.Collision.b2AABB;
 	import Box2D.Common.Math.b2Vec2;
-	import Box2D.Dynamics.Joints.b2Joint;
-	import Box2D.Dynamics.Joints.b2JointDef;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2World;
-	
-	import flash.utils.Dictionary;
+	import Box2D.Dynamics.Joints.b2Joint;
+	import Box2D.Dynamics.Joints.b2JointDef;
 	
 	import cadet.core.Component;
 	import cadet.core.ISteppableComponent;
+	
 	import cadet2DBox2D.components.behaviours.RigidBodyBehaviour;
 
 
@@ -142,5 +143,10 @@ package cadet2DBox2D.components.processes
 		}
 		public function get scaleFactor():Number { return _scaleFactor; }
 		public function get invScaleFactor():Number { return _invScaleFactor; }
+		
+		public function get world():b2World
+		{
+			return _box2D;
+		}
 	}
 }
