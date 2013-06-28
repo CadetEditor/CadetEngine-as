@@ -17,13 +17,11 @@ package cadet2D.components.skins
 	import cadet2D.components.connections.Pin;
 	import cadet2D.components.renderers.IRenderer2D;
 	import cadet2D.components.renderers.Renderer2D;
-	import cadet2D.components.transforms.Transform2D;
-	
-	import starling.core.Starling;
+
 	import starling.display.Graphics;
 	import starling.display.Shape;
 	
-	[CadetEditor( transformable="false" )]
+//	[CadetEditor( transformable="false" )]
 	public class PinSkin extends AbstractSkin2D
 	{
 		private static const DISPLAY		:String = "display";
@@ -94,8 +92,8 @@ package cadet2D.components.skins
 		
 		public function validateDisplay():void
 		{
-			if ( !_pin ) return;
-			if ( !_renderer || !_renderer.viewport) return;
+			if ( !_pin || !_pin.localPos ) return;
+			if ( !_renderer || !_renderer.viewport ) return;
 			if ( !_pin.transformA ) return;
 			
 //			if (!Starling.current) return;
