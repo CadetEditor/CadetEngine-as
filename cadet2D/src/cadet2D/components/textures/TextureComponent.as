@@ -49,8 +49,9 @@ package cadet2D.components.textures
 		
 		override public function validateNow():void
 		{
+			var textureValidated:Boolean = true;
 			if ( isInvalid( TEXTURE ) ) {
-				var textureValidated:Boolean = validateTexture();
+				 textureValidated = validateTexture();
 			}
 			super.validateNow();
 			
@@ -62,10 +63,11 @@ package cadet2D.components.textures
 		private function validateTexture():Boolean
 		{
 			if ( _bitmapData && Starling.context ) {
-/*				if ( _texture ) {
+				//trace("validateTexture");
+				if ( _texture ) {
 					_texture.dispose();
 					_texture = null;
-				}*/
+				}
 				_texture = Texture.fromBitmap( new Bitmap(_bitmapData), false );
 				var event:ValidationEvent = new ValidationEvent(ValidationEvent.VALIDATED, TEXTURE);
 				dispatchEvent(event);

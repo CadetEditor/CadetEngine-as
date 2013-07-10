@@ -1,3 +1,5 @@
+Please check the [Releases](https://github.com/CadetEditor/CadetEngine-as/releases) for software versions compatible with [CadetEditor](http://www.cadeteditor.com)
+
 CadetEngine
 ===========
 
