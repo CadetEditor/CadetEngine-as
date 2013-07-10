@@ -26,9 +26,9 @@ package cadet.components.processes
 		public static const LEFT:String = "LEFT";
 		public static const RIGHT:String = "RIGHT";
 		
-		public function KeyboardInputMapping()
+		public function KeyboardInputMapping( name:String = "KeyboardInputMapping" )
 		{
-			name = "KeyboardInputMapping";
+			super(name);
 		}
 		
 		[Serializable][Inspectable( editor="DropDownMenu", dataProvider="[UP,DOWN,LEFT,RIGHT,SPACE,ENTER,0,1,2,3,4,5,6,7,8,9]" )]

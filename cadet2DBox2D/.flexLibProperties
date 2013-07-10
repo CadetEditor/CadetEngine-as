@@ -2,6 +2,7 @@
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
   <includeClasses>
     <classEntry path="cadet2DBox2D.components.processes.DebugDrawProcess"/>
+    <classEntry path="cadet2DBox2D.components.behaviours.IJoint"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

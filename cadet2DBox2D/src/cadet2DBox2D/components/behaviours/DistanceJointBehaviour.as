@@ -10,6 +10,9 @@
 
 package cadet2DBox2D.components.behaviours
 {
+	import flash.events.Event;
+	import flash.geom.Point;
+	
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.Joints.b2DistanceJointDef;
 	import Box2D.Dynamics.Joints.b2Joint;
@@ -22,11 +25,8 @@ package cadet2DBox2D.components.behaviours
 	import cadet2D.components.connections.Connection;
 	
 	import cadet2DBox2D.components.processes.PhysicsProcess;
-	
-	import flash.events.Event;
-	import flash.geom.Point;
 
-	public class DistanceJointBehaviour extends Component
+	public class DistanceJointBehaviour extends Component implements IJoint
 	{
 		// Invalidation types
 		private static const JOINT			:String = "joint";
@@ -35,10 +35,10 @@ package cadet2DBox2D.components.behaviours
 		protected var _connection			:Connection;
 		protected var _physicsProcess		:PhysicsProcess;
 		
-		protected var joint				:b2Joint
+		protected var joint				:b2Joint;
 		
-		protected var physicsBehaviourA	:RigidBodyBehaviour
-		protected var physicsBehaviourB	:RigidBodyBehaviour
+		protected var physicsBehaviourA	:RigidBodyBehaviour;
+		protected var physicsBehaviourB	:RigidBodyBehaviour;
 		
 		[Serializable]
 		public var length				:Number = -1;

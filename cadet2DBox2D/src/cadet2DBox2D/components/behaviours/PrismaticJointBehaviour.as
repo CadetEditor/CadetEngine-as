@@ -10,20 +10,22 @@
 
 package cadet2DBox2D.components.behaviours
 {
+	import flash.geom.Point;
+	
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.Joints.b2PrismaticJoint;
 	import Box2D.Dynamics.Joints.b2PrismaticJointDef;
 	
-	import flash.geom.Point;
-	
 	import cadet.core.Component;
 	import cadet.events.ComponentEvent;
 	import cadet.events.ValidationEvent;
-	import cadet2D.components.connections.Connection;
-	import cadet2DBox2D.components.processes.PhysicsProcess;
 	import cadet.util.ComponentUtil;
+	
+	import cadet2D.components.connections.Connection;
+	
+	import cadet2DBox2D.components.processes.PhysicsProcess;
 
-	public class PrismaticJointBehaviour extends Component
+	public class PrismaticJointBehaviour extends Component implements IJoint
 	{
 		// Invalidation types
 		private static const JOINT			:String = "joint";
@@ -220,9 +222,9 @@ package cadet2DBox2D.components.behaviours
 		protected function validateJoint():void
 		{
 			if ( !_scene ) return;
-			if ( !physicsBehaviourA ) return
-			if ( !physicsBehaviourB ) return
-			if ( !_physicsProcess ) return
+			if ( !physicsBehaviourA ) return;
+			if ( !physicsBehaviourB ) return;
+			if ( !_physicsProcess ) return;
 			
 			physicsBehaviourA.validateNow();
 			physicsBehaviourB.validateNow();

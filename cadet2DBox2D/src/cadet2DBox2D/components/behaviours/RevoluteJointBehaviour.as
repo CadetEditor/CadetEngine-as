@@ -25,7 +25,7 @@ package cadet2DBox2D.components.behaviours
 	
 	import cadet2DBox2D.components.processes.PhysicsProcess;
 
-	public class RevoluteJointBehaviour extends Component
+	public class RevoluteJointBehaviour extends Component implements IJoint
 	{
 		// Invalidation types
 		private static const JOINT			:String = "joint";
@@ -204,9 +204,10 @@ package cadet2DBox2D.components.behaviours
 		protected function validateJoint():void
 		{
 			if ( !_scene ) return;
-			if ( !physicsBehaviourA ) return
-			if ( !physicsBehaviourB ) return
-			if ( !_physicsProcess ) return
+			if ( !physicsBehaviourA ) return;
+			if ( !physicsBehaviourB ) return;
+			if ( !_physicsProcess ) return;
+			if ( !_pin || !_pin.localPos) return;
 			
 			physicsBehaviourA.validateNow();
 			physicsBehaviourB.validateNow();

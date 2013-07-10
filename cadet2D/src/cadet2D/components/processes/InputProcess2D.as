@@ -11,6 +11,7 @@ package cadet2D.components.processes
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 
+	// InputProcess with a notion of Touches (via Starling)
 	public class InputProcess2D extends InputProcess
 	{
 		private var _renderer2D	:Renderer2D;

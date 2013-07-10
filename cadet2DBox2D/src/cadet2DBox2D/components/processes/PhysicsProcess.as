@@ -47,16 +47,17 @@ package cadet2DBox2D.components.processes
 		private var jointTable				:Dictionary;
 		
 		
-		public function PhysicsProcess()
+		public function PhysicsProcess( name:String = "PhysicsProcess" )
 		{
+			super( name );
+			
 			init();
 		}
 		
 		private function init():void
 		{
-			name = "PhysicsProcess";
-			
 			scaleFactor = 0.01;
+			
 			var bounds:b2AABB = new b2AABB();
 			bounds.lowerBound = new b2Vec2( -10000, -10000 );
 			bounds.upperBound = new b2Vec2( 10000, 10000 );

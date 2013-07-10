@@ -16,6 +16,7 @@ package cadet2D.components.skins
 	import cadet.events.ValidationEvent;
 	
 	import cadet2D.components.geom.TerrainGeometry;
+	import cadet2D.components.textures.TextureComponent;
 	import cadet2D.geom.Vertex;
 	import cadet2D.util.VertexUtil;
 	
@@ -35,9 +36,12 @@ package cadet2D.components.skins
 		private var _terrainGeometry		:TerrainGeometry;
 		
 		// Styles
-		protected var _surfaceBitmap		:BitmapData;
+		//protected var _surfaceBitmap		:BitmapData;
 		protected var _surfaceThickness		:int = 20;
-		protected var _fillBitmap			:BitmapData;
+		//protected var _fillBitmap			:BitmapData;
+		
+		protected var _surfaceTexture		:TextureComponent;
+		protected var _fillTexture			:TextureComponent;
 		
 		// 
 		private var invalidatedBuckets		:Object;
@@ -47,8 +51,10 @@ package cadet2D.components.skins
 		
 		private var _shape					:Shape;				
 		
-		public function TerrainSkin()
+		public function TerrainSkin( name:String = "TerrainSkin" )
 		{
+			super(name);
+			
 			_displayObject = new Shape();
 			_shape = Shape(_displayObject);
 			
@@ -56,9 +62,7 @@ package cadet2D.components.skins
 		}
 		
 		private function init():void
-		{
-			name = "TerrainSkin";
-			
+		{			
 			while ( _shape.numChildren > 0 )
 			{
 				_shape.removeChildAt(0);
@@ -78,7 +82,62 @@ package cadet2D.components.skins
 			super.addedToScene();
 			addSiblingReference( TerrainGeometry, "terrainGeometry" );
 		}
-				
+		
+		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="100" )]
+		public function set fillTexture( value:TextureComponent ):void
+		{
+			if ( _fillTexture ) {
+				_fillTexture.removeEventListener( ValidationEvent.VALIDATED, fillTextureValidatedHandler );
+			}
+			
+			_fillTexture = value;	
+			
+			if ( _fillTexture ) {
+				_fillTexture.addEventListener( ValidationEvent.VALIDATED, fillTextureValidatedHandler );
+			}
+			
+			invalidate( ALL_BUCKETS );
+			invalidate( DISPLAY );
+		}
+		public function get fillTexture():TextureComponent
+		{
+			return _fillTexture;
+		}
+		
+		private function fillTextureValidatedHandler( event:ValidationEvent ):void
+		{
+			invalidate( ALL_BUCKETS );
+			invalidate( DISPLAY );
+		}
+		
+		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="101" )]
+		public function set surfaceTexture( value:TextureComponent ):void
+		{
+			if ( _surfaceTexture ) {
+				_surfaceTexture.removeEventListener( ValidationEvent.VALIDATED, surfaceTextureValidatedHandler );
+			}
+			
+			_surfaceTexture = value;	
+			
+			if ( _surfaceTexture ) {
+				_surfaceTexture.addEventListener( ValidationEvent.VALIDATED, surfaceTextureValidatedHandler );
+			}
+			
+			invalidate( ALL_BUCKETS );
+			invalidate( DISPLAY );
+		}
+		public function get surfaceTexture():TextureComponent
+		{
+			return _surfaceTexture;
+		}
+		
+		private function surfaceTextureValidatedHandler( event:ValidationEvent ):void
+		{
+			invalidate( ALL_BUCKETS );
+			invalidate( DISPLAY );
+		}		
+		
+/*				
 		[Serializable( type="resource" )][Inspectable( editor="ResourceItemEditor" )]
 		public function set fillBitmap( value:BitmapData ):void
 		{
@@ -96,8 +155,8 @@ package cadet2D.components.skins
 			invalidate( DISPLAY );
 		}
 		public function get surfaceBitmap():BitmapData { return _surfaceBitmap; }
-		
-		[Serializable][Inspectable( editor="NumericStepper", min="1", max="100", stepSize="1" )]
+		*/
+		[Serializable][Inspectable( editor="NumericStepper", min="1", max="100", stepSize="1", priority="102" )]
 		public function set surfaceThickness( value:Number ):void
 		{
 			_surfaceThickness = value;
@@ -213,11 +272,15 @@ package cadet2D.components.skins
 			const graphics:Graphics = shape.graphics;
 			graphics.clear();
 			
-			if ( _fillBitmap )
+			//if ( _fillBitmap )
+			if ( _fillTexture )
 			{
 				m.identity();
-				m.tx = int(-shape.x % _fillBitmap.width);
-				graphics.beginBitmapFill(_fillBitmap, m);
+				m.tx = int(-shape.x % _fillTexture.texture.width);
+				//m.tx = int(-shape.x % _fillBitmap.width);
+				//graphics.beginBitmapFill(_fillBitmap, m);
+				
+				graphics.beginTextureFill(_fillTexture.texture, m);
 			}
 			else
 			{
@@ -239,7 +302,8 @@ package cadet2D.components.skins
 			graphics.endFill();
 			
 			
-			if ( !_surfaceBitmap ) return;
+			//if ( !_surfaceBitmap ) return;
+			if ( !_surfaceTexture ) return;
 			
 			var strip:Array = VertexUtil.getPolygonStrip(vertices, _surfaceThickness, 0);
 			for ( i = 0; i < length; i++ )
@@ -257,11 +321,17 @@ package cadet2D.components.skins
 				var angle:Number = Math.PI * 0.5 -Math.atan2(dx, dy);
 				
 				m.identity();
-				m.translate(-shape.x % _surfaceBitmap.width,0);
-				m.scale(1, _surfaceThickness/_surfaceBitmap.height);
+//				m.translate(-shape.x % _surfaceBitmap.width,0);
+//				m.scale(1, _surfaceThickness/_surfaceBitmap.height);
+//				m.rotate(angle);
+//				m.translate(stripShape[0].x, stripShape[0].y);
+//				graphics.beginBitmapFill(_surfaceBitmap, m);
+				
+				m.translate(-shape.x % _surfaceTexture.texture.width,0);
+				m.scale(1, _surfaceThickness/_surfaceTexture.texture.height);
 				m.rotate(angle);
 				m.translate(stripShape[0].x, stripShape[0].y);
-				graphics.beginBitmapFill(_surfaceBitmap, m);
+				graphics.beginTextureFill(_surfaceTexture.texture, m);				
 				
 				graphics.moveTo(stripShape[0].x, stripShape[0].y);
 				graphics.lineTo(stripShape[1].x, stripShape[1].y);

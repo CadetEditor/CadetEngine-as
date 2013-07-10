@@ -12,9 +12,10 @@
 
 package cadet2D.components.connections
 {
-	import cadet2D.components.transforms.Transform2D;
 	import cadet.core.Component;
 	import cadet.events.ValidationEvent;
+	
+	import cadet2D.components.transforms.Transform2D;
 	import cadet2D.geom.Vertex;
 	
 	public class Connection extends Component
@@ -26,9 +27,12 @@ package cadet2D.components.connections
 		private var _localPosA		:Vertex;
 		private var _localPosB		:Vertex;
 				
-		public function Connection()
+		public function Connection(name:String = "Connection")
 		{
-			name = "Connection";
+			super(name);
+			
+			_localPosA = new Vertex(0,0);
+			_localPosB = new Vertex(0,0);
 		}
 		
 		[Serializable][Inspectable( editor="ComponentList", scope="scene", priority="100" )]

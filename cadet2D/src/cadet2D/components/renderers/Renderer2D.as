@@ -482,6 +482,8 @@ package cadet2D.components.renderers
 		
 		public function worldToViewport( pt:Point ):Point
 		{
+			if (!_worldContainer) return null;
+			
 			pt = _worldContainer.localToGlobal(pt);
 			return _viewport.globalToLocal(pt);
 		}
