@@ -45,12 +45,11 @@ package cadet2DBox2D.components.processes
 		
 		private var behaviourTable			:Dictionary;
 		private var jointTable				:Dictionary;
-		
-		
+	
 		public function PhysicsProcess( name:String = "PhysicsProcess" )
 		{
 			super( name );
-			
+
 			init();
 		}
 		

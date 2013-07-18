@@ -329,7 +329,7 @@ package cadet2DBox2D.components.behaviours
 				{
 					allVertices = VertexUtil.makeConvex(vertices);
 				}
-				
+			
 				for each ( vertices in allVertices ) {
 					var polygonShapeDef:b2PolygonDef = new b2PolygonDef();
 					polygonShapeDef.density = fixed ? 0 : density;
