@@ -84,12 +84,14 @@ package cadet2D.components.renderers
 		public var defaultProfile			:String = BASELINE;
 		
 		private var _depthSort				:Boolean = false;
+		private var _allowScale				:Boolean = false;
 		
-		public function Renderer2D( depthSort:Boolean = false )
+		public function Renderer2D( depthSort:Boolean = false, allowScale:Boolean = false, name = "Starling Renderer" )
 		{
-			_depthSort = depthSort;
+			super( name );
 			
-			name = "Starling Renderer";
+			_allowScale = allowScale;
+			_depthSort = depthSort;
 			
 			reset();
 		}
@@ -104,8 +106,12 @@ package cadet2D.components.renderers
 			
 			_enabled = true;
 			
-			_viewportWidth = _nativeStage.stageWidth;
-			_viewportHeight = _nativeStage.stageHeight;
+			if (!_viewportWidth) {
+				_viewportWidth = _nativeStage.stageWidth;
+			}
+			if (!_viewportHeight) {
+				_viewportHeight = _nativeStage.stageHeight;
+			}
 			
 			if (!Starling.current) {
 				star = new Starling( Sprite, _nativeStage, null, null, "auto", defaultProfile );
@@ -131,8 +137,12 @@ package cadet2D.components.renderers
 			
 			_enabled = true;
 			
-			_viewportWidth = _parent.stage.stageWidth;
-			_viewportHeight = _parent.stage.stageHeight;
+			if (!_viewportWidth) {
+				_viewportWidth = _parent.stage.stageWidth;
+			}
+			if (!_viewportHeight) {
+				_viewportHeight = _parent.stage.stageHeight;
+			}
 			
 			AsynchronousUtil.callLater(init);
 			
@@ -204,7 +214,16 @@ package cadet2D.components.renderers
 			invalidate(RendererInvalidationTypes.VIEWPORT);			
 		}
 		
+		//===== INSPECTABLE API ===================================================
+
 		[Serializable][Inspectable( priority="50" )]
+		public function set allowScale( value:Boolean ):void
+		{
+			_allowScale = value;
+		}
+		public function get allowScale():Boolean { return _allowScale; }
+		
+		[Serializable][Inspectable( priority="51" )]
 		public function set depthSort( value:Boolean ):void
 		{
 			_depthSort = value;
@@ -212,7 +231,7 @@ package cadet2D.components.renderers
 		}
 		public function get depthSort():Boolean { return _depthSort; }
 		
-		[Inspectable]//[Serializable]
+		[Inspectable( priority="52" )]//[Serializable]
 		public function set viewportWidth( value:Number ):void
 		{
 			if ( _viewportWidth == value ) return;
@@ -222,7 +241,7 @@ package cadet2D.components.renderers
 		}
 		public function get viewportWidth():Number { return _viewportWidth; }
 		
-		[Inspectable]//[Serializable]
+		[Inspectable( priority="53" )]//[Serializable]
 		public function set viewportHeight( value:Number ):void
 		{
 			if ( _viewportHeight == value ) return;
@@ -231,6 +250,8 @@ package cadet2D.components.renderers
 			invalidate(RendererInvalidationTypes.VIEWPORT);
 		}
 		public function get viewportHeight():Number { return _viewportHeight; }
+		
+		//==============================================================================
 		
 		public function addToJuggler( object:IAnimatable ):void
 		{
@@ -271,15 +292,17 @@ package cadet2D.components.renderers
 			_viewportX = pt.x;
 			_viewportY = pt.y;
 			
-			star.stage.stageWidth = _viewportWidth;
-			star.stage.stageHeight = _viewportHeight;
-			//star.stage.color = _backgroundColor;
+			// retain the original proportions of the stage content
+			if ( !_allowScale ) {
+				star.stage.stageWidth = _viewportWidth;
+				star.stage.stageHeight = _viewportHeight;
+			}
 			
 			var viewportRect:Rectangle = new Rectangle(_viewportX, _viewportY, _viewportWidth, _viewportHeight);
-			
-			//trace("Starling stage: x "+_parent.stage.x+" y "+_parent.stage.y+ " w "+_parent.stage.stageWidth+" h "+_parent.stage.stageHeight+" viewportRect "+viewportRect);
 		
 			star.viewPort = viewportRect;
+			
+		//	trace("validateViewport stage: x "+_parent.stage.x+" y "+_parent.stage.y+ " w "+_parent.stage.stageWidth+" h "+_parent.stage.stageHeight+" viewportRect "+viewportRect+" star.viewPort "+star.viewPort);
 		}
 		
 		private function validateOverlays():void
@@ -419,7 +442,6 @@ package cadet2D.components.renderers
 				delete skinTable[displayObject];
 			}
 		}
-		
 		
 		
 		public function addOverlay( overlay:Overlay, layerIndex:uint = 0 ):void

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <actionScriptProperties analytics="false" mainApplicationPath="Boilerplate.as" projectUUID="533848e9-7cdc-49ad-b9b9-ce687898ae91" version="11">
-  <compiler additionalCompilerArguments="-locale en_US  -use-network=false -include-libraries ../../../../CadetEngine/bin/CadetEngine.swc ../../../../CadetEngine_Ext_2D/bin/CadetEngine_Ext_2D.swc ../../../../CadetEngine_Ext_2DBox2D/bin/CadetEngine_Ext_2DBox2D.swc" advancedTelemetry="false" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" useFlashSDK="true" verifyDigests="true" warn="true">
+  <compiler additionalCompilerArguments="-locale en_US  -use-network=false -include-libraries ../../../../cadet/bin/CadetEngine.swc ../../../../cadet2D/bin/CadetEngine_Ext_2D.swc ../../../../cadet2DBox2D/bin/CadetEngine_Ext_2DBox2D.swc" advancedTelemetry="false" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" useFlashSDK="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="4" path="">
@@ -43,5 +43,3 @@
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
 </actionScriptProperties>
-
-

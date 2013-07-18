@@ -159,6 +159,12 @@ package cadet.core
 		{
 			_runMode = value;
 		}
+		
+		// Allow the scene to re-initialise components
+		public function reset():void
+		{
+			_runMode = false;
+		}
 	}
 }
 
