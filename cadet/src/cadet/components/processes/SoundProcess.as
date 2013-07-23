@@ -106,7 +106,21 @@ package cadet.components.processes
 		public function playSound( sound:ISound ):void
 		{
 			if ( muted ) return;
+			if ( sound == _music ) {
+				if ( _musicPlaying ) return;
+				else _musicPlaying = true;
+			}
+			
 			sound.play();
+		}
+		
+		public function stopSound( sound:ISound ):void
+		{
+			sound.stop();
+			
+			if ( sound == music ) {
+				_musicPlaying = false;
+			}
 		}
 		
 		private function addSounds():void

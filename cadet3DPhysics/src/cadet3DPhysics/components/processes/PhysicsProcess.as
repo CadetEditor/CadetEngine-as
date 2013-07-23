@@ -28,15 +28,14 @@ package cadet3DPhysics.components.processes
 		
 		private var _timeStep : Number = 1.0 / 60;
 		
-		public function PhysicsProcess()
+		public function PhysicsProcess( name:String = "PhysicsProcess" )
 		{
+			super( name );
 			init();
 		}
 			
 		private function init():void
 		{
-			name = "PhysicsProcess";
-			
 			/*
 			scaleFactor = 0.02;
 			var bounds:b2AABB = new b2AABB();

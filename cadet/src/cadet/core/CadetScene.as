@@ -33,7 +33,6 @@ package cadet.core
 		public function CadetScene()
 		{
 			_dependencyManager = new DependencyManager();
-		//	_userData = {};
 			name = "Scene";
 			_scene = this;
 			

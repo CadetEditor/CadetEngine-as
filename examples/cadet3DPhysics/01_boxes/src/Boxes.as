@@ -108,18 +108,18 @@ package
 		{
 			var cubeGeometry:CubeGeometryComponent = new CubeGeometryComponent(width, height, depth);
 			
-			var cubeEntity:MeshComponent = new MeshComponent();
-			cubeEntity.x = x;
-			cubeEntity.y = y;
-			cubeEntity.z = z;
-			cubeEntity.materialComponent = defaultMaterial;
-			cubeEntity.geometryComponent = cubeGeometry;
-			cubeEntity.children.addItem(cubeGeometry);
-			cubeEntity.children.addItem(new RigidBodyBehaviour());
+			var entity:MeshComponent = new MeshComponent();
+			entity.x = x;
+			entity.y = y;
+			entity.z = z;
+			entity.materialComponent = defaultMaterial;
+			entity.geometryComponent = cubeGeometry;
+			entity.children.addItem(cubeGeometry);
+			entity.children.addItem(new RigidBodyBehaviour());
 			
-			cadetScene.children.addItem(cubeEntity);
+			cadetScene.children.addItem(entity);
 			
-			return cubeEntity;
+			return entity;
 		}
 		
 		private function enterFrameHandler( event:Event ):void

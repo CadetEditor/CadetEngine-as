@@ -33,8 +33,7 @@ package
 			cadetScene.children.addItem(renderer);
 			renderer.enable(this);
 
-			var physicsProcess:PhysicsProcess = new PhysicsProcess(); 
-			cadetScene.children.addItem( physicsProcess );
+			cadetScene.children.addItem(new PhysicsProcess());
 			
 //			var debugDraw:DebugDrawProcess = new DebugDrawProcess();
 //			cadetScene.children.addItem( debugDraw );

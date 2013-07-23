@@ -112,10 +112,6 @@ package cadet.core
 						child = _children[i];
 						childAdded(child, i);
 					}
-/*					for each ( child in _children )
-					{
-						childAdded( child, event.index );
-					}*/
 					
 					break;
 			}
@@ -175,10 +171,6 @@ package cadet.core
 					var child:IComponent = _children[i];
 					childAdded(child, i);
 				}
-/*				for each ( var child:IComponent in _children )
-				{
-					childAdded(child);
-				}*/
 			}
 		}
 		public function get children():ArrayCollection { return _children; }

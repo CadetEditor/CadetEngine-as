@@ -96,7 +96,7 @@ package cadet2D.components.renderers
 			reset();
 		}
 		
-		// When adding a Starling renderer to a native scene where a reference to the nativeParent's transform is required.
+		// When adding a Starling renderer to a native scene a reference to the nativeParent's transform is required.
 		public function enable(nativeParent:flash.display.DisplayObject):void
 		{
 			_nativeParent = nativeParent;
