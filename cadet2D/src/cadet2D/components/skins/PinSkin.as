@@ -90,11 +90,11 @@ package cadet2D.components.skins
 			super.validateNow();
 		}
 		
-		public function validateDisplay():void
+		override protected function validateDisplay():Boolean
 		{
-			if ( !_pin || !_pin.localPos ) return;
-			if ( !_renderer || !_renderer.viewport ) return;
-			if ( !_pin.transformA ) return;
+			if ( !_pin || !_pin.localPos ) return false;
+			if ( !_renderer || !_renderer.viewport ) return false;
+			if ( !_pin.transformA ) return false;
 			
 //			if (!Starling.current) return;
 //			if (!_transform) return;
@@ -114,6 +114,10 @@ package cadet2D.components.skins
 //			var pt:Point = new Point(0,0);
 												
 			graphics.drawCircle( pt.x, pt.y, radius );
+			
+			super.validateDisplay();
+			
+			return true;
 		}
 		
 		[Serializable][Inspectable( editor="ColorPicker" )]

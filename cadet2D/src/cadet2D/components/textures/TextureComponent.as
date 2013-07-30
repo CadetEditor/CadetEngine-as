@@ -64,10 +64,10 @@ package cadet2D.components.textures
 		{
 			if ( _bitmapData && Starling.context ) {
 				//trace("validateTexture");
-				if ( _texture ) {
-					_texture.dispose();
-					_texture = null;
-				}
+//				if ( _texture ) {
+//					_texture.dispose();
+//					_texture = null;
+//				}
 				_texture = Texture.fromBitmap( new Bitmap(_bitmapData), false );
 				var event:ValidationEvent = new ValidationEvent(ValidationEvent.VALIDATED, TEXTURE);
 				dispatchEvent(event);

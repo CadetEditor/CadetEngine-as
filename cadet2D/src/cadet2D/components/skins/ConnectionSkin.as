@@ -94,10 +94,10 @@ package cadet2D.components.skins
 			super.validateNow();
 		}
 		
-		public function validateDisplay():void
+		override protected function validateDisplay():Boolean
 		{
-			if ( !_connection ) return;
-			if ( !_renderer || !_renderer.viewport ) return;
+			if ( !_connection ) return false;
+			if ( !_renderer || !_renderer.viewport ) return false;
 			
 			var graphics:Graphics = _shape.graphics;
 			graphics.clear();
@@ -119,6 +119,10 @@ package cadet2D.components.skins
 			graphics.lineStyle( width, lineColor, lineAlpha );
 			graphics.moveTo( pt1.x, pt1.y );
 			graphics.lineTo( pt2.x, pt2.y );
+			
+			super.validateDisplay();
+			
+			return true;
 		}
 		
 		// Getters / Setters ////////////////////////////////////////////////////////////////////////////

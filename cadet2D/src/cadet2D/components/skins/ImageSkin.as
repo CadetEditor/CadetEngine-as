@@ -107,6 +107,8 @@ package cadet2D.components.skins
 				return true;
 			}
 			
+			super.validateDisplay();
+			
 			return false;
 		}
 		

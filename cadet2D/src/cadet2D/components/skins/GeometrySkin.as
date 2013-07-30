@@ -107,6 +107,8 @@ package cadet2D.components.skins
 			var graphics:Graphics = _shape.graphics;
 			graphics.clear();
 			
+			super.validateDisplay();
+			
 			return render( _geometry );		
 		}
 		
