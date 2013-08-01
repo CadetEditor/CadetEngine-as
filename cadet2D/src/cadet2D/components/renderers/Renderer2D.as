@@ -50,13 +50,11 @@ package cadet2D.components.renderers
 		
 		// Display Hierachy
 		protected var _viewport						:DisplayObjectContainer;
-//		protected var _mask							:flash.display.Shape;
 		protected var _worldContainer				:Sprite;
 		protected var _viewportOverlayContainer		:Sprite;
 			
 		// Misc
-		protected var skinTable				:Dictionary; //These two...
-		//protected var displayObjectTable	:Dictionary; //...perform the same function?
+		protected var skinTable				:Dictionary;
 		protected var displayListVector		:Vector.<IRenderable>;
 		protected var identityMatrix		:Matrix;
 		
@@ -184,7 +182,6 @@ package cadet2D.components.renderers
 		{
 			identityMatrix = new Matrix();
 			skinTable = new Dictionary();
-			//displayObjectTable = new Dictionary();
 			displayListVector = new Vector.<IRenderable>();
 			overlaysTable = new Dictionary();
 		}
@@ -282,27 +279,28 @@ package cadet2D.components.renderers
 		
 		private function validateViewport():void
 		{
-//			if (!_nativeStage) return;
-			if (!_parent && !_nativeParent) return;
+			// If _parent then enableToExisting() was called, meaning the renderer is embedded within a wider Starling scene,
+			// instead of the CadetScene being the only Starling content. If this is the case, the Renderer shouldn't update the
+			// Starling viewport as this can cause problems.
+			if (_parent) return;
+			
+			if (!_nativeParent) return;
 			
 			var pt:Point;
-			if ( _parent )				pt = _parent.localToGlobal(new Point(0,0));
-			else if ( _nativeParent) 	pt = _nativeParent.localToGlobal(new Point(0,0));
+			if ( _nativeParent) 	pt = _nativeParent.localToGlobal(new Point(0,0));
 			
 			_viewportX = pt.x;
 			_viewportY = pt.y;
+			
+			var viewportRect:Rectangle = new Rectangle(_viewportX, _viewportY, _viewportWidth, _viewportHeight);
+			
+			star.viewPort = viewportRect;
 			
 			// retain the original proportions of the stage content
 			if ( !_allowScale ) {
 				star.stage.stageWidth = _viewportWidth;
 				star.stage.stageHeight = _viewportHeight;
 			}
-			
-			var viewportRect:Rectangle = new Rectangle(_viewportX, _viewportY, _viewportWidth, _viewportHeight);
-		
-			star.viewPort = viewportRect;
-			
-		//	trace("validateViewport stage: x "+_parent.stage.x+" y "+_parent.stage.y+ " w "+_parent.stage.stageWidth+" h "+_parent.stage.stageHeight+" viewportRect "+viewportRect+" star.viewPort "+star.viewPort);
 		}
 		
 		private function validateOverlays():void
@@ -361,7 +359,6 @@ package cadet2D.components.renderers
 			renderable.addEventListener(ValidationEvent.INVALIDATE, invalidateRenderableHandler);
 			
 			skinTable[displayObject] = renderable;
-			//displayObjectTable[displayObject] = renderable;
 		}
 		
 		private function removeRenderable( renderable:IRenderable ):void
@@ -372,7 +369,6 @@ package cadet2D.components.renderers
 			renderable.removeEventListener(ValidationEvent.INVALIDATE, invalidateRenderableHandler);
 			
 			delete skinTable[displayObject];
-			//delete displayObjectTable[displayObject];
 		}
 		
 		private function invalidateRenderableHandler( event:ValidationEvent ):void
