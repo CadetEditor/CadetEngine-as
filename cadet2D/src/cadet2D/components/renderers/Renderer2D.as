@@ -84,7 +84,7 @@ package cadet2D.components.renderers
 		private var _depthSort				:Boolean = false;
 		private var _allowScale				:Boolean = false;
 		
-		public function Renderer2D( depthSort:Boolean = false, allowScale:Boolean = false, name = "Starling Renderer" )
+		public function Renderer2D( depthSort:Boolean = false, allowScale:Boolean = false, name:String = "Starling Renderer" )
 		{
 			super( name );
 			
@@ -287,7 +287,7 @@ package cadet2D.components.renderers
 			if (!_nativeParent) return;
 			
 			var pt:Point;
-			if ( _nativeParent) 	pt = _nativeParent.localToGlobal(new Point(0,0));
+			pt = _nativeParent.localToGlobal(new Point(0,0));
 			
 			_viewportX = pt.x;
 			_viewportY = pt.y;
