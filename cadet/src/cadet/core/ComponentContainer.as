@@ -22,7 +22,6 @@ package cadet.core
 	[Event( type="cadet.events.ComponentContainerEvent", name="childRemoved" )]
 	
 	/**
-	 * Abstract. This class is not designed to be directly instantiated.
 	 * @author Jonathan
 	 * 
 	 */	

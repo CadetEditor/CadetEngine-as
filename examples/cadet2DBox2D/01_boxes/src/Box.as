@@ -4,8 +4,8 @@ package
 	import flash.events.Event;
 	
 	import cadet.core.CadetScene;
+	import cadet.core.ComponentContainer;
 	
-	import cadet2D.components.core.Entity;
 	import cadet2D.components.geom.RectangleGeometry;
 	import cadet2D.components.renderers.Renderer2D;
 	import cadet2D.components.skins.GeometrySkin;
@@ -36,7 +36,7 @@ package
 //			var debugDraw:DebugDrawProcess = new DebugDrawProcess();
 //			cadetScene.children.addItem( debugDraw );
 			
-			var rotatingRectangle:Entity = addRectangleEntity( 300, 0, 60, 60, 46 );
+			var rotatingRectangle:ComponentContainer = addRectangleEntity( 300, 0, 60, 60, 46 );
 			
 			// Create the floor. We pass 'true' as the 'fixed' property to make the floor static.
 			addRectangleEntity( -200, stage.stageHeight-50, stage.stageWidth+200, 50, 0, true );
@@ -44,12 +44,12 @@ package
 			addEventListener(Event.ENTER_FRAME, enterFrameHandler);			
 		}
 		
-		private function addRectangleEntity( x:Number, y:Number, width:Number, height:Number, rotation:Number, fixed:Boolean = false ):Entity
+		private function addRectangleEntity( x:Number, y:Number, width:Number, height:Number, rotation:Number, fixed:Boolean = false ):ComponentContainer
 		{
 			var transform:Transform2D = new Transform2D(x, y, rotation);
 			var skin:GeometrySkin = new GeometrySkin();
 			
-			var entity:Entity = new Entity();
+			var entity:ComponentContainer = new ComponentContainer();
 			entity.children.addItem( transform );
 			entity.children.addItem( skin );
 			entity.children.addItem( new RectangleGeometry(width, height) );

@@ -4,8 +4,8 @@ package model
 	import flash.events.Event;
 	
 	import cadet.core.CadetScene;
+	import cadet.core.ComponentContainer;
 	
-	import cadet2D.components.core.Entity;
 	import cadet2D.components.geom.BezierCurve;
 	import cadet2D.components.materials.StandardMaterialComponent;
 	import cadet2D.components.renderers.Renderer2D;
@@ -69,7 +69,7 @@ package model
 		
 		private function drawBg():void
 		{
-			var entity:Entity = new Entity("Background Entity");
+			var entity:ComponentContainer = new ComponentContainer("Background Entity");
 			_cadetScene.children.addItem(entity);	
 			
 			// Add the bg texture to the scene
@@ -86,7 +86,7 @@ package model
 		
 		private function drawFg():void
 		{
-			var entity:Entity = new Entity("Foreground Entity");
+			var entity:ComponentContainer = new ComponentContainer("Foreground Entity");
 			_cadetScene.children.addItem(entity);	
 			
 			// Add the bg texture to the scene
@@ -103,7 +103,7 @@ package model
 		
 		private function drawLava():void
 		{
-			var entity:Entity = new Entity("Lava Entity");
+			var entity:ComponentContainer = new ComponentContainer("Lava Entity");
 			_cadetScene.children.addItem(entity);	
 			
 			var curve:BezierCurve = new BezierCurve();
@@ -149,7 +149,7 @@ package model
 		
 		private function drawBanks():void
 		{
-			var entity:Entity = new Entity("Banks Entity");
+			var entity:ComponentContainer = new ComponentContainer("Banks Entity");
 			_cadetScene.children.addItem(entity);	
 			
 			var curve:BezierCurve = new BezierCurve();

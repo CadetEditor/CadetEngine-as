@@ -1,8 +1,11 @@
 package
 {
-	import cadet.core.CadetScene;
+	import flash.display.Sprite;
+	import flash.events.Event;
 	
-	import cadet2D.components.core.Entity;
+	import cadet.core.CadetScene;
+	import cadet.core.ComponentContainer;
+	
 	import cadet2D.components.geom.CircleGeometry;
 	import cadet2D.components.geom.RectangleGeometry;
 	import cadet2D.components.renderers.Renderer2D;
@@ -12,9 +15,6 @@ package
 	import components.behaviours.AnimateRotationBehaviour;
 	import components.behaviours.UpdateAlphaBehaviour;
 	import components.skins.ShadedCircleSkin;
-	
-	import flash.display.Sprite;
-	import flash.events.Event;
 	
 	[SWF( width="700", height="400", backgroundColor="0x002135", frameRate="60" )]
 	public class BehavioursAndSkins extends Sprite
@@ -34,7 +34,7 @@ package
 			addEventListener( Event.ENTER_FRAME, enterFrameHandler );
 
 			// Rectangle Entity
-			var rectangleEntity:Entity = new Entity();
+			var rectangleEntity:ComponentContainer = new ComponentContainer();
 			rectangleEntity.name = "Rectangle";
 			cadetScene.children.addItem(rectangleEntity);
 			
@@ -58,7 +58,7 @@ package
 			rectangleEntity.children.addItem(updateAlphaBehaviour);
 			
 			// Circle Entity
-			var circleEntity:Entity = new Entity();
+			var circleEntity:ComponentContainer = new ComponentContainer();
 			circleEntity.name = "Circle";
 			cadetScene.children.addItem(circleEntity);
 			
