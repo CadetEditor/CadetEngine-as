@@ -28,7 +28,6 @@ package cadet.operations
 	import core.app.events.OperationProgressEvent;
 	import core.app.managers.ResourceManager;
 	import core.app.operations.DeserializeOperation;
-	import core.app.operations.ReadFileAndDeserializeOperation;
 
 	public class ReadCadetFileAndDeserializeOperation extends EventDispatcher implements IAsynchronousOperation
 	{

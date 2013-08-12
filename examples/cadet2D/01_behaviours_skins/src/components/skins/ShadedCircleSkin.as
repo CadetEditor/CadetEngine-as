@@ -14,9 +14,10 @@ package components.skins
 	
 	public class ShadedCircleSkin extends AbstractSkin2D
 	{
-		private var _circle		: CircleGeometry;
-		
+		private var _circle		:CircleGeometry;
 		private var _shape		:Shape;
+		
+		private const DISPLAY	:String = "display";
 		
 		public function ShadedCircleSkin()
 		{
@@ -44,19 +45,19 @@ package components.skins
 				_circle.addEventListener(ValidationEvent.INVALIDATE, invalidateCircleHandler);
 			}
 			
-			invalidate("display");
+			invalidate(DISPLAY);
 		}
 		public function get circle():CircleGeometry{ return _circle; }
 		
 		
 		private function invalidateCircleHandler( event:ValidationEvent ):void
 		{
-			invalidate("display");
+			invalidate(DISPLAY);
 		}
 		
 		override public function validateNow():void
 		{
-			if ( isInvalid( "display" ) )
+			if ( isInvalid(DISPLAY) )
 			{
 				validateDisplay();
 			}
@@ -73,7 +74,7 @@ package components.skins
 			var alphas:Array = [1,1];
 			
 			// Don't attempt to create the gradientTexture if the Starling.context is unavailable,
-			//as Texture.fromBitmapData() will throw a missing context error
+			// as Texture.fromBitmapData() will throw a missing context error
 			if (!Starling.context) return;
 			
 			var gradientTexture:Texture = GradientTexture.create(128, 128, GradientType.RADIAL, colors, alphas, ratios );

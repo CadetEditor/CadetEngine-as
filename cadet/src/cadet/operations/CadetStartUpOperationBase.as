@@ -96,7 +96,11 @@ package cadet.operations
 			
 			if ( cadetFileURL ) {
 				// Read and deserialize the Cadet XML into a CadetScene
-				var uri:URI = new URI(fspURLID+cadetFileURL);
+				var uri:URI;
+				
+				if ( fileSystemType == FileSystemTypes.LOCAL ) 		uri = new URI(fspLocalID+"/"+baseURL+"/"+cadetFileURL);
+				else if ( fileSystemType == FileSystemTypes.URL ) 	uri = new URI(fspURLID+cadetFileURL);
+				
 				readAndDeserializeOperation = new ReadCadetFileAndDeserializeOperation( uri, CoreApp.fileSystemProvider, CoreApp.resourceManager );
 				addOperation(readAndDeserializeOperation);
 			}
