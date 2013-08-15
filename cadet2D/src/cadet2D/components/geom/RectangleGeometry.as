@@ -33,18 +33,18 @@ package cadet2D.components.geom
 		
 		override public function validateNow():void
 		{
-			if ( isInvalid( SIZE ) ) {
-				validateSize();
-			}
 			if ( isInvalid( GEOMETRY ) ) {
 				validateGeometry();
+			}
+			if ( isInvalid( SIZE ) ) {
+				validateSize();
 			}
 			super.validateNow();
 		}
 		
 		// Checks to see if the rectangle is regular or not (i.e. not distorted)
 		private function isRegular():Boolean
-		{	
+		{
 			if ( corners[1].x != corners[2].x ) return false;
 			if ( corners[0].x != corners[3].x ) return false;
 			if ( corners[0].y != corners[1].y ) return false;
@@ -56,13 +56,13 @@ package cadet2D.components.geom
 		private function getCornersBy(filterFunc:Function):Array
 		{
 			var ordered:Array = [];
-			trace("unordered "+corners);
+			//trace("unordered "+corners);
 			for ( var i:uint = 0; i < corners.length; i ++ ) {
 				ordered[i] = corners[i];
 			}
 			
 			ordered.sort(filterFunc);
-			trace("ordered "+ordered);
+			//trace("ordered "+ordered);
 			return ordered;
 		}
 		
@@ -83,7 +83,11 @@ package cadet2D.components.geom
 		private function validateSize():void
 		{
 			var regular:Boolean = isRegular();
-			trace("regular "+regular);
+			//trace("regular "+regular);
+			// setting the vertices and setting the width & height values causes a battle for control,
+			// so RectangleGeometry has 2 modes: regular & irregular. If regular, vertex positions are
+			// overridden by width & height values, if irregular, width & height values are overridden
+			// by vertex positions.
 			if (regular) {
 				corners[1].x = _width;
 				corners[2].x = _width;
@@ -91,20 +95,15 @@ package cadet2D.components.geom
 				corners[3].y = _height;
 			} else {
 				var xCorners:Array = getCornersBy(filterByX);
-				// find the difference between the two rightMost corners
-				var xDiff:Number = xCorners[3].x - xCorners[2].x;
-				// set the rightMost corner to the width value
-				xCorners[3].x = _width;
-				// set the second rightMost corner value to the width - the xDiff
-				xCorners[2].x = _width - xDiff;
-				
 				var yCorners:Array = getCornersBy(filterByY);
-				// find the difference between the two bottomMost corners
-				var yDiff:Number = yCorners[3].y - yCorners[2].y;
-				// set the bottomMost corner to the height value
-				yCorners[3].y = _height;
-				// set the second bottomMost corner value to the height - the yDiff
-				yCorners[2].y = _height - xDiff;
+				
+				var last:Vertex = xCorners[xCorners.length - 1];
+				var first:Vertex = xCorners[0];
+				_width = last.x - first.x;
+				
+				last = yCorners[yCorners.length - 1];
+				first = yCorners[0];
+				_height = last.y - first.y;
 			}
 			
 			vertices = corners;
@@ -112,8 +111,9 @@ package cadet2D.components.geom
 		
 		private function validateGeometry():void
 		{
+			if ( vertices.length == 0 ) return;
+			
 			corners = vertices;
-			invalidate( SIZE );
 		}
 		
 		[Serializable][Inspectable]
