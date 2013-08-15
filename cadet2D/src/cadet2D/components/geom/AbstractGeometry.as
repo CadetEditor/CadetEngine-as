@@ -10,6 +10,9 @@
 
 package cadet2D.components.geom
 {
+	import flash.geom.Matrix;
+	import flash.geom.Point;
+	
 	import cadet.components.geom.IGeometry;
 	import cadet.core.Component;
 	import cadet.core.IComponent;
@@ -19,14 +22,11 @@ package cadet2D.components.geom
 	import cadet2D.components.transforms.Transform2D;
 	import cadet2D.geom.Vertex;
 	
-	import flash.geom.Matrix;
-	import flash.geom.Point;
-	
 	public class AbstractGeometry extends Component implements IGeometry
 	{
-		public function AbstractGeometry()
+		public function AbstractGeometry( name:String = "AbstractGeometry" )
 		{
-			
+			super( name );
 		}
 		
 		protected function transformConnections( m:Matrix, transform:Transform2D ):void

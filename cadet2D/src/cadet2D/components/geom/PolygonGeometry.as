@@ -10,13 +10,13 @@
 
 package cadet2D.components.geom
 {
-	import cadet2D.components.transforms.Transform2D;
-	import cadet2D.geom.Vertex;
-	import cadet2D.util.VertexUtil;
-	
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	
+	import cadet2D.components.transforms.Transform2D;
+	import cadet2D.geom.Vertex;
+	import cadet2D.util.VertexUtil;
 	
 	/**
 	 * This class serves a base class for all geometry consisting of a series of points. 
@@ -25,16 +25,18 @@ package cadet2D.components.geom
 	 */	
 	public class PolygonGeometry extends AbstractGeometry
 	{
+		protected const GEOMETRY		:String = "geometry";
 		protected var _vertices			:Array;
 		
-		public function PolygonGeometry()
+		public function PolygonGeometry( name:String = "PolygonGeometry" )
 		{
+			super( name );
+			
 			init();
 		}
 		
 		private function init():void
 		{
-			name = "PolygonGeometry";
 			_vertices = [];
 		}
 		
@@ -47,7 +49,7 @@ package cadet2D.components.geom
 		public function set vertices(value:Array):void
 		{
 			_vertices = value;
-			invalidate("geometry");
+			invalidate(GEOMETRY);
 		}
 		public function get vertices():Array { return _vertices }
 				

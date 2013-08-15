@@ -26,7 +26,8 @@ package cadet2D.components.geom
 		
 		public function CircleGeometry( radius:Number = 50 )
 		{
-			name = "Circle";
+			super("Circle");
+			
 			this.radius = radius;
 		}
 				

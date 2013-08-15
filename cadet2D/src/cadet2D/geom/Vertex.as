@@ -45,5 +45,10 @@ package cadet2D.geom
 			v.setValues(x,y);
 			return v;
 		}
+		
+		public function toString():String
+		{
+			return "{x: "+x+", y: "+y+"}"; 
+		}
 	}
 }
