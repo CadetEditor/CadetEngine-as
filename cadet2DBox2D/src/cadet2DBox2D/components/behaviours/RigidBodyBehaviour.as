@@ -42,8 +42,9 @@ package cadet2DBox2D.components.behaviours
 		// Invalidation  types
 		private static const BODY		:String = "body";
 		private static const SHAPES		:String = "shapes";
-		
-		
+
+        private static var helperMatrix :Matrix = new Matrix();
+
 		private var _density			:Number = 1;
 		private var _friction			:Number = 0.8;
 		private var _restitution		:Number = 0.5;
@@ -63,7 +64,7 @@ package cadet2DBox2D.components.behaviours
 		protected var storedTranslateY	:Number;
 		protected var storedScaleX		:Number;
 		protected var storedScaleY		:Number;
-		protected var m					:Matrix;
+		protected var matrix		    :Matrix;
 		
 		protected var tempVecA			:b2Vec2;
 		protected var tempVecB			:b2Vec2;
@@ -77,7 +78,7 @@ package cadet2DBox2D.components.behaviours
 			this.friction = friction;
 			this.restitution = restitution;
 			
-			m = new Matrix();
+			matrix = new Matrix();
 			tempVecA = new b2Vec2();
 			tempVecB = new b2Vec2();
 		}
@@ -136,13 +137,32 @@ package cadet2DBox2D.components.behaviours
 		{
 			if ( !body ) return;
 			if ( !_transform ) return;
-			
-			m.identity();
-			m.scale(storedScaleX, storedScaleY);
-			m.rotate( body.GetAngle() );
-			m.translate(body.GetPosition().x * _physicsProcess.invScaleFactor, body.GetPosition().y * _physicsProcess.invScaleFactor);
-			
-			_transform.matrix = m;
+
+            var globalScaleX:Number = 1;
+            var globalScaleY:Number = 1;
+
+            if(transform.parentTransform) {
+                var m:Matrix = _transform.parentTransform.globalMatrix;
+
+                globalScaleX = Math.sqrt(m.a * m.a + m.b * m.b);
+                globalScaleY = Math.sqrt(m.c * m.c + m.d * m.d);
+            }
+
+            matrix.identity();
+
+            matrix.scale(globalScaleX * storedScaleX, globalScaleY * storedScaleY);
+            matrix.rotate( body.GetAngle() );
+            matrix.translate(body.GetPosition().x * _physicsProcess.invScaleFactor, body.GetPosition().y * _physicsProcess.invScaleFactor);
+
+            if(transform.parentTransform) {
+                helperMatrix.identity();
+                helperMatrix.concat(_transform.parentTransform.globalMatrix);
+                helperMatrix.invert();
+
+                matrix.concat(helperMatrix);
+            }
+
+            _transform.matrix = matrix;
 		}
 		
 		override public function validateNow():void
@@ -230,15 +250,26 @@ package cadet2DBox2D.components.behaviours
 			if ( !_transform ) return;
 			if ( !_geometry ) return;
 			if ( !_physicsProcess ) return;
-			
-			var bodyDef:b2BodyDef = new b2BodyDef();
-			bodyDef.position.x = _transform.x * _physicsProcess.scaleFactor;
-			bodyDef.position.y = _transform.y * _physicsProcess.scaleFactor;
-			bodyDef.angle = _transform.rotation * (Math.PI / 180);
-			
-			storedScaleX = _transform.scaleX;
-			storedScaleY = _transform.scaleY;
-			
+
+            var bodyDef:b2BodyDef = new b2BodyDef();
+
+            if(_transform.parentTransform) {
+                var m:Matrix = _transform.globalMatrix;
+
+                bodyDef.position.x = m.tx * _physicsProcess.scaleFactor;
+                bodyDef.position.y = m.ty * _physicsProcess.scaleFactor;
+                bodyDef.angle = Math.atan(m.b / m.a);
+            }
+            else {
+                bodyDef.position.x = _transform.x * _physicsProcess.scaleFactor;
+                bodyDef.position.y = _transform.y * _physicsProcess.scaleFactor;
+                bodyDef.angle = _transform.rotation * (Math.PI / 180);
+            }
+
+            // this is always in local coords
+            storedScaleX = _transform.scaleX;
+            storedScaleY = _transform.scaleY;
+
 			body = _physicsProcess.createRigidBody(this, bodyDef);
 			buildShape( _geometry, body );
 			body.SetMassFromShapes();
@@ -278,20 +309,16 @@ package cadet2DBox2D.components.behaviours
 		protected function buildShape( geometry:IGeometry, body:b2Body ):void
 		{
 			geometry.validateNow();
-			
-			if ( geometry is CircleGeometry )
+
+            var globalMatrix:Matrix = _transform.globalMatrix;
+            var globalScaleX:Number = Math.sqrt(globalMatrix.a * globalMatrix.a + globalMatrix.b * globalMatrix.b);
+            var globalScaleY:Number = Math.sqrt(globalMatrix.c * globalMatrix.c + globalMatrix.d * globalMatrix.d);
+
+            if ( geometry is CircleGeometry )
 			{
 				// Take the scale transform of the circle into account
-				var scale:Number = 1;
-				
-				if ( _transform ) {
-					scale = _transform.scaleX;
-					
-					if ( _transform.scaleY > scale ) {
-						scale = _transform.scaleY;
-					}
-				}
-				
+				var scale:Number = globalScaleX > globalScaleY ? globalScaleX : globalScaleY;
+
 				var circle:CircleGeometry = CircleGeometry( geometry );
 				var circleShapeDef:b2CircleDef = new b2CircleDef();
 				circleShapeDef.radius = circle.radius * _physicsProcess.scaleFactor * scale;
@@ -303,27 +330,20 @@ package cadet2DBox2D.components.behaviours
 			}
 			else if ( geometry is PolygonGeometry )
 			{
-				var polygon:PolygonGeometry = PolygonGeometry( geometry );
-				
-				// Cancel out translation and rotation, but retain scale.
-				//m = _transform.matrix;
-				m = _transform.matrix.clone();
-				m.translate(-_transform.x, -_transform.y);
-				m.rotate(-_transform.rotation * Math.PI/180);
-				//Note: Starling rotation already in radians.
-				
-				// Transform the vertices to world space
-				var vertices:Array = VertexUtil.copy(polygon.vertices);
-				VertexUtil.transform(vertices, m);
-				//var centroid:Vertex = VertexUtil.computeCentroid(vertices);
-				//m.identity();
-				//m.translate( -centroid.x, -centroid.y );
-				//VertexUtil.transform(vertices, m);
-				
+                var polygon:PolygonGeometry = PolygonGeometry( geometry );
+                var vertices:Array = VertexUtil.copy(polygon.vertices);
+
+                if(globalScaleX != 1 || globalScaleY != 1) {
+                    helperMatrix.identity();
+
+                    helperMatrix.scale(globalScaleX, globalScaleY);
+
+                    // Transform the vertices to world space
+                    VertexUtil.transform(vertices, helperMatrix);
+                }
+
 				// Simplify the vertices so vertices on, or very near, a straight line get removed.
 				vertices = VertexUtil.simplify(vertices);
-				
-				
 				
 				var allVertices:Array = [vertices];
 				// Check if the poylgon is concave, if so, then collapse down to convex shapes first
