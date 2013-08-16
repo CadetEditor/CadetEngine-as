@@ -12,7 +12,11 @@
 
 package cadet2D.components.transforms
 {
-	import flash.geom.Matrix;
+    import cadet.events.ComponentEvent;
+    import cadet.events.ValidationEvent;
+    import cadet.util.ComponentUtil;
+
+    import flash.geom.Matrix;
 	
 	import cadet.core.Component;
 	import cadet.util.deg2rad;
@@ -21,7 +25,9 @@ package cadet2D.components.transforms
 	import core.events.PropertyChangeEvent;
 	
 	import starling.display.DisplayObject;
-	import starling.display.Shape;
+
+    import starling.display.DisplayObjectContainer;
+    import starling.display.Shape;
 
 	[Cadet( inheritFromTemplate='false' )]
 	public class Transform2D extends Component implements ITransform2D
@@ -33,12 +39,14 @@ package cadet2D.components.transforms
 		// Rotation values are stored in degrees for ease of hand editing, then converted
 		// to radians when passed to Starling DisplayObject
 		protected var _rotation					:Number = 0;
+        protected var _globalMatrix             :Matrix = new Matrix();
 		
 		protected var _displayObject			:DisplayObject;
-		
-		public var dispatchEvents:Boolean = false; // Added as a speed optimisation
-		
-		protected static const TRANSFORM					:String = "transform";
+        protected var _parentTransform          :Transform2D = null;
+
+        public var dispatchEvents:Boolean = false; // Added as a speed optimisation
+
+		protected static const TRANSFORM				:String = "transform";
 		public static const PROPERTY_CHANGE_X			:String = "propertyChange_x";
 		public static const PROPERTY_CHANGE_Y			:String = "propertyChange_y";
 		public static const PROPERTY_CHANGE_SCALEX		:String = "propertyChange_scaleX";
@@ -163,10 +171,21 @@ package cadet2D.components.transforms
 				validateTransform();
 			}
 			
-			return _displayObject.transformationMatrix; 
+			return _displayObject.transformationMatrix;
 		}
-		
-		[Serializable(alias="matrix")]
+
+        public function get globalMatrix():Matrix
+        {
+            if (isInvalid(TRANSFORM)) {
+                validateTransform();
+            }
+
+            return _globalMatrix;
+        }
+
+        public function get parentTransform():ITransform2D { return _parentTransform; }
+
+        [Serializable(alias="matrix")]
 		public function set serializedMatrix( value:String ):void
 		{
 			var split:Array = value.split( "," );
@@ -190,11 +209,79 @@ package cadet2D.components.transforms
 		
 		protected function validateTransform():void
 		{
+            // is _parentTransform validated by now?
+
 			_displayObject.x = _x;
 			_displayObject.y = _y;
 			_displayObject.scaleX = _scaleX;
 			_displayObject.scaleY = _scaleY;
 			_displayObject.rotation = deg2rad(_rotation);
+            _displayObject.getTransformationMatrix(null, _globalMatrix);
 		}
-	}
+
+        override protected function addedToParent():void
+        {
+            if(parentComponent.parentComponent != null) {
+                setupParentTransform();
+            }
+            else {
+                parentComponent.addEventListener(ComponentEvent.ADDED_TO_PARENT, onParentAddedToParent);
+            }
+        }
+
+        override protected function removedFromParent():void
+        {
+            parentComponent.removeEventListener(ComponentEvent.ADDED_TO_PARENT, onParentAddedToParent);
+            parentComponent.removeEventListener(ComponentEvent.REMOVED_FROM_PARENT, onParentRemovedFromParent);
+
+            if(_parentTransform != null)
+                cleanUpParentTransform();
+        }
+
+        protected function onParentAddedToParent(event:ComponentEvent):void
+        {
+            if(event.component != parentComponent) return;
+
+            // now listen for
+            parentComponent.removeEventListener(ComponentEvent.ADDED_TO_PARENT, onParentAddedToParent);
+            parentComponent.addEventListener(ComponentEvent.REMOVED_FROM_PARENT, onParentRemovedFromParent);
+
+            setupParentTransform();
+        }
+
+        protected function onParentRemovedFromParent(event:ComponentEvent):void
+        {
+            if(event.component != parentComponent) return;
+
+            parentComponent.removeEventListener(ComponentEvent.REMOVED_FROM_PARENT, onParentRemovedFromParent);
+
+            cleanUpParentTransform();
+        }
+
+        protected function setupParentTransform():void
+        {
+            _parentTransform = ComponentUtil.getChildOfType(parentComponent.parentComponent, Transform2D);
+
+            if(_parentTransform != null) {
+                var container:DisplayObjectContainer = DisplayObjectContainer(_parentTransform._displayObject);
+                container.addChild(_displayObject);
+
+                invalidate(TRANSFORM);
+
+                _parentTransform.addEventListener(ValidationEvent.INVALIDATE, onParentTransformInvalidated);
+            }
+        }
+
+        protected function cleanUpParentTransform():void
+        {
+            _parentTransform.removeEventListener(ValidationEvent.INVALIDATE, onParentTransformInvalidated);
+
+            _displayObject.removeFromParent();
+            _parentTransform = null;
+
+            invalidate(TRANSFORM);
+        }
+
+        protected function onParentTransformInvalidated(event:ValidationEvent):void  { invalidate(TRANSFORM); }
+    }
 }

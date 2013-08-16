@@ -12,18 +12,18 @@
 
 package cadet2D.components.skins
 {
-	import cadet.core.Component;
-	import cadet.core.IComponent;
-	import cadet.core.IComponentContainer;
-	import cadet.events.ValidationEvent;
-	import cadet.util.deg2rad;
-	
-	import cadet2D.components.transforms.Transform2D;
-	
-	import starling.display.DisplayObject;
-	import starling.display.Sprite;
+    import cadet.core.Component;
+    import cadet.core.IComponent;
+    import cadet.core.IComponentContainer;
+    import cadet.events.ValidationEvent;
+    import cadet.util.deg2rad;
 
-	public class AbstractSkin2D extends Component implements IRenderable
+    import cadet2D.components.transforms.Transform2D;
+
+    import starling.display.DisplayObject;
+    import starling.display.Sprite;
+
+    public class AbstractSkin2D extends Component implements IRenderable
 	{		
 		protected var _displayObject			:DisplayObject;
 		
@@ -129,12 +129,19 @@ package cadet2D.components.skins
 		protected function validateTransform():void
 		{
 			if (!_transform2D) return;
-			
-			_displayObject.x = _transform2D.x;
-			_displayObject.y = _transform2D.y;
-			_displayObject.scaleX = _transform2D.scaleX;
-			_displayObject.scaleY = _transform2D.scaleY;
-			_displayObject.rotation = deg2rad(_transform2D.rotation);
+
+            // if this transform uses parent coords space, copy the global matrix to display object
+            if(_transform2D.parentTransform) {
+                _displayObject.transformationMatrix = _transform2D.globalMatrix;
+            }
+            // if this is a top-level transform, simply set the properties (may be faster)
+            else {
+                _displayObject.x = _transform2D.x;
+                _displayObject.y = _transform2D.y;
+                _displayObject.scaleX = _transform2D.scaleX;
+                _displayObject.scaleY = _transform2D.scaleY;
+                _displayObject.rotation = deg2rad(_transform2D.rotation);
+            }
 		}
 		
 		protected function validateDisplay():Boolean

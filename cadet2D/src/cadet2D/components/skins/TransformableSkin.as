@@ -24,8 +24,8 @@ package cadet2D.components.skins
 		// -------------------------------------------------------------------------------------
 		// ITRANSFORM2D API
 		// -------------------------------------------------------------------------------------
-		
-		[Inspectable( priority="50" )]
+
+        [Inspectable( priority="50" )]
 		public function set x( value:Number ):void
 		{
 			if ( isNaN(value) ) {
@@ -104,8 +104,11 @@ package cadet2D.components.skins
 			
 			return _displayObject.transformationMatrix; 
 		}
-		
-		[Serializable(alias="matrix")]
+
+        public function get globalMatrix():Matrix { throw new Error("unimplemented"); }
+        public function get parentTransform():ITransform2D { throw new Error("unimplemented"); }
+
+        [Serializable(alias="matrix")]
 		public function set serializedMatrix( value:String ):void
 		{
 			var split:Array = value.split( "," );
@@ -117,8 +120,8 @@ package cadet2D.components.skins
 			var m:Matrix = matrix;
 			return m.a + "," + m.b + "," + m.c + "," + m.d + "," + m.tx + "," + m.ty;
 		}
-		
-		// -------------------------------------------------------------------------------------	
+
+		// -------------------------------------------------------------------------------------
 		
 		override protected function validateTransform():void
 		{
@@ -138,5 +141,5 @@ package cadet2D.components.skins
 			_displayObject.scaleY = _scaleY;
 			_displayObject.rotation = deg2rad(_rotation);
 		}
-	}
+    }
 }
