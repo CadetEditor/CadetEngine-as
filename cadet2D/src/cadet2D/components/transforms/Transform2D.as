@@ -209,8 +209,6 @@ package cadet2D.components.transforms
 		
 		protected function validateTransform():void
 		{
-            // is _parentTransform validated by now?
-
 			_displayObject.x = _x;
 			_displayObject.y = _y;
 			_displayObject.scaleX = _scaleX;
@@ -223,6 +221,7 @@ package cadet2D.components.transforms
         {
             if(parentComponent.parentComponent != null) {
                 setupParentTransform();
+				parentComponent.addEventListener(ComponentEvent.REMOVED_FROM_PARENT, onParentRemovedFromParent);
             }
             else {
                 parentComponent.addEventListener(ComponentEvent.ADDED_TO_PARENT, onParentAddedToParent);
@@ -242,7 +241,6 @@ package cadet2D.components.transforms
         {
             if(event.component != parentComponent) return;
 
-            // now listen for
             parentComponent.removeEventListener(ComponentEvent.ADDED_TO_PARENT, onParentAddedToParent);
             parentComponent.addEventListener(ComponentEvent.REMOVED_FROM_PARENT, onParentRemovedFromParent);
 
@@ -274,8 +272,10 @@ package cadet2D.components.transforms
 
         protected function cleanUpParentTransform():void
         {
-            _parentTransform.removeEventListener(ValidationEvent.INVALIDATE, onParentTransformInvalidated);
-
+			if ( _parentTransform) {
+            	_parentTransform.removeEventListener(ValidationEvent.INVALIDATE, onParentTransformInvalidated);
+			}
+			
             _displayObject.removeFromParent();
             _parentTransform = null;
 

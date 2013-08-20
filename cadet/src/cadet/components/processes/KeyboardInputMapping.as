@@ -25,6 +25,8 @@ package cadet.components.processes
 		public static const DOWN:String = "DOWN";
 		public static const LEFT:String = "LEFT";
 		public static const RIGHT:String = "RIGHT";
+		public static const SPACE:String = "SPACE";
+		public static const ENTER:String = "ENTER";
 		
 		public function KeyboardInputMapping( name:String = "KeyboardInputMapping" )
 		{
