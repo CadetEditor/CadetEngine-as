@@ -12,11 +12,15 @@
 
 package cadet2D.components.transforms
 {
-    import cadet.events.ComponentEvent;
+import cadet.core.IComponent;
+import cadet.core.IComponentContainer;
+import cadet.events.ComponentEvent;
     import cadet.events.ValidationEvent;
     import cadet.util.ComponentUtil;
 
-    import flash.geom.Matrix;
+import cadet2D.components.skins.TransformableSkin;
+
+import flash.geom.Matrix;
 	
 	import cadet.core.Component;
 	import cadet.util.deg2rad;
@@ -32,6 +36,8 @@ package cadet2D.components.transforms
 	[Cadet( inheritFromTemplate='false' )]
 	public class Transform2D extends Component implements ITransform2D
 	{
+        private static var helperMatrix         :Matrix = new Matrix();
+
 		protected var _x						:Number = 0;
 		protected var _y						:Number = 0;
 		protected var _scaleX					:Number = 1;
@@ -52,7 +58,6 @@ package cadet2D.components.transforms
 		public static const PROPERTY_CHANGE_SCALEX		:String = "propertyChange_scaleX";
 		public static const PROPERTY_CHANGE_SCALEY		:String = "propertyChange_scaleY";
 		public static const PROPERTY_CHANGE_ROTATION	:String = "propertyChange_rotation";
-		
 		
 		public function Transform2D( x:Number = 0, y:Number = 0, rotation:Number = 0, scaleX:Number = 1, scaleY:Number = 1 )
 		{
@@ -209,6 +214,8 @@ package cadet2D.components.transforms
 		
 		protected function validateTransform():void
 		{
+            trace("validate");
+
 			_displayObject.x = _x;
 			_displayObject.y = _y;
 			_displayObject.scaleX = _scaleX;
@@ -217,69 +224,93 @@ package cadet2D.components.transforms
             _displayObject.getTransformationMatrix(null, _globalMatrix);
 		}
 
-        override protected function addedToParent():void
+        override protected function addedToScene():void
         {
-            if(parentComponent.parentComponent != null) {
-                setupParentTransform();
-				parentComponent.addEventListener(ComponentEvent.REMOVED_FROM_PARENT, onParentRemovedFromParent);
-            }
-            else {
-                parentComponent.addEventListener(ComponentEvent.ADDED_TO_PARENT, onParentAddedToParent);
-            }
+            trace("added");
+
+            var transform:Transform2D = findParentTransform();
+            setupParentTransform(transform);
         }
 
-        override protected function removedFromParent():void
+        override protected function removedFromScene():void
         {
-            parentComponent.removeEventListener(ComponentEvent.ADDED_TO_PARENT, onParentAddedToParent);
-            parentComponent.removeEventListener(ComponentEvent.REMOVED_FROM_PARENT, onParentRemovedFromParent);
-
-            if(_parentTransform != null)
-                cleanUpParentTransform();
-        }
-
-        protected function onParentAddedToParent(event:ComponentEvent):void
-        {
-            if(event.component != parentComponent) return;
-
-            parentComponent.removeEventListener(ComponentEvent.ADDED_TO_PARENT, onParentAddedToParent);
-            parentComponent.addEventListener(ComponentEvent.REMOVED_FROM_PARENT, onParentRemovedFromParent);
-
-            setupParentTransform();
-        }
-
-        protected function onParentRemovedFromParent(event:ComponentEvent):void
-        {
-            if(event.component != parentComponent) return;
-
-            parentComponent.removeEventListener(ComponentEvent.REMOVED_FROM_PARENT, onParentRemovedFromParent);
+            trace("removed");
 
             cleanUpParentTransform();
         }
 
-        protected function setupParentTransform():void
+        protected function findParentTransform():Transform2D {
+            var transform:Transform2D       = null;
+            var parent:IComponentContainer  = parentComponent.parentComponent;
+
+            while(parent != null) {
+                transform = ComponentUtil.getChildOfType(parent, Transform2D);
+
+                if(transform != null)
+                    break;
+
+                parent = parent.parentComponent;
+            }
+
+            return transform;
+        }
+
+        protected function setupParentTransform(transform:Transform2D):void
         {
-            _parentTransform = ComponentUtil.getChildOfType(parentComponent.parentComponent, Transform2D);
+            trace("set up");
 
-            if(_parentTransform != null) {
+            if(parentTransform != null)
+                throw new Error("parentTransform already set, call cleanUpParentTransform() first");
+
+            helperMatrix.identity();
+
+            if(transform != null) {
+                _parentTransform = transform;
+
                 var container:DisplayObjectContainer = DisplayObjectContainer(_parentTransform._displayObject);
-                container.addChild(_displayObject);
 
-                invalidate(TRANSFORM);
+                container.getTransformationMatrix(null, helperMatrix);
+                container.addChild(_displayObject);
 
                 _parentTransform.addEventListener(ValidationEvent.INVALIDATE, onParentTransformInvalidated);
             }
+
+            helperMatrix.invert();
+            _globalMatrix.identity();
+            _globalMatrix.scale(_scaleX, _scaleY);
+            _globalMatrix.rotate(deg2rad(_rotation));
+            _globalMatrix.translate(_x, _y);
+            _globalMatrix.concat(helperMatrix);
+
+            // transform old global coords to new local coords
+            _x = _globalMatrix.tx;
+            _y = _globalMatrix.ty;
+            _scaleX = Math.sqrt(_globalMatrix.a * _globalMatrix.a + _globalMatrix.b * _globalMatrix.b);
+            _scaleY = Math.sqrt(_globalMatrix.c * _globalMatrix.c + _globalMatrix.d * _globalMatrix.d);
+            _rotation = rad2deg(Math.atan(_globalMatrix.b / _globalMatrix.a));
+
+            invalidate(TRANSFORM);
         }
 
         protected function cleanUpParentTransform():void
         {
-			if ( _parentTransform) {
-            	_parentTransform.removeEventListener(ValidationEvent.INVALIDATE, onParentTransformInvalidated);
-			}
-			
-            _displayObject.removeFromParent();
-            _parentTransform = null;
+            trace("clean up");
 
-            invalidate(TRANSFORM);
+            // save current global coords
+            _x = _globalMatrix.tx;
+            _y = _globalMatrix.ty;
+            _scaleX = Math.sqrt(_globalMatrix.a * _globalMatrix.a + _globalMatrix.b * _globalMatrix.b);
+            _scaleY = Math.sqrt(_globalMatrix.c * _globalMatrix.c + _globalMatrix.d * _globalMatrix.d);
+            _rotation = rad2deg(Math.atan(_globalMatrix.b / _globalMatrix.a));
+
+            if(_parentTransform != null) {
+                _parentTransform.removeEventListener(ValidationEvent.INVALIDATE, onParentTransformInvalidated);
+
+                _displayObject.removeFromParent();
+                _parentTransform = null;
+
+                invalidate(TRANSFORM);
+            }
         }
 
         protected function onParentTransformInvalidated(event:ValidationEvent):void  { invalidate(TRANSFORM); }

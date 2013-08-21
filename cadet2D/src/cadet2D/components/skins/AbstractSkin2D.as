@@ -96,7 +96,7 @@ package cadet2D.components.skins
 			if ( _transform2D )
 			{
 				_transform2D.addEventListener(ValidationEvent.INVALIDATE, invalidateTransformHandler);
-				_displayObject.transformationMatrix = _transform2D.matrix;
+				_displayObject.transformationMatrix = _transform2D.globalMatrix;
 			}
 		}
 		public function get transform2D():Transform2D { return _transform2D; }
@@ -104,7 +104,7 @@ package cadet2D.components.skins
 		// Only fired if we're listening in to an external Transform2D
 		private function invalidateTransformHandler( event:ValidationEvent ):void
 		{
-			_displayObject.transformationMatrix = _transform2D.matrix;
+			//_displayObject.transformationMatrix = _transform2D.globalMatrix;
 			invalidate(TRANSFORM);
 		}
 		
