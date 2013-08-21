@@ -57,7 +57,7 @@ package cadet2DBox2D.components.behaviours
 		
 		protected var _geometry			:IGeometry;
 		protected var _transform		:Transform2D;
-		protected var _physicsProcess	:PhysicsProcess
+		protected var _physicsProcess	:PhysicsProcess;
 		protected var body				:b2Body;
 		
 		protected var storedTranslateX	:Number;
