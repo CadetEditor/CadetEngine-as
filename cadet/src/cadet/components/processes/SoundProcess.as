@@ -132,13 +132,18 @@ package cadet.components.processes
 			}
 		}
 		
+		public function stopAllSounds():void
+		{
+			for each ( var sound:ISound in soundArray ) {
+				stopSound(sound);
+			}
+		}
+		
 		override public function dispose():void
 		{
 			SoundMixer.stopAll();
 			
-			for each ( var sound:ISound in soundArray ) {
-				sound.stop();
-			}
+			stopAllSounds();
 			
 			super.dispose();
 		}
