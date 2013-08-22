@@ -48,9 +48,17 @@ package cadet2D.components.skins
 			var excludedTypes:Vector.<Class> = new Vector.<Class>();
 			excludedTypes.push(IRenderable);
 			addSiblingReference(Transform2D, "transform2D", excludedTypes);
+
+            invalidate(TRANSFORM);
 		}
-		
-		public function get displayObject():DisplayObject { return _displayObject; }
+
+        override protected function removedFromScene():void {
+            _transform2D = null;
+
+            invalidate(TRANSFORM);
+        }
+
+        public function get displayObject():DisplayObject { return _displayObject; }
 
 		override public function toString():String
 		{

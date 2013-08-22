@@ -12,32 +12,24 @@
 
 package cadet2D.components.transforms
 {
-import cadet.core.IComponent;
-import cadet.core.IComponentContainer;
-import cadet.events.ComponentEvent;
+    import cadet.core.Component;
+    import cadet.core.IComponentContainer;
     import cadet.events.ValidationEvent;
     import cadet.util.ComponentUtil;
+    import cadet.util.deg2rad;
+    import cadet.util.rad2deg;
 
-import cadet2D.components.skins.TransformableSkin;
+    import core.events.PropertyChangeEvent;
 
-import flash.geom.Matrix;
-	
-	import cadet.core.Component;
-	import cadet.util.deg2rad;
-	import cadet.util.rad2deg;
-	
-	import core.events.PropertyChangeEvent;
-	
-	import starling.display.DisplayObject;
+    import flash.geom.Matrix;
 
+    import starling.display.DisplayObject;
     import starling.display.DisplayObjectContainer;
     import starling.display.Shape;
 
-	[Cadet( inheritFromTemplate='false' )]
+    [Cadet( inheritFromTemplate='false' )]
 	public class Transform2D extends Component implements ITransform2D
 	{
-        private static var helperMatrix         :Matrix = new Matrix();
-
 		protected var _x						:Number = 0;
 		protected var _y						:Number = 0;
 		protected var _scaleX					:Number = 1;
@@ -214,8 +206,6 @@ import flash.geom.Matrix;
 		
 		protected function validateTransform():void
 		{
-            trace("validate");
-
 			_displayObject.x = _x;
 			_displayObject.y = _y;
 			_displayObject.scaleX = _scaleX;
@@ -226,16 +216,12 @@ import flash.geom.Matrix;
 
         override protected function addedToScene():void
         {
-            trace("added");
-
             var transform:Transform2D = findParentTransform();
             setupParentTransform(transform);
         }
 
         override protected function removedFromScene():void
         {
-            trace("removed");
-
             cleanUpParentTransform();
         }
 
@@ -257,52 +243,23 @@ import flash.geom.Matrix;
 
         protected function setupParentTransform(transform:Transform2D):void
         {
-            trace("set up");
-
             if(parentTransform != null)
                 throw new Error("parentTransform already set, call cleanUpParentTransform() first");
-
-            helperMatrix.identity();
 
             if(transform != null) {
                 _parentTransform = transform;
 
                 var container:DisplayObjectContainer = DisplayObjectContainer(_parentTransform._displayObject);
-
-                container.getTransformationMatrix(null, helperMatrix);
                 container.addChild(_displayObject);
+
+                invalidate(TRANSFORM);
 
                 _parentTransform.addEventListener(ValidationEvent.INVALIDATE, onParentTransformInvalidated);
             }
-
-            helperMatrix.invert();
-            _globalMatrix.identity();
-            _globalMatrix.scale(_scaleX, _scaleY);
-            _globalMatrix.rotate(deg2rad(_rotation));
-            _globalMatrix.translate(_x, _y);
-            _globalMatrix.concat(helperMatrix);
-
-            // transform old global coords to new local coords
-            _x = _globalMatrix.tx;
-            _y = _globalMatrix.ty;
-            _scaleX = Math.sqrt(_globalMatrix.a * _globalMatrix.a + _globalMatrix.b * _globalMatrix.b);
-            _scaleY = Math.sqrt(_globalMatrix.c * _globalMatrix.c + _globalMatrix.d * _globalMatrix.d);
-            _rotation = rad2deg(Math.atan(_globalMatrix.b / _globalMatrix.a));
-
-            invalidate(TRANSFORM);
         }
 
         protected function cleanUpParentTransform():void
         {
-            trace("clean up");
-
-            // save current global coords
-            _x = _globalMatrix.tx;
-            _y = _globalMatrix.ty;
-            _scaleX = Math.sqrt(_globalMatrix.a * _globalMatrix.a + _globalMatrix.b * _globalMatrix.b);
-            _scaleY = Math.sqrt(_globalMatrix.c * _globalMatrix.c + _globalMatrix.d * _globalMatrix.d);
-            _rotation = rad2deg(Math.atan(_globalMatrix.b / _globalMatrix.a));
-
             if(_parentTransform != null) {
                 _parentTransform.removeEventListener(ValidationEvent.INVALIDATE, onParentTransformInvalidated);
 
