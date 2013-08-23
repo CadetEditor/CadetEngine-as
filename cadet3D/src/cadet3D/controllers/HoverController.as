@@ -290,7 +290,7 @@ package cadet3D.controllers
 		 * @see	#panAngle
 		 * @see	#steps
 		 */
-		public override function update():void
+		public override function update(interpolate:Boolean = true):void
 		{
 			if (_tiltAngle != _currentTiltAngle || _panAngle != _currentPanAngle) {
 				

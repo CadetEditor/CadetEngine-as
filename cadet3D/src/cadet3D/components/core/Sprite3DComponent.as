@@ -1,9 +1,9 @@
 package cadet3D.components.core
 {
+	import away3d.entities.Sprite3D;
 	import away3d.materials.TextureMaterial;
 	
 	import cadet3D.components.materials.AbstractMaterialComponent;
-	import cadet3D.primitives.Sprite3D;
 	import cadet3D.util.NullBitmapTexture;
 
 	public class Sprite3DComponent extends ObjectContainer3DComponent

@@ -1,22 +1,21 @@
 package cadet3D.primitives
 {
-	import away3d.cameras.Camera3D;
+	import away3d.core.math.Plane3D;
 	import away3d.core.partition.EntityNode;
 	import away3d.core.traverse.PartitionTraverser;
-	
 	
 	/**
 	 * SkyBoxNode is a space partitioning leaf node that contains a SkyBox object.
 	 */
 	public class SkyBoxNode extends EntityNode
 	{
-		private var _skyBox : SkyBox;
+		private var _skyBox:SkyBox;
 		
 		/**
 		 * Creates a new SkyBoxNode object.
 		 * @param skyBox The SkyBox to be contained in the node.
 		 */
-		public function SkyBoxNode(skyBox : SkyBox)
+		public function SkyBoxNode(skyBox:SkyBox)
 		{
 			super(skyBox);
 			_skyBox = skyBox;
@@ -25,22 +24,20 @@ package cadet3D.primitives
 		/**
 		 * @inheritDoc
 		 */
-		override public function acceptTraverser(traverser : PartitionTraverser) : void
+		override public function acceptTraverser(traverser:PartitionTraverser):void
 		{
 			if (traverser.enterNode(this)) {
 				super.acceptTraverser(traverser);
 				traverser.applySkyBox(_skyBox);
 			}
-			traverser.leaveNode(this);
 		}
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function isInFrustum(camera : Camera3D) : Boolean
+		override public function isInFrustum(planes:Vector.<Plane3D>, numPlanes:int):Boolean
 		{
-			_skyBox.pushModelViewProjection(camera);
-			return _skyBox.bounds.isInFrustum(_skyBox.getModelViewProjectionUnsafe());
+			planes = planes;
+			numPlanes = numPlanes;
+			return true;
 		}
 	}
 }
+

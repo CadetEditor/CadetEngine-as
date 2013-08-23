@@ -19,7 +19,8 @@ package cadet3D.components.renderers
 	import away3d.containers.ObjectContainer3D;
 	import away3d.containers.View3D;
 	import away3d.lights.DirectionalLight;
-	import away3d.materials.DefaultMaterialBase;
+	import away3d.materials.MaterialBase;
+	import away3d.materials.SinglePassMaterialBase;
 	import away3d.materials.lightpickers.StaticLightPicker;
 	import away3d.materials.methods.ShadowMapMethodBase;
 	import away3d.materials.methods.SoftShadowMapMethod;
@@ -45,7 +46,7 @@ package cadet3D.components.renderers
 		private var lights						:Array;
 		private var _cameraComponent			:CameraComponent;
 		private var _rootContainer				:ObjectContainer3D;
-		private var _materials					:Vector.<DefaultMaterialBase>;
+		private var _materials					:Vector.<MaterialBase>;
 		private var object3DComponentTable		:Dictionary;
 		private var _shadowMapMethod			:ShadowMapMethodBase;
 		
@@ -61,7 +62,7 @@ package cadet3D.components.renderers
 			_view3D = new View3D();
 			_view3D.antiAlias = 2;
 			
-			_materials = new Vector.<DefaultMaterialBase>();
+			_materials = new Vector.<MaterialBase>();
 			object3DComponentTable = new Dictionary();
 			
 			preRenderEvent = new Renderer3DEvent( Renderer3DEvent.PRE_RENDER );
@@ -226,11 +227,11 @@ package cadet3D.components.renderers
 				lightPicker.lights = lights = [];
 			}
 			
-			for each ( var material:DefaultMaterialBase in _materials )
+			for each ( var material:MaterialBase in _materials )
 			{
 				material.lightPicker = null;
 			}
-			_materials = new Vector.<DefaultMaterialBase>();
+			_materials = new Vector.<MaterialBase>();
 		}
 		
 		private function componentAddedToSceneHandler( event:ComponentEvent ):void
@@ -300,9 +301,11 @@ package cadet3D.components.renderers
 			if ( _shadowMapMethod == null && lightComponent.light is DirectionalLight )
 			{
 				_shadowMapMethod = new SoftShadowMapMethod(DirectionalLight(lightComponent.light));
-				for each ( var material:DefaultMaterialBase in _materials )
+				for each ( var material:MaterialBase in _materials )
 				{
-					material.shadowMethod = _shadowMapMethod;
+					if ( material is SinglePassMaterialBase ) {
+						SinglePassMaterialBase(material).shadowMethod = _shadowMapMethod;
+					}
 				}
 			}
 		}
@@ -314,9 +317,11 @@ package cadet3D.components.renderers
 			
 			if ( _shadowMapMethod && _shadowMapMethod.castingLight == lightComponent.light )
 			{
-				for each ( var material:DefaultMaterialBase in _materials )
+				for each ( var material:MaterialBase in _materials )
 				{
-					material.shadowMethod = null;
+					if ( material is SinglePassMaterialBase ) {
+						SinglePassMaterialBase(material).shadowMethod = null;
+					}
 				}
 				_shadowMapMethod.dispose();
 			}

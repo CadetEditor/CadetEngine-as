@@ -11,13 +11,13 @@
 // Abstract
 package cadet3D.components.materials
 {
-	import away3d.materials.DefaultMaterialBase;
+	import away3d.materials.SinglePassMaterialBase;
 	
 	import cadet.core.Component;
 	
 	public class AbstractMaterialComponent extends Component
 	{
-		protected var _material	:DefaultMaterialBase;
+		protected var _material	:SinglePassMaterialBase;
 		
 		public function AbstractMaterialComponent()
 		{
@@ -34,7 +34,7 @@ package cadet3D.components.materials
 			catch( e:Error ) {}
 		}
 		
-		public function get material():DefaultMaterialBase
+		public function get material():SinglePassMaterialBase
 		{
 			return _material;
 		}
