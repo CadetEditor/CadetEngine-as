@@ -4,7 +4,7 @@
     <core:ArrayCollection x:name="dependencyNodes" x:id="3">
       <core:DependencyNode x:name="0" x:id="4">
         <Array x:name="dependants" x:id="5"/>
-        <cadet2D:Entity x:name="object" x:id="6" name="Connection_0">
+        <cadet:ComponentContainer x:name="object" x:id="6" name="Connection_0">
           <core:ArrayCollection x:name="children" x:id="7">
             <cadet2D:Connection x:name="0" x:id="8" name="Connection">
               <cadet2D:Vertex x:name="localPosB" x:id="9" y="40" x="20"/>
@@ -17,7 +17,7 @@
               <x:Ref x:name="transform2D" x:id="13"/>
             </cadet2D:ConnectionSkin>
           </core:ArrayCollection>
-        </cadet2D:Entity>
+        </cadet:ComponentContainer>
         <Array x:name="dependencies" x:id="15">
           <core:DependencyNode x:name="0" x:id="16">
             <Array x:name="dependants" x:id="17">
@@ -45,7 +45,7 @@
       <x:Ref x:name="3" x:id="22"/>
       <core:DependencyNode x:name="4" x:id="25">
         <Array x:name="dependants" x:id="26"/>
-        <cadet2D:Entity x:name="object" x:id="27" name="Connection_0">
+        <cadet:ComponentContainer x:name="object" x:id="27" name="Connection_0">
           <core:ArrayCollection x:name="children" x:id="28">
             <cadet2D:Connection x:name="0" x:id="29" name="Connection">
               <cadet2D:Vertex x:name="localPosB" x:id="30" y="25" x="25"/>
@@ -59,7 +59,7 @@
             </cadet2D:ConnectionSkin>
             <cadet2DBox2D:DistanceJointBehaviour x:name="3" x:id="34" collideConnected="1" damping="0.5" length="-1" name="DistanceJointBehaviour"/>
           </core:ArrayCollection>
-        </cadet2D:Entity>
+        </cadet:ComponentContainer>
         <Array x:name="dependencies" x:id="35">
           <core:DependencyNode x:name="0" x:id="36">
             <Array x:name="dependants" x:id="37">
@@ -90,7 +90,7 @@
   <core:ArrayCollection x:name="children" x:id="45">
     <cadet2D:Renderer2D x:name="0" x:id="46" depthSort="0" name="2D Renderer"/>
     <cadet2DBox2D:PhysicsProcess x:name="1" x:id="47" numVelocityIterations="2" numPositionIterations="2" numIterations="2" scaleFactor="0.01" name="Physics" gravity="6"/>
-    <cadet2D:Entity x:name="2" x:id="48" name="Rectangle_0">
+    <cadet:ComponentContainer x:name="2" x:id="48" name="Rectangle_0">
       <core:ArrayCollection x:name="children" x:id="49">
         <x:Ref x:name="0" x:id="11"/>
         <cadet2D:RectangleGeometry x:name="1" x:id="50" vertices="0,0:100,0:100,100:0,100" width="100" height="100" name="RectangleGeometry"/>
@@ -99,8 +99,8 @@
         </cadet2D:GeometrySkin>
         <cadet2DBox2D:RigidBodyBehaviour x:name="3" x:id="52" linearDamping="0.1" angularDamping="0.1" categoryBits="1" maskBits="4294967295" restitution="0.5" density="1" fixed="1" friction="0.8" name="RigidBodyBehaviour"/>
       </core:ArrayCollection>
-    </cadet2D:Entity>
-    <cadet2D:Entity x:name="3" x:id="53" name="Rectangle_1">
+    </cadet:ComponentContainer>
+    <cadet:ComponentContainer x:name="3" x:id="53" name="Rectangle_1">
       <core:ArrayCollection x:name="children" x:id="54">
         <x:Ref x:name="0" x:id="12"/>
         <cadet2D:RectangleGeometry x:name="1" x:id="55" vertices="0,0:50,0:50,50:0,50" width="50" height="50" name="RectangleGeometry"/>
@@ -109,9 +109,9 @@
         </cadet2D:GeometrySkin>
         <cadet2DBox2D:RigidBodyBehaviour x:name="3" x:id="57" linearDamping="0.1" angularDamping="0.1" categoryBits="1" maskBits="4294967295" restitution="0.5" density="100" fixed="0" friction="0.8" name="RigidBodyBehaviour"/>
       </core:ArrayCollection>
-    </cadet2D:Entity>
+    </cadet:ComponentContainer>
     <x:Ref x:name="4" x:id="27"/>
-    <cadet2D:Entity x:name="5" x:id="58" name="Floor">
+    <cadet:ComponentContainer x:name="5" x:id="58" name="Floor">
       <core:ArrayCollection x:name="children" x:id="59">
         <cadet2D:Transform2D x:name="0" x:id="60" name="Transform2D" matrix="1,0,0,1,30,380"/>
         <cadet2D:RectangleGeometry x:name="1" x:id="61" vertices="0,0:860,0:860,20:0,20" width="860" height="20" name="RectangleGeometry"/>
@@ -120,8 +120,8 @@
         </cadet2D:GeometrySkin>
         <cadet2DBox2D:RigidBodyBehaviour x:name="3" x:id="63" linearDamping="0.1" angularDamping="0.1" categoryBits="1" maskBits="4294967295" restitution="0.5" density="1" fixed="1" friction="0.8" name="RigidBodyBehaviour"/>
       </core:ArrayCollection>
-    </cadet2D:Entity>
-    <cadet2D:Entity x:name="6" x:id="64" name="Circle_0">
+    </cadet:ComponentContainer>
+    <cadet:ComponentContainer x:name="6" x:id="64" name="Circle_0">
       <core:ArrayCollection x:name="children" x:id="65">
         <cadet2D:Transform2D x:name="0" x:id="66" name="Transform2D" matrix="1,0,0,1,160,360"/>
         <cadet2D:CircleGeometry x:name="1" x:id="67" x="0" y="0" name="Circle" radius="20"/>
@@ -130,8 +130,8 @@
         </cadet2D:GeometrySkin>
         <cadet2DBox2D:RigidBodyBehaviour x:name="3" x:id="69" linearDamping="0.1" angularDamping="0.1" categoryBits="1" maskBits="4294967295" restitution="0.5" density="20" fixed="0" friction="0.8" name="RigidBodyBehaviour"/>
       </core:ArrayCollection>
-    </cadet2D:Entity>
-    <cadet2D:Entity x:name="7" x:id="70" name="Rectangle_2">
+    </cadet:ComponentContainer>
+    <cadet:ComponentContainer x:name="7" x:id="70" name="Rectangle_2">
       <core:ArrayCollection x:name="children" x:id="71">
         <cadet2D:Transform2D x:name="0" x:id="72" name="Transform2D" matrix="1,0,0,1,560,100"/>
         <cadet2D:RectangleGeometry x:name="1" x:id="73" vertices="0,0:20,0:20,130:0,130" width="20" height="130" name="RectangleGeometry"/>
@@ -140,8 +140,8 @@
         </cadet2D:GeometrySkin>
         <cadet2DBox2D:RigidBodyBehaviour x:name="3" x:id="75" linearDamping="0.1" angularDamping="0.1" categoryBits="1" maskBits="4294967295" restitution="0.5" density="1" fixed="0" friction="0.8" name="RigidBodyBehaviour"/>
       </core:ArrayCollection>
-    </cadet2D:Entity>
-    <cadet2D:Entity x:name="8" x:id="76" name="Rectangle_3">
+    </cadet:ComponentContainer>
+    <cadet:ComponentContainer x:name="8" x:id="76" name="Rectangle_3">
       <core:ArrayCollection x:name="children" x:id="77">
         <cadet2D:Transform2D x:name="0" x:id="78" name="Transform2D" matrix="1,0,0,1,490,230"/>
         <cadet2D:RectangleGeometry x:name="1" x:id="79" vertices="0,0:140,0:140,20:0,20" width="140" height="20" name="RectangleGeometry"/>
@@ -150,8 +150,8 @@
         </cadet2D:GeometrySkin>
         <cadet2DBox2D:RigidBodyBehaviour x:name="3" x:id="81" linearDamping="0.1" angularDamping="0.1" categoryBits="1" maskBits="4294967295" restitution="0.5" density="1" fixed="0" friction="0.8" name="RigidBodyBehaviour"/>
       </core:ArrayCollection>
-    </cadet2D:Entity>
-    <cadet2D:Entity x:name="9" x:id="82" name="Rectangle_4">
+    </cadet:ComponentContainer>
+    <cadet:ComponentContainer x:name="9" x:id="82" name="Rectangle_4">
       <core:ArrayCollection x:name="children" x:id="83">
         <cadet2D:Transform2D x:name="0" x:id="84" name="Transform2D" matrix="1,0,0,1,620,250"/>
         <cadet2D:RectangleGeometry x:name="1" x:id="85" vertices="0,0:20,0:20,130:0,130" width="20" height="130" name="RectangleGeometry"/>
@@ -160,8 +160,8 @@
         </cadet2D:GeometrySkin>
         <cadet2DBox2D:RigidBodyBehaviour x:name="3" x:id="87" linearDamping="0.1" angularDamping="0.1" categoryBits="1" maskBits="4294967295" restitution="0.5" density="1" fixed="0" friction="0.8" name="RigidBodyBehaviour"/>
       </core:ArrayCollection>
-    </cadet2D:Entity>
-    <cadet2D:Entity x:name="10" x:id="88" name="Rectangle_3">
+    </cadet:ComponentContainer>
+    <cadet:ComponentContainer x:name="10" x:id="88" name="Rectangle_3">
       <core:ArrayCollection x:name="children" x:id="89">
         <cadet2D:Transform2D x:name="0" x:id="90" name="Transform2D" matrix="1,0,0,1,630,230"/>
         <cadet2D:RectangleGeometry x:name="1" x:id="91" vertices="0,0:140,0:140,20:0,20" width="140" height="20" name="RectangleGeometry"/>
@@ -170,8 +170,8 @@
         </cadet2D:GeometrySkin>
         <cadet2DBox2D:RigidBodyBehaviour x:name="3" x:id="93" linearDamping="0.1" angularDamping="0.1" categoryBits="1" maskBits="4294967295" restitution="0.5" density="1" fixed="0" friction="0.8" name="RigidBodyBehaviour"/>
       </core:ArrayCollection>
-    </cadet2D:Entity>
-    <cadet2D:Entity x:name="11" x:id="94" name="Rectangle_2">
+    </cadet:ComponentContainer>
+    <cadet:ComponentContainer x:name="11" x:id="94" name="Rectangle_2">
       <core:ArrayCollection x:name="children" x:id="95">
         <cadet2D:Transform2D x:name="0" x:id="96" name="Transform2D" matrix="1,0,0,1,750,250"/>
         <cadet2D:RectangleGeometry x:name="1" x:id="97" vertices="0,0:20,0:20,130:0,130" width="20" height="130" name="RectangleGeometry"/>
@@ -180,8 +180,8 @@
         </cadet2D:GeometrySkin>
         <cadet2DBox2D:RigidBodyBehaviour x:name="3" x:id="99" linearDamping="0.1" angularDamping="0.1" categoryBits="1" maskBits="4294967295" restitution="0.5" density="1" fixed="0" friction="0.8" name="RigidBodyBehaviour"/>
       </core:ArrayCollection>
-    </cadet2D:Entity>
-    <cadet2D:Entity x:name="12" x:id="100" name="Rectangle_2">
+    </cadet:ComponentContainer>
+    <cadet:ComponentContainer x:name="12" x:id="100" name="Rectangle_2">
       <core:ArrayCollection x:name="children" x:id="101">
         <cadet2D:Transform2D x:name="0" x:id="102" name="Transform2D" matrix="1,0,0,1,490,250"/>
         <cadet2D:RectangleGeometry x:name="1" x:id="103" vertices="0,0:20,0:20,130:0,130" width="20" height="130" name="RectangleGeometry"/>
@@ -190,8 +190,8 @@
         </cadet2D:GeometrySkin>
         <cadet2DBox2D:RigidBodyBehaviour x:name="3" x:id="105" linearDamping="0.1" angularDamping="0.1" categoryBits="1" maskBits="4294967295" restitution="0.5" density="1" fixed="0" friction="0.8" name="RigidBodyBehaviour"/>
       </core:ArrayCollection>
-    </cadet2D:Entity>
-    <cadet2D:Entity x:name="13" x:id="106" name="Rectangle_2">
+    </cadet:ComponentContainer>
+    <cadet:ComponentContainer x:name="13" x:id="106" name="Rectangle_2">
       <core:ArrayCollection x:name="children" x:id="107">
         <cadet2D:Transform2D x:name="0" x:id="108" name="Transform2D" matrix="1,0,0,1,680,100"/>
         <cadet2D:RectangleGeometry x:name="1" x:id="109" vertices="0,0:20,0:20,130:0,130" width="20" height="130" name="RectangleGeometry"/>
@@ -200,8 +200,8 @@
         </cadet2D:GeometrySkin>
         <cadet2DBox2D:RigidBodyBehaviour x:name="3" x:id="111" linearDamping="0.1" angularDamping="0.1" categoryBits="1" maskBits="4294967295" restitution="0.5" density="1" fixed="0" friction="0.8" name="RigidBodyBehaviour"/>
       </core:ArrayCollection>
-    </cadet2D:Entity>
-    <cadet2D:Entity x:name="14" x:id="112" name="Rectangle_3">
+    </cadet:ComponentContainer>
+    <cadet:ComponentContainer x:name="14" x:id="112" name="Rectangle_3">
       <core:ArrayCollection x:name="children" x:id="113">
         <cadet2D:Transform2D x:name="0" x:id="114" name="Transform2D" matrix="1,0,0,1,560,80"/>
         <cadet2D:RectangleGeometry x:name="1" x:id="115" vertices="0,0:140,0:140,20:0,20" width="140" height="20" name="RectangleGeometry"/>
@@ -210,6 +210,6 @@
         </cadet2D:GeometrySkin>
         <cadet2DBox2D:RigidBodyBehaviour x:name="3" x:id="117" linearDamping="0.1" angularDamping="0.1" categoryBits="1" maskBits="4294967295" restitution="0.5" density="1" fixed="0" friction="0.8" name="RigidBodyBehaviour"/>
       </core:ArrayCollection>
-    </cadet2D:Entity>
+    </cadet:ComponentContainer>
   </core:ArrayCollection>
 </cadet:CadetScene>
