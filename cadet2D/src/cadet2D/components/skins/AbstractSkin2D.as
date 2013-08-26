@@ -52,12 +52,6 @@ package cadet2D.components.skins
             invalidate(TRANSFORM);
 		}
 
-        override protected function removedFromScene():void {
-            _transform2D = null;
-
-            invalidate(TRANSFORM);
-        }
-
         public function get displayObject():DisplayObject { return _displayObject; }
 
 		override public function toString():String
@@ -109,8 +103,7 @@ package cadet2D.components.skins
 		}
 		public function get transform2D():Transform2D { return _transform2D; }
 		
-		// Only fired if we're listening in to an external Transform2D
-		private function invalidateTransformHandler( event:ValidationEvent ):void
+		protected function invalidateTransformHandler( event:ValidationEvent ):void
 		{
 			//_displayObject.transformationMatrix = _transform2D.globalMatrix;
 			invalidate(TRANSFORM);
