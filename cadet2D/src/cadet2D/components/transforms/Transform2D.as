@@ -50,8 +50,23 @@ package cadet2D.components.transforms
 		public static const PROPERTY_CHANGE_SCALEX		:String = "propertyChange_scaleX";
 		public static const PROPERTY_CHANGE_SCALEY		:String = "propertyChange_scaleY";
 		public static const PROPERTY_CHANGE_ROTATION	:String = "propertyChange_rotation";
-		
-		public function Transform2D( x:Number = 0, y:Number = 0, rotation:Number = 0, scaleX:Number = 1, scaleY:Number = 1 )
+
+        public static function findParentTransform( parent:IComponentContainer ):Transform2D {
+            var transform:Transform2D = null;
+
+            while(parent != null) {
+                transform = ComponentUtil.getChildOfType(parent, Transform2D);
+
+                if(transform != null)
+                    break;
+
+                parent = parent.parentComponent;
+            }
+
+            return transform;
+        }
+
+        public function Transform2D( x:Number = 0, y:Number = 0, rotation:Number = 0, scaleX:Number = 1, scaleY:Number = 1 )
 		{
 			super( "Transform2D" );
 			
@@ -180,6 +195,12 @@ package cadet2D.components.transforms
             return _globalMatrix;
         }
 
+        [Serializable]
+        public function set parentTransform(value:ITransform2D):void
+        {
+            cleanUpParentTransform();
+            setupParentTransform(Transform2D(value));
+        }
         public function get parentTransform():ITransform2D { return _parentTransform; }
 
         [Serializable(alias="matrix")]
@@ -194,7 +215,36 @@ package cadet2D.components.transforms
 			var m:Matrix = matrix;
 			return m.a + "," + m.b + "," + m.c + "," + m.d + "," + m.tx + "," + m.ty;
 		}
-		
+
+        public function setupParentTransform( transform:Transform2D ):void
+        {
+            if(parentTransform != null)
+                throw new Error("parentTransform already set, call cleanUpParentTransform() first");
+
+            if(transform != null) {
+                _parentTransform = transform;
+
+                var container:DisplayObjectContainer = DisplayObjectContainer(_parentTransform._displayObject);
+                container.addChild(_displayObject);
+
+                invalidate(TRANSFORM);
+
+                _parentTransform.addEventListener(ValidationEvent.INVALIDATE, onParentTransformInvalidated);
+            }
+        }
+
+        public function cleanUpParentTransform():void
+        {
+            if(_parentTransform != null) {
+                _parentTransform.removeEventListener(ValidationEvent.INVALIDATE, onParentTransformInvalidated);
+
+                _displayObject.removeFromParent();
+                _parentTransform = null;
+
+                invalidate(TRANSFORM);
+            }
+        }
+
 		override public function validateNow():void
 		{
 			if (isInvalid(TRANSFORM)) {
@@ -216,58 +266,16 @@ package cadet2D.components.transforms
 
         override protected function addedToScene():void
         {
-            var transform:Transform2D = findParentTransform();
-            setupParentTransform(transform);
+            // it's already set when deserializing
+            if( _parentTransform == null) {
+                var transform:Transform2D = findParentTransform(parentComponent.parentComponent);
+                setupParentTransform(transform);
+            }
         }
 
         override protected function removedFromScene():void
         {
             cleanUpParentTransform();
-        }
-
-        protected function findParentTransform():Transform2D {
-            var transform:Transform2D       = null;
-            var parent:IComponentContainer  = parentComponent.parentComponent;
-
-            while(parent != null) {
-                transform = ComponentUtil.getChildOfType(parent, Transform2D);
-
-                if(transform != null)
-                    break;
-
-                parent = parent.parentComponent;
-            }
-
-            return transform;
-        }
-
-        protected function setupParentTransform(transform:Transform2D):void
-        {
-            if(parentTransform != null)
-                throw new Error("parentTransform already set, call cleanUpParentTransform() first");
-
-            if(transform != null) {
-                _parentTransform = transform;
-
-                var container:DisplayObjectContainer = DisplayObjectContainer(_parentTransform._displayObject);
-                container.addChild(_displayObject);
-
-                invalidate(TRANSFORM);
-
-                _parentTransform.addEventListener(ValidationEvent.INVALIDATE, onParentTransformInvalidated);
-            }
-        }
-
-        protected function cleanUpParentTransform():void
-        {
-            if(_parentTransform != null) {
-                _parentTransform.removeEventListener(ValidationEvent.INVALIDATE, onParentTransformInvalidated);
-
-                _displayObject.removeFromParent();
-                _parentTransform = null;
-
-                invalidate(TRANSFORM);
-            }
         }
 
         protected function onParentTransformInvalidated(event:ValidationEvent):void  { invalidate(TRANSFORM); }

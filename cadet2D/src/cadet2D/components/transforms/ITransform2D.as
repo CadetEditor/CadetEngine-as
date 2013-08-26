@@ -20,5 +20,6 @@ package cadet2D.components.transforms
 		function get matrix():Matrix
 		function get globalMatrix():Matrix
         function get parentTransform():ITransform2D
+        function set parentTransform( value:ITransform2D ):void
 	}
 }
