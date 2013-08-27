@@ -10,29 +10,29 @@
 
 package cadet2D.components.skins
 {
-	import flash.geom.Point;
-	
-	import cadet.events.ValidationEvent;
-	
-	import cadet2D.components.connections.Pin;
-	import cadet2D.components.renderers.IRenderer2D;
-	import cadet2D.components.renderers.Renderer2D;
+    import cadet.events.ValidationEvent;
 
-	import starling.display.Graphics;
-	import starling.display.Shape;
-	
-//	[CadetEditor( transformable="false" )]
+    import cadet2D.components.connections.Pin;
+
+    import flash.geom.Point;
+
+    import starling.core.Starling;
+    import starling.display.Graphics;
+    import starling.display.Shape;
+
+    //	[CadetEditor( transformable="false" )]
 	public class PinSkin extends AbstractSkin2D
 	{
 		private static const DISPLAY		:String = "display";
-		
+
+        private static var helperPoint      :Point = new Point();
+
 		private var _fillColor:uint;
 		private var _fillAlpha:Number;
 		private var _radius:Number;
 		
 		private var _pin				:Pin;
-		private var _renderer			:Renderer2D;
-		
+
 		private var _shape				:Shape;
 		
 		public function PinSkin( fillColor:uint = 0xFFFFFF, fillAlpha:Number = 0.5, radius:Number = 5 )
@@ -51,15 +51,7 @@ package cadet2D.components.skins
 			super.addedToScene();
 			
 			addSiblingReference(Pin, "pin");
-			addSceneReference( IRenderer2D, "renderer" );
 		}
-				
-		public function set renderer( value:IRenderer2D ):void
-		{
-			_renderer = Renderer2D(value);
-			invalidate(DISPLAY);
-		}
-		public function get renderer():IRenderer2D { return _renderer; }
 
 		public function set pin( value:Pin ):void
 		{
@@ -92,29 +84,13 @@ package cadet2D.components.skins
 		
 		override protected function validateDisplay():Boolean
 		{
-			if ( !_pin || !_pin.localPos ) return false;
-			if ( !_renderer || !_renderer.viewport ) return false;
-			if ( !_pin.transformA ) return false;
-			
-//			if (!Starling.current) return;
-//			if (!_transform) return;
-			
-			var graphics:Graphics = _shape.graphics;
-			graphics.clear();
-			graphics.beginFill( _fillColor, _fillAlpha );
-			
-			var pt:Point = _pin.localPos.toPoint();
-			pt = _pin.transformA.matrix.transformPoint( pt ); // presumes the transform = (0,0)
-			
-			// Translate world coords to viewport coords
-			pt = _renderer.worldToViewport(pt);
-			pt = Renderer2D(_renderer).viewport.localToGlobal(pt);
-			pt = _shape.globalToLocal(pt);
-			
-//			var pt:Point = new Point(0,0);
-												
-			graphics.drawCircle( pt.x, pt.y, radius );
-			
+            if (!Starling.current) return false;
+
+            var graphics:Graphics = _shape.graphics;
+            graphics.clear();
+            graphics.beginFill( _fillColor, _fillAlpha );
+            graphics.drawCircle( 0, 0, radius );
+
 			super.validateDisplay();
 			
 			return true;

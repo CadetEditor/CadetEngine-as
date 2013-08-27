@@ -208,7 +208,7 @@ package cadet2DBox2D.components.behaviours
 			if ( !physicsBehaviourB ) return;
 			if ( !_physicsProcess ) return;
 			if ( !_pin || !_pin.localPos) return;
-			
+
 			physicsBehaviourA.validateNow();
 			physicsBehaviourB.validateNow();
 			
@@ -222,9 +222,9 @@ package cadet2DBox2D.components.behaviours
 			jointDef.motorSpeed = _motorSpeed;
 			
 			var pt:Point = _pin.localPos.toPoint(); // needs to be local to the shape not world coords
-			pt = _pin.transformA.matrix.transformPoint( pt ); //presumes transform = (0,0)
-			var pos:b2Vec2 = new b2Vec2( pt.x * _physicsProcess.scaleFactor, pt.y * _physicsProcess.scaleFactor );
-			
+			pt = _pin.transformA.globalMatrix.transformPoint( pt ); //presumes transform = (0,0)
+            var pos:b2Vec2 = new b2Vec2( pt.x * _physicsProcess.scaleFactor, pt.y * _physicsProcess.scaleFactor );
+
 			jointDef.Initialize( physicsBehaviourA.getBody(), physicsBehaviourB.getBody(), pos );
 			joint = b2RevoluteJoint(_physicsProcess.createJoint( jointDef ));
 		}
