@@ -32,8 +32,10 @@ package cadet2D.components.skins
                 if(_transform2D == null)
                     _internalTransform.addEventListener(ValidationEvent.INVALIDATE, onInternalTransformInvalidated);
 
-                var parentTransform:Transform2D = Transform2D.findParentTransform(parentComponent.parentComponent);
-                _internalTransform.setupParentTransform(parentTransform); // may be null
+                if(parentComponent != null) {
+                    var parentTransform:Transform2D = Transform2D.findParentTransform(parentComponent.parentComponent);
+                    _internalTransform.setupParentTransform(parentTransform); // may be null
+                }
             }
         }
         public function get internalTransform():Transform2D { return _internalTransform; }
@@ -155,8 +157,10 @@ package cadet2D.components.skins
 
                 _internalTransform.cleanUpParentTransform();
 
-                var parentTransform:Transform2D = Transform2D.findParentTransform(parentComponent.parentComponent);
-                _internalTransform.setupParentTransform(parentTransform); // may be null
+                if(parentComponent != null) {
+                    var parentTransform:Transform2D = Transform2D.findParentTransform(parentComponent.parentComponent);
+                    _internalTransform.setupParentTransform(parentTransform); // may be null
+                }
             }
             else {
                 _internalTransform.removeEventListener(ValidationEvent.INVALIDATE, onInternalTransformInvalidated);
