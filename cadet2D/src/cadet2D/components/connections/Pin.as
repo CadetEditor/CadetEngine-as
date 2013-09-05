@@ -12,60 +12,43 @@
 
 package cadet2D.components.connections
 {
-	import flash.geom.Point;
-	
-	import cadet.core.Component;
-	import cadet.events.ValidationEvent;
-	import cadet.util.ComponentUtil;
-	
-	import cadet2D.components.renderers.Renderer2D;
-	import cadet2D.components.skins.IRenderable;
-	import cadet2D.components.transforms.Transform2D;
-	import cadet2D.geom.Vertex;
-	
-	public class Pin extends Component
+    import cadet.core.Component;
+    import cadet.events.ValidationEvent;
+
+    import cadet2D.components.renderers.Renderer2D;
+    import cadet2D.components.transforms.Transform2D;
+    import cadet2D.geom.Vertex;
+
+    import flash.geom.Matrix;
+    import flash.geom.Point;
+
+    import starling.utils.MatrixUtil;
+
+    public class Pin extends Component
 	{
-		private static const SKINA			:String = "skinA";
-		private static const DISPLAY		:String = "display";
 		private static const TRANSFORM		:String = "transform";
 		private static const TRANSFORM_AB	:String = "transformAB";
-		
-		private var _skinA			:IRenderable;
-		private var _renderer		:Renderer2D;
-		
-		private var _transform		:Transform2D; // The transform sibling of the Pin component
-		private var _transformA		:Transform2D;
-		private var _transformB		:Transform2D;
-		private var _localPos		:Vertex;
+
+        private static var helperPoint      :Point  = new Point();
+        private static var helperMatrix     :Matrix = new Matrix();
+
+		private var _transform		:Transform2D;   // The transform sibling of the Pin component
+		private var _transformA		:Transform2D;   // Pin uses this transform coordinate system (it's 'inside' this transform)
+		private var _transformB		:Transform2D;   // Transform pinned to transformA
+		private var _localPos		:Vertex;        // Local point in transform coordinate system.
 		
 		public function Pin( name:String = "Pin" )
 		{			
 			super(name);
 			
-			_localPos	 = new Vertex();
+			_localPos = new Vertex();
 		}
 		
 		override protected function addedToScene():void
 		{
 			addSiblingReference(Transform2D, "transform");
-			addSceneReference(Renderer2D, "renderer");
 		}
-		
-		public function set renderer( value:Renderer2D ):void
-		{
-			if ( _renderer ) {
-				_renderer.removeEventListener(ValidationEvent.INVALIDATE, invalidateDisplayHandler);
-			}
-			
-			_renderer = value;
-			
-			if ( _renderer ) {
-				_renderer.addEventListener(ValidationEvent.INVALIDATE, invalidateDisplayHandler);
-			}
-			invalidate(DISPLAY);
-		}
-		public function get renderer():Renderer2D { return _renderer; }
-		
+
 		public function set transform( value:Transform2D ):void
 		{
 			if ( _transform ) {
@@ -96,7 +79,6 @@ package cadet2D.components.connections
 			}
 			
 			invalidate(TRANSFORM_AB);
-			invalidate(SKINA);
 		}
 		public function get transformA():Transform2D { return _transformA; }
 		
@@ -125,11 +107,6 @@ package cadet2D.components.connections
 		}
 		public function get localPos():Vertex { return _localPos; }
 		
-		private function invalidateDisplayHandler( event:ValidationEvent ):void
-		{
-			invalidate(DISPLAY);
-		}
-		
 		protected function invalidateTransformHandler( event:ValidationEvent ):void
 		{
 			//trace("INVALIDATE PIN TRANSFORM");
@@ -149,49 +126,35 @@ package cadet2D.components.connections
 			if ( isInvalid( TRANSFORM ) ) {
 				validatePinLocalPosFromTransform();
 			} 
-			if ( isInvalid( TRANSFORM_AB ) || isInvalid( DISPLAY ) ) {
+			if ( isInvalid( TRANSFORM_AB )) {
 				validatePinTransformFromSkin();
 			}
-			if ( isInvalid( SKINA ) ) {
-				skinAValid = validateSkinA();
-			}
-			
+
 			super.validateNow();
-			
-			if (!skinAValid) {
-				invalidate(SKINA);
-			}
-		}
-		
-		private function validateSkinA():Boolean
-		{
-			if (!_transformA || !_transformA.parentComponent ) return false;
-			
-			_skinA = ComponentUtil.getChildOfType(_transformA.parentComponent, IRenderable);
-			
-			//trace("VALIDATE SKIN A "+_skinA.name);
-			
-			return true;
 		}
 		
 		// When you change the transform of SkinA, set the pin's transform to match the local pos
  		private function validatePinTransformFromSkin():void
 		{
-			if (!_transform) return;
-			if (!_renderer || !_renderer.viewport) return;
-			if (!_skinA) return;
-			
-			var offset:Point = new Point(_localPos.x, _localPos.y);
-			
-			// Convert the point from local skin space to global (screen) space 
-			offset = _skinA.displayObject.localToGlobal(offset);
-			// Change the point from viewport space to screen space
-			offset = renderer.viewport.globalToLocal(offset);
-			// Change the point from screen space to world space
-			offset = renderer.viewportToWorld(offset);
-			
-			_transform.x = offset.x;
-			_transform.y = offset.y;
+			if (_transform == null || _transformA == null) return;
+			//if (!_renderer || !_renderer.viewport) return;
+			//if (!_skinA) return;
+
+			// Convert the point from local skin space to global (screen) space
+			//offset = _skinA.displayObject.localToGlobal(offset);
+			MatrixUtil.transformCoords(_transformA.globalMatrix, _localPos.x, _localPos.y, helperPoint);
+
+            helperMatrix.identity();
+
+            if(_transform.parentTransform != null) {
+                helperMatrix.concat(_transform.parentTransform.globalMatrix);
+                helperMatrix.invert();
+            }
+
+            MatrixUtil.transformCoords(helperMatrix, helperPoint.x, helperPoint.y, helperPoint);
+
+            _transform.x = helperPoint.x;
+			_transform.y = helperPoint.y;
 			
 			//trace("validatePinTransformFromSkin transform x "+_transform.x+" y "+_transform.y);
 		}
@@ -199,22 +162,25 @@ package cadet2D.components.connections
 		// When you drag the pin itself around, set the pin's local pos to match its transform
 		private function validatePinLocalPosFromTransform():void
 		{
-			if (!_transform) return;
-			if (!_renderer || !_renderer.viewport) return;
-			if (!_skinA) return;
-			
-			var offset:Point = new Point(_transform.x, _transform.y);
-			// Get the viewport location of the click within world space
-			offset = renderer.worldToViewport(offset);
-			
-			// Change the point from viewport space to screen space
-			offset = renderer.viewport.localToGlobal(offset);
-			
-			// Convert the point from global (screen) space to local skin space
-			offset = _skinA.displayObject.globalToLocal(offset);
-			
-			localPos = new Vertex(offset.x, offset.y);
-			
+			if (!_transform || !_transformA) return;
+			//if (!_renderer || !_renderer.viewport) return;
+			//if (!_skinA) return;
+
+            // Get the global origin
+            MatrixUtil.transformCoords(_transform.globalMatrix, 0, 0, helperPoint);
+
+            helperMatrix.identity();
+            helperMatrix.concat(_transformA.globalMatrix);
+            helperMatrix.invert();
+
+            // Convert the point from global (screen) space to local _transformA space
+            MatrixUtil.transformCoords(helperMatrix, helperPoint.x, helperPoint.y, helperPoint);
+
+            _localPos.x = helperPoint.x;
+            _localPos.y = helperPoint.y;
+
+            invalidate(TRANSFORM);
+
 			//trace("validatePinLocalPosFromTransform localPos x "+localPos.x+" y "+localPos.y);
 		}
 		

@@ -90,7 +90,7 @@ internal class Reference
 	{
 		this.target = target;
 		this.type = type;
-		this.host = host
+		this.host = host;
 		this.property = property;
 		
 		target.addEventListener(ComponentContainerEvent.CHILD_ADDED, childAddedHandler);
@@ -100,18 +100,17 @@ internal class Reference
 		_excludedComponents.push(host);
 		
 		_excludedTypes = excludedTypes;
-		
-		var child:IComponent = ComponentUtil.getChildOfType(target, type, false, _excludedComponents, _excludedTypes);
-		if ( child ) {
-			host[property] = child;
-		}
+
+        host[property] = ComponentUtil.getChildOfType(target, type, false, _excludedComponents, _excludedTypes);
 	}
 	
 	public function dispose():void
 	{
 		target.removeEventListener(ComponentContainerEvent.CHILD_ADDED, childAddedHandler);
 		target.removeEventListener(ComponentContainerEvent.CHILD_REMOVED, childRemovedHandler);
-		
+
+        host[property] = null;
+
 		target = null;
 		host = null;
 		type = null;

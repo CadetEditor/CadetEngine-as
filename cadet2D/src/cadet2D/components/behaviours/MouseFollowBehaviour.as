@@ -1,27 +1,32 @@
 package cadet2D.components.behaviours
 {
-	import cadet.core.Component;
-	import cadet.core.IRenderer;
-	import cadet.core.ISteppableComponent;
-	import cadet.events.RendererEvent;
-	
-	import cadet2D.components.renderers.Renderer2D;
-	import cadet2D.components.transforms.Transform2D;
-	
-	import starling.display.DisplayObject;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
-	
-	public class MouseFollowBehaviour extends Component implements ISteppableComponent
+    import cadet.core.Component;
+    import cadet.core.IRenderer;
+    import cadet.core.ISteppableComponent;
+    import cadet.events.RendererEvent;
+
+    import cadet2D.components.renderers.Renderer2D;
+    import cadet2D.components.transforms.Transform2D;
+
+    import flash.geom.Matrix;
+    import flash.geom.Point;
+
+    import starling.display.DisplayObject;
+    import starling.events.Touch;
+    import starling.events.TouchEvent;
+    import starling.events.TouchPhase;
+    import starling.utils.MatrixUtil;
+
+    public class MouseFollowBehaviour extends Component implements ISteppableComponent
 	{
-		public var transform		:Transform2D;
-		private var _renderer		:Renderer2D;
-		private var _constrain		:String;
-		
-		private var targetX			:Number = 0;
-		private var targetY			:Number = 0;
-		
+        private static var helperMatrix :Matrix = new Matrix();
+
+		public var transform		    :Transform2D;
+		private var _renderer		    :Renderer2D;
+		private var _constrain		    :String;
+
+        private var targetPoint         :Point = new Point(0, 0);
+
 		public static const CONSTRAIN_X	:String = "x";
 		public static const CONSTRAIN_Y	:String = "y";
 		
@@ -40,8 +45,8 @@ package cadet2D.components.behaviours
 		{
 			if ( !transform || !renderer ) return;
 			
-			if ( _constrain != CONSTRAIN_X )	transform.x -= (transform.x - targetX) * 0.1;
-			if ( _constrain != CONSTRAIN_Y )	transform.y -= (transform.y - targetY) * 0.1;
+			if ( _constrain != CONSTRAIN_X )	transform.x -= (transform.x - targetPoint.x) * 0.1;
+			if ( _constrain != CONSTRAIN_Y )	transform.y -= (transform.y - targetPoint.y) * 0.1;
 		}
 		
 		[Serializable][Inspectable( editor="DropDownMenu", dataProvider="[<None>,x,y]" )]
@@ -85,13 +90,22 @@ package cadet2D.components.behaviours
 			
 			var dispObj:DisplayObject = DisplayObject(_renderer.viewport.stage);
 			var touches:Vector.<Touch> = event.getTouches(dispObj);
-			
+
 			for each (var touch:Touch in touches)
 			{
 				// include MOVED for touch screens (where hover isn't available)
 				if (touch.phase == TouchPhase.HOVER || touch.phase == TouchPhase.MOVED) {
-					targetX = touch.globalX;
-					targetY = touch.globalY;
+                    if(transform.parentTransform) {
+                        helperMatrix.identity();
+                        helperMatrix.concat(transform.parentTransform.globalMatrix);    // get parent -> global matrix
+                        helperMatrix.invert();                                          // and change it to global -> parent
+
+                        var p:Point = MatrixUtil.transformCoords(helperMatrix, touch.globalX, touch.globalY, targetPoint);
+                    }
+                    else {
+                        targetPoint.x = touch.globalX;
+                        targetPoint.y = touch.globalY;
+                    }
 					break;
 				}
 			}

@@ -83,11 +83,12 @@ package cadet.core
 		
 		override public function validateNow():void
 		{
-			super.validateNow();
 			for each ( var child:IComponent in _children )
 			{
 				child.validateNow();
 			}
+
+            super.validateNow();
 		}
 		
 		private var previousChildSource:Array = [];

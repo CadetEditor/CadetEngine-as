@@ -103,12 +103,12 @@ package cadet2D.components.skins
 			graphics.clear();
 			graphics.lineStyle( lineThickness, lineColor, lineAlpha );
 			
-			var pt1:Point = _connection.transformA.matrix.transformPoint( _connection.localPosA.toPoint() );
+			var pt1:Point = _connection.transformA.globalMatrix.transformPoint( _connection.localPosA.toPoint() );
 			pt1 = _renderer.worldToViewport(pt1);
 			pt1 = _renderer.viewport.localToGlobal(pt1);
 			pt1 = _shape.globalToLocal(pt1);
 			
-			var pt2:Point = _connection.transformB.matrix.transformPoint( _connection.localPosB.toPoint() );
+			var pt2:Point = _connection.transformB.globalMatrix.transformPoint( _connection.localPosB.toPoint() );
 			pt2 = _renderer.worldToViewport(pt2);
 			pt2 = _renderer.viewport.localToGlobal(pt2);
 			pt2 = _shape.globalToLocal(pt2);

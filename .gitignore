@@ -2,3 +2,6 @@
 Thumbs.db
 *.swf
 bin/
+cadet/out/*
+cadet2D/out/*
+cadet2DBox2D/out/*

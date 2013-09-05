@@ -197,16 +197,16 @@ package cadet2D.components.skins
 		override public function clone():IRenderable
 		{
 			var newSkin:ImageSkin = new ImageSkin();
-			newSkin.rotation = _rotation;
-			newSkin.scaleX = _scaleX;
-			newSkin.scaleY = _scaleY;
+			newSkin.rotation = rotation;
+			newSkin.scaleX = scaleX;
+			newSkin.scaleY = scaleY;
 			newSkin.texture = _texture;
 			newSkin.textureAtlas = _textureAtlas;
 			newSkin.texturesPrefix = _texturesPrefix;
 			newSkin.touchable = _displayObject.touchable;
 			newSkin.transform2D = _transform2D;
-			newSkin.x = _x;
-			newSkin.y = _y;
+			newSkin.x = x;
+			newSkin.y = y;
 			newSkin.width = _width;
 			newSkin.height = _height;
 			return newSkin;
