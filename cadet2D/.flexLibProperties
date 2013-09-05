@@ -18,6 +18,12 @@
     <classEntry path="cadet2D.components.materials.IMaterialComponent"/>
     <classEntry path="cadet2D.util.DisplayUtil"/>
     <classEntry path="cadet2D.components.processes.IDebugDrawProcess"/>
+    <classEntry path="cadet2D.operations.CollapseTransformOperation"/>
+    <classEntry path="cadet2D.operations.MakeConvexOperation"/>
+    <classEntry path="cadet2D.operations.CollapseTransformsOperation"/>
+    <classEntry path="cadet2D.operations.CenterOriginsOperation"/>
+    <classEntry path="cadet2D.operations.CenterOriginOperation"/>
+    <classEntry path="cadet2D.operations.ConvertToPolygonOperation"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

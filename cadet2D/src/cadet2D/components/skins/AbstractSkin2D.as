@@ -12,18 +12,18 @@
 
 package cadet2D.components.skins
 {
-	import cadet.core.Component;
-	import cadet.core.IComponent;
-	import cadet.core.IComponentContainer;
-	import cadet.events.ValidationEvent;
-	import cadet.util.deg2rad;
-	
-	import cadet2D.components.transforms.Transform2D;
-	
-	import starling.display.DisplayObject;
-	import starling.display.Sprite;
+    import cadet.core.Component;
+    import cadet.core.IComponent;
+    import cadet.core.IComponentContainer;
+    import cadet.events.ValidationEvent;
+    import cadet.util.deg2rad;
 
-	public class AbstractSkin2D extends Component implements IRenderable
+    import cadet2D.components.transforms.Transform2D;
+
+    import starling.display.DisplayObject;
+    import starling.display.Sprite;
+
+    public class AbstractSkin2D extends Component implements IRenderable
 	{		
 		protected var _displayObject			:DisplayObject;
 		
@@ -48,9 +48,11 @@ package cadet2D.components.skins
 			var excludedTypes:Vector.<Class> = new Vector.<Class>();
 			excludedTypes.push(IRenderable);
 			addSiblingReference(Transform2D, "transform2D", excludedTypes);
+
+            invalidate(TRANSFORM);
 		}
-		
-		public function get displayObject():DisplayObject { return _displayObject; }
+
+        public function get displayObject():DisplayObject { return _displayObject; }
 
 		override public function toString():String
 		{
@@ -96,15 +98,14 @@ package cadet2D.components.skins
 			if ( _transform2D )
 			{
 				_transform2D.addEventListener(ValidationEvent.INVALIDATE, invalidateTransformHandler);
-				_displayObject.transformationMatrix = _transform2D.matrix;
+				_displayObject.transformationMatrix = _transform2D.globalMatrix;
 			}
 		}
 		public function get transform2D():Transform2D { return _transform2D; }
 		
-		// Only fired if we're listening in to an external Transform2D
-		private function invalidateTransformHandler( event:ValidationEvent ):void
+		protected function invalidateTransformHandler( event:ValidationEvent ):void
 		{
-			_displayObject.transformationMatrix = _transform2D.matrix;
+			//_displayObject.transformationMatrix = _transform2D.globalMatrix;
 			invalidate(TRANSFORM);
 		}
 		
@@ -129,12 +130,19 @@ package cadet2D.components.skins
 		protected function validateTransform():void
 		{
 			if (!_transform2D) return;
-			
-			_displayObject.x = _transform2D.x;
-			_displayObject.y = _transform2D.y;
-			_displayObject.scaleX = _transform2D.scaleX;
-			_displayObject.scaleY = _transform2D.scaleY;
-			_displayObject.rotation = deg2rad(_transform2D.rotation);
+
+            // if this transform uses parent coords space, copy the global matrix to display object
+            if(_transform2D.parentTransform) {
+                _displayObject.transformationMatrix = _transform2D.globalMatrix;
+            }
+            // if this is a top-level transform, simply set the properties (may be faster)
+            else {
+                _displayObject.x = _transform2D.x;
+                _displayObject.y = _transform2D.y;
+                _displayObject.scaleX = _transform2D.scaleX;
+                _displayObject.scaleY = _transform2D.scaleY;
+                _displayObject.rotation = deg2rad(_transform2D.rotation);
+            }
 		}
 		
 		protected function validateDisplay():Boolean

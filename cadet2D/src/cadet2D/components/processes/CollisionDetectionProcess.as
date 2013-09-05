@@ -20,8 +20,10 @@ package cadet2D.components.processes
 	import cadet2D.components.geom.ICollisionShape;
 	import cadet2D.components.transforms.Transform2D;
 	import cadet2D.events.CollisionEvent;
-	
-	public class CollisionDetectionProcess extends Component implements ISteppableComponent
+
+    import flash.geom.Matrix;
+
+    public class CollisionDetectionProcess extends Component implements ISteppableComponent
 	{
 		private var boundingSpheres	:Vector.<BoundingSphere>;
 		
@@ -87,11 +89,21 @@ package cadet2D.components.processes
 				{
 					var boundingSphereB:BoundingSphere = boundingSpheres[j];
 					if (boundingSphereB.transform == null) continue;
-					
-					var dx:Number = Transform2D(boundingSphereA.transform).x - Transform2D(boundingSphereB.transform).x;
-					var dy:Number = Transform2D(boundingSphereA.transform).y - Transform2D(boundingSphereB.transform).y;
-					var d:Number = dx*dx + dy*dy;
-					var r:Number = boundingSphereA.radius + boundingSphereB.radius;
+
+                    var mA:Matrix = Transform2D(boundingSphereA.transform).globalMatrix;
+                    var mB:Matrix = Transform2D(boundingSphereB.transform).globalMatrix;
+					var dx:Number = mA.tx - mB.tx;
+					var dy:Number = mA.ty - mB.ty;
+
+                    var sqrScaleXA:Number = mA.a * mA.a + mA.b * mA.b;
+                    var sqrScaleYA:Number = mA.c * mA.c + mA.d * mA.d;
+                    var scaleA:Number = sqrScaleXA > sqrScaleYA ? Math.sqrt(sqrScaleXA) : Math.sqrt(sqrScaleYA);
+                    var sqrScaleXB:Number = mB.a * mB.a + mB.b * mB.b;
+                    var sqrScaleYB:Number = mB.c * mB.c + mB.d * mB.d;
+                    var scaleB:Number = sqrScaleXB > sqrScaleYB ? Math.sqrt(sqrScaleXB) : Math.sqrt(sqrScaleYB);
+
+                    var d:Number = dx*dx + dy*dy;
+					var r:Number = scaleA * boundingSphereA.radius + scaleB * boundingSphereB.radius;
 					if ( d > r*r ) continue;
 					
 					// A collision has occured. Rather than dispatching the event right away, add it

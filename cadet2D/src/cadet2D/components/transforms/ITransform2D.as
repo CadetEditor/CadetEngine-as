@@ -18,5 +18,8 @@ package cadet2D.components.transforms
 		function get rotation():Number
 		function set matrix( value:Matrix ):void
 		function get matrix():Matrix
+		function get globalMatrix():Matrix
+        function get parentTransform():ITransform2D
+        function set parentTransform( value:ITransform2D ):void
 	}
 }
