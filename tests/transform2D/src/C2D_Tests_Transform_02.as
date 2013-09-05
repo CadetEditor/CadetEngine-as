@@ -1,6 +1,5 @@
-// Similar to 00, though simulates editor delay by requiring the user to press SpaceBar
-// to remove the second rectangle entity from the scene, then press it again to re-add it to the
-// first rectangle entity.
+// Press SPACEBAR twice to step scene.
+// 3rd component is removed from scene and added as child of second.
 
 package
 {
@@ -24,19 +23,20 @@ package
 	import components.behaviours.AnimateRotationBehaviour;
 	
 	[SWF( width="1024", height="768", backgroundColor="0x002135", frameRate="60" )]
-	public class C2D_Tests_Transform_01 extends Sprite
+	public class C2D_Tests_Transform_02 extends Sprite
 	{
 		private var cadetScene:CadetScene;
 		private var rectangleEntity1:ComponentContainer;
 		private var rectangleEntity2:ComponentContainer;
+		private var rectangleEntity3:ComponentContainer;
 		
 		private var count:uint = 0;
 		
-		public function C2D_Tests_Transform_01()
+		public function C2D_Tests_Transform_02()
 		{
 			var tf:TextField = new TextField();
 			addChild(tf);
-			tf.text = "Press SPACEBAR twice to step scene.\n2nd component is removed from scene and added as child of 1st.";
+			tf.text = "Press SPACEBAR twice to step scene.\n3rd component is removed from scene and added as child of second.";
 			tf.textColor = 0xFFFFFF;
 			tf.autoSize = TextFieldAutoSize.LEFT;
 			
@@ -57,18 +57,23 @@ package
 			
 			addEventListener( Event.ENTER_FRAME, enterFrameHandler );
 			
-			rectangleEntity1 = createRectangleEntity(cadetScene, 250, 150, 100, 100);
-		
-			var parentTransform:Transform2D = ComponentUtil.getChildOfType(rectangleEntity1, Transform2D);
-			parentTransform.scaleX = 1.5;
+			// Create first rectangle and add to scene
+			rectangleEntity1 = createRectangleEntity(cadetScene, 200, 200, 40, 40, 0xFF0000);
+			
+//			var parentTransform:Transform2D = ComponentUtil.getChildOfType(rectangleEntity1, Transform2D);
+//			parentTransform.scaleX = 1.5;
 			
 			var animateRotationBehaviour:AnimateRotationBehaviour = new AnimateRotationBehaviour();
 			rectangleEntity1.children.addItem(animateRotationBehaviour);
 			
-			rectangleEntity2 = createRectangleEntity(cadetScene, 100, 0, 100, 100);
+			// Create second rectangle and nest within first
+			rectangleEntity2 = createRectangleEntity(rectangleEntity1, 40, 40, 40, 40, 0x00FF00);
+			
+			// Create third rectangle and add to scene
+			rectangleEntity3 = createRectangleEntity(cadetScene, 40, 40, 40, 40, 0x0000FF);
 		}
 		
-		private function createRectangleEntity(parent:ComponentContainer, x:Number, y:Number, width:Number, height:Number):ComponentContainer
+		private function createRectangleEntity(parent:ComponentContainer, x:Number, y:Number, width:Number, height:Number, lineColour:uint = 0xFFFFFF):ComponentContainer
 		{
 			var rectangleEntity:ComponentContainer = new ComponentContainer();
 			rectangleEntity.name = "Rectangle";
@@ -85,6 +90,7 @@ package
 			rectangleEntity.children.addItem(rectangleGeometry);
 			
 			var skin:GeometrySkin = new GeometrySkin();
+			skin.lineColor = lineColour;
 			rectangleEntity.children.addItem(skin);
 			
 			return rectangleEntity;
@@ -94,9 +100,9 @@ package
 		{
 			if ( event.name == "SPACE" ) {
 				if ( count == 0 ) {
-					rectangleEntity2.parentComponent.children.removeItem(rectangleEntity2);
+					rectangleEntity3.parentComponent.children.removeItem(rectangleEntity3);
 				} else if ( count == 1 ) {
-					rectangleEntity1.children.addItem(rectangleEntity2);
+					rectangleEntity2.children.addItem(rectangleEntity3);
 				}
 				count ++;
 			}

@@ -1,3 +1,5 @@
+// Tests nesting one transform2D within another
+
 package
 {
 	import flash.display.Sprite;
@@ -18,8 +20,8 @@ package
 	public class C2D_Tests_Transform_00 extends Sprite
 	{
 		private var cadetScene:CadetScene;
-		private var rectangleEntity:ComponentContainer;
-		private var topRectEntity:ComponentContainer;
+		private var rectangleEntity1:ComponentContainer;
+		private var rectangleEntity2:ComponentContainer;
 		
 		private var count:uint = 0;
 		
@@ -35,16 +37,15 @@ package
 			
 			addEventListener( Event.ENTER_FRAME, enterFrameHandler );
 			
-			rectangleEntity = createRectangleEntity(cadetScene, 250, 150, 100, 100);
-			topRectEntity = rectangleEntity;
+			rectangleEntity1 = createRectangleEntity(cadetScene, 250, 150, 100, 100);
 		
-			var parentTransform:Transform2D = ComponentUtil.getChildOfType(rectangleEntity, Transform2D);
+			var parentTransform:Transform2D = ComponentUtil.getChildOfType(rectangleEntity1, Transform2D);
 			parentTransform.scaleX = 1.5;
 			
 			var animateRotationBehaviour:AnimateRotationBehaviour = new AnimateRotationBehaviour();
-			rectangleEntity.children.addItem(animateRotationBehaviour);
+			rectangleEntity1.children.addItem(animateRotationBehaviour);
 			
-			rectangleEntity = createRectangleEntity(rectangleEntity, 100, 0, 100, 100);
+			rectangleEntity2 = createRectangleEntity(rectangleEntity1, 100, 0, 100, 100);
 		}
 		
 		private function createRectangleEntity(parent:ComponentContainer, x:Number, y:Number, width:Number, height:Number):ComponentContainer
