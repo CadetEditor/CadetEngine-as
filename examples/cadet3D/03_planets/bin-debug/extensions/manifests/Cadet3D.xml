@@ -3,7 +3,6 @@
   <!-- Processes -->
   <classMap name="InputProcess3D" class="cadet3D.components.processes.InputProcess3D" />
   <!-- Core -->
-  <classMap name="Entity" class="cadet3D.components.core.Entity"/>
   <classMap name="Renderer3D" class="cadet3D.components.renderers.Renderer3D"/>
   <classMap name="MeshComponent" class="cadet3D.components.core.MeshComponent"/> 
   <!-- Cameras -->
