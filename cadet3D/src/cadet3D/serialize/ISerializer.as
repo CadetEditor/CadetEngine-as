@@ -14,6 +14,6 @@ package cadet3D.serialize
 
 	public interface ISerializer
 	{
-		function export(object:Object3D):String
+		function export(object:Object3D):String;
 	}
 }

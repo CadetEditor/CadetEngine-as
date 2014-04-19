@@ -17,6 +17,6 @@ package cadet.core
 	
 	public interface IComponentContainer extends IComponent
 	{
-		function get children():ArrayCollection
+		function get children():ArrayCollection;
 	}
 }

@@ -6,7 +6,7 @@ package cadet3D.components.renderers
 
 	public interface IRenderer3D extends IRenderer
 	{
-		function enable(parent:DisplayObjectContainer, depth:int = -1):void
-		function disable(parent:DisplayObjectContainer):void
+		function enable(parent:DisplayObjectContainer, depth:int = -1):void;
+		function disable(parent:DisplayObjectContainer):void;
 	}
 }

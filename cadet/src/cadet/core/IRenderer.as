@@ -29,6 +29,6 @@ package cadet.core
 			
 		function getNativeStage():Stage
 			
-		function get initialised():Boolean
+		function get initialised():Boolean;
 	}
 }

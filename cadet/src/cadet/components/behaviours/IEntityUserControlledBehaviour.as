@@ -12,10 +12,10 @@ package cadet.components.behaviours
 {
 	public interface IEntityUserControlledBehaviour
 	{
-		function up():void
-		function down():void
-		function left():void
-		function right():void
-		function space():void
+		function up():void;
+		function down():void;
+		function left():void;
+		function right():void;
+		function space():void;
 	}
 }

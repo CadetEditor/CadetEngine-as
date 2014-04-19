@@ -17,6 +17,6 @@ package cadet2D.components.skins
 	public interface IRenderable extends IComponent
 	{
 		function get indexStr():String
-		function get displayObject():DisplayObject // Ties this implementation to Starling
+		function get displayObject():DisplayObject; // Ties this implementation to Starling
 	}
 }

@@ -6,7 +6,7 @@ package cadet2DBox2D.components.behaviours
 
 	public interface IJoint extends IComponent
 	{
-		function set physicsProcess( value:PhysicsProcess ):void
-		function get physicsProcess():PhysicsProcess
+		function set physicsProcess( value:PhysicsProcess ):void;
+		function get physicsProcess():PhysicsProcess;
 	}
 }

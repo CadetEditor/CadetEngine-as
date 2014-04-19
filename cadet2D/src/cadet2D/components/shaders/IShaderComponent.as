@@ -4,6 +4,6 @@ package cadet2D.components.shaders
 
 	public interface IShaderComponent
 	{
-		function get shader():IShader
+		function get shader():IShader;
 	}
 }

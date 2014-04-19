@@ -4,7 +4,7 @@ package cadet.components.processes
 
 	public interface IInputMapping extends IComponent
 	{
-		function set input( value:String ):void
-		function get input():String
+		function set input( value:String ):void;
+		function get input():String;
 	}
 }

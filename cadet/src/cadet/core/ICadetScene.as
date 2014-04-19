@@ -26,6 +26,6 @@ package cadet.core
 		function set userData( value:Object ):void;
 		function get userData():Object;
 		function get runMode():Boolean;
-		function set runMode( value:Boolean ):void
+		function set runMode( value:Boolean ):void;
 	}
 }

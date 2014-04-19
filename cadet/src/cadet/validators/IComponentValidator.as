@@ -14,6 +14,6 @@ package cadet.validators
 
 	public interface IComponentValidator
 	{
-		function validate( componentType:Class, parent:IComponentContainer ):Boolean
+		function validate( componentType:Class, parent:IComponentContainer ):Boolean;
 	}
 }

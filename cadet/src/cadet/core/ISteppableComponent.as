@@ -12,6 +12,6 @@ package cadet.core
 {
 	public interface ISteppableComponent extends IComponent
 	{
-		function step( dt:Number ):void
+		function step( dt:Number ):void;
 	}
 }

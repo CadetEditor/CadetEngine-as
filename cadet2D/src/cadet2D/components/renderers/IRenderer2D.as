@@ -23,9 +23,9 @@ package cadet2D.components.renderers
 		function worldToViewport( pt:Point ):Point;
 		function viewportToWorld( pt:Point ):Point;
 		
-		function enable(parent:DisplayObject):void
-		function disable():void		
+		function enable(parent:DisplayObject):void;
+		function disable():void;
 		
-		function setWorldContainerTransform( m:Matrix ):void
+		function setWorldContainerTransform( m:Matrix ):void;
 	}
 }

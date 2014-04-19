@@ -7,7 +7,7 @@ package cadet2D.components.skins
 			
 		function get isAnimating():Boolean
 		
-		function set previewAnimation( value:Boolean ):void
-		function get previewAnimation():Boolean
+		function set previewAnimation( value:Boolean ):void;
+		function get previewAnimation():Boolean;
 	}
 }

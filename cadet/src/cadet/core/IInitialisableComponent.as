@@ -17,6 +17,6 @@ package cadet.core
 {
 	public interface IInitialisableComponent extends IComponent
 	{
-		function init():void
+		function init():void;
 	}
 }

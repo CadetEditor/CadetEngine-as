@@ -6,6 +6,6 @@ package cadet2D.components.materials
 
 	public interface IMaterialComponent extends IEventDispatcher
 	{
-		function get material():IMaterial
+		function get material():IMaterial;
 	}
 }

@@ -8,7 +8,7 @@ package model
 	{
 		function init( parent:DisplayObject ):void
 		
-		function get cadetScene():CadetScene
-		function set cadetScene( value:CadetScene ):void
+		function get cadetScene():CadetScene;
+		function set cadetScene( value:CadetScene ):void;
 	}
 }
