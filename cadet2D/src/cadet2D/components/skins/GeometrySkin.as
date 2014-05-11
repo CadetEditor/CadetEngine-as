@@ -145,11 +145,11 @@ package cadet2D.components.skins
 			if ( _fillBitmap ) {
 				var m:Matrix = new Matrix();
 				//m.translate(_fillXOffset, _fillYOffset);
-				try {
+/*				try {
 					graphics.beginBitmapFill(_fillBitmap, m);
 				} catch ( e:Error ) {
 					trace("Error: "+e.errorID+" "+e.message);
-				}
+				}*/
 			} else if ( _fillAlpha > 0 ) {
 				graphics.beginFill( _fillColor, _fillAlpha );
 			}
@@ -180,9 +180,9 @@ package cadet2D.components.skins
 			setLineStyle();
 			
 			if ( _fillBitmap ) {
-				var m:Matrix = new Matrix();
+				//var m:Matrix = new Matrix();
 				//m.translate(_fillXOffset, _fillYOffset);
-				graphics.beginBitmapFill(_fillBitmap, m);
+				//graphics.beginBitmapFill(_fillBitmap, m);
 			} else if ( _fillAlpha > 0 ) {
 				graphics.beginFill( _fillColor, _fillAlpha );
 			}
