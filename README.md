@@ -1,6 +1,7 @@
 ![Cadet Banner](http://cadeteditor.github.io/img/carousel/1_2.gif)
 
-Please check the [Releases](https://github.com/CadetEditor/CadetEngine-as/releases) for software versions compatible with [CadetEditor](http://www.cadeteditor.com)
+* Please check the [Releases](https://github.com/CadetEditor/CadetEngine-as/releases) for software versions compatible with [CadetEditor](http://www.cadeteditor.com)
+* See the [wiki](https://github.com/CadetEditor/CadetEngine-as/wiki) for details on how to get started.
 
 CadetEngine
 ===========
